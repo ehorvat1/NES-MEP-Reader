@@ -4,7 +4,7 @@ The data is presented in a graphical web interface and can also send the data to
 
 This project is basically merging 2 other project into one:
 1) AmsToMqttBridge (Rev, 2.1.10)  which can found here: https://github.com/gskjold/AmsToMqttBridge  and
-2) OSGP Alliance Documentation for MEP (Multipurpose Expansion Ports) and the coding work from Graves Kilsgaard and Gert Lynge from www.dabbler.dk, in combination with help from NES and OSGP Alliance. See also : https://github.com/DabblerDK/MEP-SW-ESP32 
+2) OSGP Alliance Documentation for MEP (Multipurpose Expansion Ports) at https://github.com/OSGP-Alliance-MEP-and-Optical and the coding work from Graves Kilsgaard and Gert Lynge from www.dabbler.dk, in combination with help from NES and OSGP Alliance. See also : https://github.com/DabblerDK/MEP-SW-ESP32 
 
 The data from NES (Echelon) smart meters is derived using the smart meters MEP (Multipurpose Expansion Port) which is using a bi-directional serial communication link. The communication is individually secured by a secret key called "MEP Basic Key" which the relevant electrical supply company (the one which own the smart meters) has to release to the customer. (In Austria this is supported by law.)
 
