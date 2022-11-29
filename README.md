@@ -21,7 +21,7 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 9) 
 
 ## Hardware:
-For hardware please check "hardware" directory and also the development done by Dabbler group at www.dabbler.dk
+For hardware please check repository [Hardware] (https://github.com/ehorvat1/NES-MEP-Reader/tree/main/Hardware) and also the development done by Dabbler group at www.dabbler.dk
 
 ## Notes:
 1) This was tested only on NES (Networked Energy Services) Smart Meters Type: 83332-3I and 83334-3I .
