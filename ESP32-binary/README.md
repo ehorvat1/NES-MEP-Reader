@@ -15,9 +15,9 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 --before default_reset
 
 
 # Update flash Instructions
-1) When firmware is already installed you can do over the air (OTA) updates by accessing the device web page and go to "System --> Firmware". Browse to a firmware.bin file and upload it to the ESP32 device.
+When firmware is already installed and device is running, you can do a update over the air (OTA) by accessing the device web page and go to "System --> Firmware". Browse to a firmware.bin file and upload it to the ESP32 device.
 
-If you want to use esptool to upgrade to a new version, a shorter command can be used to avoid config being overwritten. Just one file will to be uploaded to the device: firmware.bin .
+But if you want to use esptool to upgrade to a new version, a shorter command can be used to avoid config being overwritten. Just one file will be uploaded to the device: firmware.bin .
 
 ## Update ESP32 flashing Command:
 esptool.py --port <port> --baud 460800 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x10000 firmware.bin
