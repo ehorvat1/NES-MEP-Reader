@@ -3,7 +3,7 @@
 ## Used parts:
 1) A DC/DC step down converter set to 3.3 Volt (source: https://www.az-delivery.de/en/collections/stromversorgung/products/lm2596s-dc-dc-step-down-modul-1 )
 2) A ESP32 D1 Mini Module (source: https://www.az-delivery.de/en/collections/esp32/products/esp32-d1-mini)
-3) A "selfmade" printed cirquit board based on attached KICAD project.
+3) A "selfmade" printed cirquit board based on attached KICAD project. [Schema in pdf format](https://github.com/ehorvat1/NES-MEP-Reader/blob/main/Hardware/NES-MEP-EHo-shema.pdf)
 
 ### Issues:
 There might be problems with power supply from NES Smart meter. It seems that some meters do not supply sufficient power to ESP32. As a result you might see frequent crashes or the serial communication to MEP port not working.
