@@ -1,0 +1,22 @@
+4983626421004
+ESP32_MC_Module
+DCDC-StepDown-LM2596-THT
+XP_POWER  IHxxxxD, DIP, (https://www.xppower.com/pdfs/SF_IH.pdf), generated with kicad-footprint-generator
+XP_POWER  IHxxxxD DIP DCDC-Converter
+0
+4
+4
+ESP32_MC_Module
+ESP32_D1_mini
+16-pin module, column spacing 22.86 mm (900 mils), https://wiki.wemos.cc/products:d1:d1_mini, https://c1.staticflickr.com/1/734/31400410271_f278b087db_z.jpg
+ESP8266 WiFi microcontroller
+0
+40
+40
+ESP32_MC_Module
+IDC-Header_2x32_P2.54mm_Vertical
+Through hole IDC box header, 2x32, 2.54mm pitch, DIN 41651 / IEC 60603-13, double rows, https://docs.google.com/spreadsheets/d/16SsEcesNF15N3Lb4niX7dcUr-NY5_MFPQhobNuNppn4/edit#gid=0
+Through hole vertical IDC box header THT 2x32 2.54mm double row
+0
+64
+64
