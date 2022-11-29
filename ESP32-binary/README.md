@@ -1,7 +1,7 @@
 # Initial flash Instructions
 1) Have a working "esptool.py" software installed. It be found here: https://github.com/espressif/esptool
 
-2) a) Build project with PlatformIO or b) use the prebuilt firmware image "firmware.bin" from this directory.
+2) a) Build project with PlatformIO or b) use the prebuilt firmware image "firmware.bin" from this directory. (firmware-de.bin is the german version).
 
 For ESP32 you will need three files to flash the device: firmware.bin , partitions.bin and bootloader.bin you get in the ESP32-binary section of this repository. The latest bootloader file you can get from Arduino ESP32 bootloader https://github.com/espressif/arduino-esp32/tree/master/tools/sdk/esp32/bin . The default bootloader for a 4MB ESP32 is "bootloader_dio_40m.bin" and it was just renamed here to "bootloader.bin".    
 
