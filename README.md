@@ -24,7 +24,7 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 For hardware please check "hardware" directory and also the development done by Dabbler group at www.dabbler.dk
 
 ## Notes:
-1) This only was tested on Smart Meters from NES (Networked Energy Services).
+1) This was tested only on NES (Networked Energy Services) Smart Meters Type: 83332-3I and 83334-3I .
 2) "NES" smart meters were previously manufactured and sold with the "Echelon" brand name.
 3) Currently only ESP32 is supported although you may find remainders of ESP8266 in the code. (Yes I want to make it ESP8266 compatible....)
 4) MEP Basic Key is a 40 char long hex string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (20 char.) which has to be converted to hex manually.
