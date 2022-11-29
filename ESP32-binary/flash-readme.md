@@ -15,7 +15,7 @@ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud 460800 --before default_reset
 
 
 # Update flash Instructions
-When firmware is already installed and you use esptool to upgrade to a new version, a shorter command can be used to avoid config being overwritten
+When firmware is already installed and you use esptool to upgrade to a new version, a shorter command can be used to avoid config being overwritten. Just one file will to be uploaded to the device: firmware.bin .
 
 
 ## Initial ESP32 flashing Command:
