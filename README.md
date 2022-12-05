@@ -1,5 +1,5 @@
 # AMS MQTT Bridge for NES-MEP
-This code is designed to decode data from NES electric smart meters installed in some countries in Europe (eg. Denmark and Austria).  
+This code is designed to decode data from NES (Networked Energy Services) electric smart meters installed in some countries in Europe (eg. Denmark and Austria).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
 
 This project is basically merging 2 other project into one:
@@ -24,8 +24,8 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-MEP-Reader/tree/main/Hardware) and also the development done by Dabbler group at www.dabbler.dk
 
 ## Notes:
-1) This was tested only on NES (Networked Energy Services) Smart Meters Type: 83332-3I and 83334-3I .
-2) "NES" smart meters were previously manufactured and sold with the "Echelon" brand name.
+1) This was tested only on NES Smart Meters Type: 83332-3I and 83334-3I .
+2) NES (Networked Energy Services) smart meters were previously manufactured and sold with the "Echelon" brand name.
 3) Currently only ESP32 is supported although you may find remainders of ESP8266 in the code. (Yes I want to make it ESP8266 compatible....)
 4) MEP Basic Key is a 40 char long hex string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (20 char.) which has to be converted to hex manually.
 5) I have done some translations to German on the main web interface. A english version will follow.
