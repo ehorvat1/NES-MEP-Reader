@@ -33,7 +33,7 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 7) Work is still in progress....
 
 ## Web interface:
-The web interface is very similar to original AMS MQTT Bridge. Basically just colors of plots and resolution of values were changed. I also changed the sign of "Import" and "Export" power - I found it more logical to show imported power as negaive values on the plots (I have prebuilt both options in firmware folder).
+The web interface is very similar to original AMS MQTT Bridge. I have added a 60 Minute plot, made the plots interactive and translated to German language.
 <img src="webui.png">
 
 
