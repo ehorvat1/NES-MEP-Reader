@@ -24,13 +24,14 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-MEP-Reader/tree/main/Hardware) and also the development done by Dabbler group at www.dabbler.dk
 
 ## Notes:
-1) This was tested only on NES Smart Meters Type: 83332-3I and 83334-3I .
-2) NES (Networked Energy Services) smart meters were previously manufactured and sold with the "Echelon" brand name.
-3) Currently only ESP32 is supported although you may find remainders of ESP8266 in the code. (Yes I want to make it ESP8266 compatible....)
-4) MEP Basic Key is a 40 char long hex string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (20 char.) which has to be converted to hex manually.
-5) I have done some translations to German on the main web interface. A english version will follow.
-6) I have changed the MQTT topic names for raw MQTT communication to better fit my home automation system (FHEM). Only RAW MQTT Payload is tested so far.
-7) Work is still in progress....
+1) This was tested only on NES Smart Meters Type: 83332-3I and 83334-3I 
+2) There might be problems with power supply from NES Smart meter. It seems that some meters do not supply sufficient power to ESP32. As a result you might see frequent crashes or the serial communication to MEP port not working at all. If this happens remove the DCDC converter (!) and power the ESP32 module directly from USB.
+3) NES (Networked Energy Services) smart meters were previously manufactured and sold with the "Echelon" brand name.
+4) Currently only ESP32 is supported although you may find remainders of ESP8266 in the code. (Yes I want to make it ESP8266 compatible....)
+5) MBK (MEP Basic Key) must be entered in its "hex" representation. This is a 40 char long string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (just 20 char.) which has to be converted to hex manually - each single ASCII character gives a 2 digit hex number.
+6) I have done some translations to German on the main web interface. A english version will follow.
+7) I have changed the MQTT topic names for raw MQTT communication to better fit my home automation system (FHEM). Only RAW MQTT Payload is tested so far.
+8) Work is still in progress....
 
 ## Web interface:
 The web interface is very similar to original AMS MQTT Bridge. I have added a 60 Minute plot, made the plots interactive and translated to German language.
