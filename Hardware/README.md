@@ -1,4 +1,5 @@
 # Hardware 
+Updated Rev2 uploaded 21.Dec 2022
 
 ## Used parts:
 1) A DC/DC step down converter set to 3.3 Volt (source: https://www.az-delivery.de/en/collections/stromversorgung/products/lm2596s-dc-dc-step-down-modul-1 )
