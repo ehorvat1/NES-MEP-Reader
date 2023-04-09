@@ -37,7 +37,7 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 8) Work is still in progress....
 
 ## Web interface:
-The web interface is very similar to original AMS MQTT Bridge. I have added a 60 Minute plot, made the plots interactive and translated to German language.
+The web interface is very similar to original "amsreader-firmware". I have (not jet)  added a 60 Minute plot, made the plots interactive and translated to German language.
 <img src="webui.png">
 
 
