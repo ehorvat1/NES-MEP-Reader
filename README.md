@@ -1,6 +1,6 @@
 # AMS MQTT Bridge for NES-MEP
 
-Major work in progress....download Revision v1.0 if you need a stabile working version.
+Major work in progress....for v2.0.1...download Revision v1.0 if you need a stabile working version.
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters installed in some countries in Europe (eg. Denmark and Austria).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
