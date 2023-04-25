@@ -6,7 +6,7 @@ This code is designed to decode data from NES (Networked Energy Services) electr
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
 
 This project is basically merging 2 other project into one:
-1) amsreader-firmware (old name: AmsToMqttBridge) Rev, 2.2.12  which can found here: https://github.com/UtilitechAS/amsreader-firmware  and
+1) amsreader-firmware (old name: AmsToMqttBridge) Rev, 2.2.15  which can found here: https://github.com/UtilitechAS/amsreader-firmware  and
 2) OSGP Alliance Documentation for MEP (Multipurpose Expansion Ports) at https://github.com/OSGP-Alliance-MEP-and-Optical and the coding work from Graves Kilsgaard and Gert Lynge from www.dabbler.dk, in combination with help from NES and OSGP Alliance. See also : https://github.com/DabblerDK/MEP-SW-ESP32 
 
 The data from NES (Echelon) smart meters is derived using the smart meters MEP (Multipurpose Expansion Port) which is using a bi-directional serial communication link. The communication is individually secured by a secret key called "MEP Basic Key" which the relevant electrical supply company (the one which own the smart meters) has to release to the customer. (In Austria this is supported by law.)
