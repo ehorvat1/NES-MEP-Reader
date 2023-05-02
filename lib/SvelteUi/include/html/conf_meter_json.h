@@ -1,2 +1,0 @@
-static const char CONF_METER_JSON[] PROGMEM = R"=="==("m":{"b":%d,"p":%d,"i":%s,"d":%d,"f":%d,"r":%d,"e":{"e":%s,"k":"%s","a":"%s"},"m":{"e":%s,"w":%.3f,"v":%.3f,"a":%.3f,"c":%.3f}},)=="==";
-const int CONF_METER_JSON_LEN PROGMEM = 128;
