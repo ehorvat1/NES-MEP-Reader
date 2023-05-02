@@ -1,8 +1,6 @@
 # AMS MQTT Bridge for NES-MEP
 
-Major work in progress....for v2.0 ....download Revision v1.0 if you need a stabile working version.
-
-This code is designed to decode data from NES (Networked Energy Services) electric smart meters installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
+This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
 
 This project is basically merging 2 other project into one:
@@ -13,9 +11,9 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 
 
 ## Quick start:
-1) Flash the ESP32 using files in "ESP32-binary" folder and according instructions in flash-readme.md . Later subsequent firmware changes can be done via Web interface by uploading a single firmware file. (Or by connecting ESP32 to a serial port which can also upload firmware.)
-2) Connect to ESP32 "AP" WIFI web page. Initially the ESP32 starts in AP mode (= presenting an WIFI Access point named AMSMQTT). Connect your Laptop/Tablet to this Wifi network (AMS2MQTT)and open ESP32 web page which is by default on IP: 192.168.4.1 
-3) Select "Generic ESP32" in the "Hardware" field, and enter your Wifi SSID, credentials and Hostname. Save&Reboot.
+1) Flash the ESP32 using files in "ESP32-binary" folder and according instructions of its readme.md file. Later subsequent firmware changes can be done via Web interface by uploading a single firmware file. (Or by connecting ESP32 to a serial port which can also upload firmware.)
+2) Connect to ESP32 "AP" WIFI web page. Initially the ESP32 starts in AP mode (= presenting an WIFI Access point named Stromzaehler-abcd"). Connect your Laptop/Tablet to this Wifi network using password nesmep_esp32#V20 and open ESP32 web page which is by default on IP: 192.168.4.1 
+3) Press "NEXT" button on initial web page, and then enter your Wifi SSID, credentials and Hostname. Save&Reboot.
 4) Connect to ESP32 web page. ESP32 should have connected to your Wifi and should be accessable by IP but also via its Hostname (Check out your Wifi router setup page for IP address.)
 5) In "Configuration --> Meter": set "Main fuse" to eg.32A - this will define the scaling of the "Import" pie-plot. If you have a production device (eg. Photovoltaik, Wind turbine) enter a suitable kW value to field "Production capacity" - this will add a pie-plot for "Export" to the main web page, and to the day and month plots. Settings for Baud rate and Parity do not have an effect since Baud rate 9600 8E1 is actually hardcoded.
 6) Still in "Configuration --> Meter": Enter the MEP Basic key in hex format, which should look similar like this: 58747A3B7E2C685656794F45404B79724F69562B .Enter such a 40 char long MEP basic key - which you must get from your local energy supplyer - into the "Encryption key" field. Best practice is to copy/paste from an editor. After pasting the 40 char long hex key a starting "0x" and 2 trailing zeros are shown....thats fine.
