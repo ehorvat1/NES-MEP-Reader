@@ -2,7 +2,7 @@
 
 Major work in progress....for v2.0 ....download Revision v1.0 if you need a stabile working version.
 
-This code is designed to decode data from NES (Networked Energy Services) electric smart meters installed in some countries in Europe (eg. Denmark and Austria).  
+This code is designed to decode data from NES (Networked Energy Services) electric smart meters installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
 
 This project is basically merging 2 other project into one:
