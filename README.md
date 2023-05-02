@@ -15,12 +15,12 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 2) Connect to ESP32 "AP" WIFI web page. Initially the ESP32 starts in AP mode (= presenting an WIFI Access point named Stromzaehler-abcd"). Connect your Laptop/Tablet to this Wifi network using password nesmep_esp32#V20 and open ESP32 web page which is by default on IP: 192.168.4.1 
 3) Press "NEXT" button on initial web page, and then enter your Wifi SSID, credentials and Hostname. Save&Reboot.
 4) Connect to ESP32 web page. ESP32 should have connected to your Wifi and should be accessable by IP but also via its Hostname (Check out your Wifi router setup page for IP address.)
-5) In "Configuration --> Meter": set "Main fuse" to eg.32A - this will define the scaling of the "Import" pie-plot. If you have a production device (eg. Photovoltaik, Wind turbine) enter a suitable kW value to field "Production capacity" - this will add a pie-plot for "Export" to the main web page, and to the day and month plots. Settings for Baud rate and Parity do not have an effect since Baud rate 9600 8E1 is actually hardcoded.
-6) Still in "Configuration --> Meter": Enter the MEP Basic key in hex format, which should look similar like this: 58747A3B7E2C685656794F45404B79724F69562B .Enter such a 40 char long MEP basic key - which you must get from your local energy supplyer - into the "Encryption key" field. Best practice is to copy/paste from an editor. After pasting the 40 char long hex key a starting "0x" and 2 trailing zeros are shown....thats fine.
-7) In "System --> GPIO": Depending on your hardware: set values to fields "LED" = 2 (works for my ESP32 Wemos D1 Module), AP button = 26 (GPIO pin where the AP button is connected to be able to reset ESP32 to initial AP mode). 
+5) Configuation. Open the Configuration web page (gear icon in header). Enter data to: "Price region, currency, fixed price. Set Power saving to Off, unceck Multipliers. Set up User interface to your needs.
+6) Still on Configuration page: Make sure that "Meter is encrypted" checkbox is selected. Then enter the MEP Basic key in hex format. It should look similar like this: 58747A3B7E2C685656794F45404B79724F69562B .Enter/paste the 40 character long MEP basic key into the field below. You you have to get the MBK from your local energy supplyer first. Best practice is to copy/paste from an editor. After pasting the 40 char long hex key 2 trailing zeros are shown....thats fine.
+7) Still on Configuration page: Set values to fields AP button = 26 (for IO26 the GPIO pin where the AP button is connected to be able to reset ESP32 to initial AP mode)."LED" = 2 (works for my ESP32 Wemos D1 Module). 
 Attention: 26 is now the default which is used after each boot of ESP32. 
-The "HAN" field is not doing anything - MEP serial communication is hard coded to Serial2 of ESP32.
-8) For MQTT setup go to  "Configuration --> MQTT": Set the "Enable" checkmark, enter MQTTs broker IP into field "Host", enter a unique name to "Client ID" (unique for the MQTT broker) e.g. SM1, enter a MQTT topic into "Publish topic" field. This will be the base topic name. e.g. smartmeter.
+The serial port connection to the MEP port is fixed in the code to UART2 which is using IO16 & IO17. RTS (Request to send) is coded to IO05.
+8) For MQTT setup: Enter a MQTTs broker IP into field "Host", a unique name to "Client ID" (unique for the MQTT broker) e.g. SM1 and enter a MQTT topic into "Publish topic" field. This will be the base topic name. e.g. smartmeter.
 9) 
 
 ## Hardware:
