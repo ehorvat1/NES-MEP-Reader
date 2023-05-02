@@ -1,0 +1,2 @@
+static const char CONF_GPIO_JSON[] PROGMEM = R"=="==("i":{"h":{"p":%s,"u":%s},"a":%s,"l":{"p":%s,"i":%s},"r":{"r":%s,"g":%s,"b":%s,"i":%s},"t":{"d":%s,"a":%s},"v":{"p":%s,"o":%.2f,"m":%.3f,"d":{"v":%d,"g":%d},"b":%.1f}},)=="==";
+const int CONF_GPIO_JSON_LEN PROGMEM = 167;
