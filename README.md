@@ -36,8 +36,29 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 4) Currently only ESP32 is supported although you may find remainders of ESP8266 in the code. (Yes I want to make it ESP8266 compatible....)
 5) MBK (MEP Basic Key) must be entered in its "hex" representation. This is a 40 char long string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (just 20 char.) which has to be converted to hex manually - each single ASCII character gives a 2 digit hex number.
 6) I have done some translations to German on the main web interface. A english version will follow.
-7) I have changed the MQTT topic names for raw MQTT communication to better fit my home automation system (FHEM). Only RAW MQTT Payload is tested so far.
-8) Work is still in progress....
+7) Following MQTT topics should work in MQTT raw mode - they are published on a pure time basis even if they do not change the value.:
+topic + "/meter/MEP_data_ready"
+topic + "/meter/clock"
+topic + "/meter/import/active/accumulated"
+topic + "/meter/l1/voltage"
+topic + "/meter/l2/voltage"
+Publish topic + "/meter/l3/voltage"
+Publish topic + "/meter/l1/current"
+Publish topic + "/meter/l2/current"
+Publish topic + "/meter/l3/current"
+Publish topic + "/meter/import/active"
+Publish topic + "/meter/export/active"
+Publish topic + "/meter/import/reactive"
+Publish topic + "/meter/export/reactive"
+Publish topic + "/realtime/import/hour"
+Publish topic + "/realtime/import/day"
+Publish topic + "/realtime/export/hour"
+Publish topic + "/realtime/export/day"
+
+For example if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter//meter/import/active
+
+9) Only RAW MQTT Payload is tested so far. Others may work for above mentioned smart meter data.
+
 
 ## Web interface:
 The web interface is very similar to original "amsreader-firmware". I have (not jet)  added a 60 Minute plot, made the plots interactive and translated to German language.
