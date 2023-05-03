@@ -55,7 +55,7 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
      - Publish topic + "/realtime/export/hour"
      - Publish topic + "/realtime/export/day"
 
-So if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter//meter/import/active
+So if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter/meter/import/active
 
 9) Only RAW MQTT Payload is tested so far. Others may work for above mentioned smart meter data.
 
