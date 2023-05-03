@@ -61,7 +61,7 @@ So if you set the "Publish topic" in MQTT configuration to "smartmeter" the actu
 
 
 ## Web interface:
-The web interface is very similar to original "amsreader-firmware". I have (not jet)  added a 60 Minute plot, made the plots interactive and translated to German language.
+The web interface is very similar to original "amsreader-firmware". I have added a 60 Minute plot, and translated to German language.
 <img src="Dashboard.png">
 
 
