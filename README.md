@@ -18,7 +18,7 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 
 The AP SSID and password are also shown on serial connected terminal right after booting ESP32.
 
-3) Press "NEXT" button on initial web page, and then enter your Wifi SSID, credentials and Hostname. Save&Reboot.
+3) Press "NEXT" button on initial web page, and then on next page enter your Wifi SSID, credentials and optionally a hostname. Save&Reboot.
 4) Connect to ESP32 web page.
 ESP32 should have connected to your Wifi and should be accessable by IP but also via its Hostname (Check out your Wifi router setup page for IP address.)
 5) Configuation. Open the Configuration web page (gear icon in header). Enter data to: "Price region, currency, fixed price. Set Power saving to Off, unceck Multipliers. Set up User interface to your needs.
