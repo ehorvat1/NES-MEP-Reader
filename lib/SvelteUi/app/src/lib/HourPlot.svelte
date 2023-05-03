@@ -47,9 +47,11 @@
                 });  
                 }
                 points.push({
-                    label: imp, 
+                    label: imp,
+                    title: imp + ' W',
                     value: imp, 
                     label2: exp * -1, 
+                    title2: exp * -1+ ' W',
                     value2: exp,
                     color2: '#407038',
                     color: '#7c3aed' 

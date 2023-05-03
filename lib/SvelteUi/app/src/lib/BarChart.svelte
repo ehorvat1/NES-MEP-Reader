@@ -87,16 +87,20 @@
                             {/if}
                     {/if}
 
-                    {#if barWidth < 16 && i%3 == 0 && point.value > 0.0001}
-                    <text 
-                        y="{yScale(config.y.max)}" 
-                        x="{xScale(i)+(barWidth/2) - 4}" 
-                        text-anchor="middle"
-                        fill="black"
-                        transform="rotate(90, {xScale(i)+(barWidth/2) - 4}, {yScale(config.y.max)})"
-                    >{point.label}</text>
+                    {#if barWidth < 16 && point.value > 0.0001}
+                        {#if i%3 == 0}
+                            <text 
+                                y="{yScale(config.y.max)+6}" 
+                                x="{xScale(i)+(barWidth/2) - 4}" 
+                                text-anchor="middle"
+                                fill="black"
+                                transform="rotate(90, {xScale(i)+(barWidth/2) - 4}, {yScale(config.y.max)+6})"
+                            >{point.label}</text>
+                        {/if}
+                        {#if point.title}
+                            <title>{point.title}</title>
+                        {/if}
                     {/if}
-
                 {/if}
             </g>
             <g>
@@ -119,17 +123,22 @@
                             transform="rotate({barWidth < 25 ? 90 : 0}, {xScale(i) + (barWidth/2)}, {yScale(point.value2 - config.y.min) > yScale(0)-12 ? yScale(point.value2 - config.y.min) - 12 : yScale(point.value2 - config.y.min)+9})"
                         >{point.label2}</text>
                         {#if point.title2}
-                        <title>{point.title2}</title>
+                            <title>{point.title2}</title>
                         {/if}
                     {/if}
-                    {#if barWidth < 16  && i%3 == 0}
-                    <text 
-                    y="{yScale(config.y.max)}" 
-                    x="{xScale(i)+(barWidth/2) - 4}" 
-                    text-anchor="middle"
-                    fill="black"
-                    transform="rotate(90, {xScale(i)+(barWidth/2) - 4}, {yScale(config.y.max)})"
-                    >{point.label2}</text>
+                    {#if barWidth < 16}
+                        {#if i%3 == 0}
+                            <text 
+                                y="{yScale(config.y.max)+6}" 
+                                x="{xScale(i)+(barWidth/2) - 4}" 
+                                text-anchor="middle"
+                                fill="black"
+                                transform="rotate(90, {xScale(i)+(barWidth/2) - 4}, {yScale(config.y.max)+6})"
+                            >{point.label2}</text>
+                        {/if}
+                            {#if point.title2}
+                                <title>{point.title2}</title>
+                            {/if}
                     {/if}
                 {/if}
             </g>                
