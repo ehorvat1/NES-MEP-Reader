@@ -1,2 +1,0 @@
-static const char SYSINFO_JSON[] PROGMEM = R"=="==({"version":"%s","chip":"%s","chipId":"%s","mac":"%s","apmac":"%s","board":%d,"vndcfg":%s,"usrcfg":%s,"fwconsent":%d,"hostname":"%s","booting":%s,"upgrading":%s,"net":{"ip":"%s","mask":"%s","gw":"%s","dns1":"%s","dns2":"%s"},"meter":{"mfg":%d,"model":"%s","id":"%s"},"ui":{"i":%d,"e":%d,"v":%d,"a":%d,"r":%d,"c":%d,"t":%d,"p":%d,"h":%d,"d":%d,"m":%d,"s":%d},"security":%d,"boot_reason":%d,"ex_cause":%d,"upgrade":{"x":%d,"e":%d,"f":"%s","t":"%s"}})=="==";
-const int SYSINFO_JSON_LEN PROGMEM = 446;

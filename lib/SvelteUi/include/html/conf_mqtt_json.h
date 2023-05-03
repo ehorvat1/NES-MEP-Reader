@@ -1,2 +1,0 @@
-static const char CONF_MQTT_JSON[] PROGMEM = R"=="==("q":{"h":"%s","p":%d,"u":"%s","a":"%s","c":"%s","b":"%s","m":%d,"s":{"e":%s,"c":%s,"r":%s,"k":%s}},)=="==";
-const int CONF_MQTT_JSON_LEN PROGMEM = 99;
