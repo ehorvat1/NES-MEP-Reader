@@ -1321,8 +1321,8 @@ void swapWifiMode() {
 //	strcpy(config.hostname, (String("ams-") + String(chipId, HEX)).c_str());
 
 //     EHorvat : establish Wifi AP connection. Note: Web page security is enforced now also in AP mode (see:  bool AmsWebServer::checkSecurity)
-//		WiFi.softAP((String("Stromzaehler-") + String(chipId, HEX)).c_str(), WIFI_AP_PASSWORD);  //EHorvat ... example to include AP password
-		WiFi.softAP((String("Stromzaehler-") + String(chipId, HEX)).c_str());  // EHorvat ... no AP security
+		WiFi.softAP((String("Stromzaehler-") + String(chipId, HEX)).c_str(), WIFI_AP_PASSWORD);  //EHorvat ... example to include AP password
+//		WiFi.softAP((String("Stromzaehler-") + String(chipId, HEX)).c_str());  // EHorvat ... no AP security
 		WiFi.mode(WIFI_AP);
 
 		if(dnsServer == NULL) {
