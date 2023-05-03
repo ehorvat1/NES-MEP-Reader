@@ -34,7 +34,7 @@ Example on Linux:
 esptool.py --port /dev/ttyUSB0 --baud 460800 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x10000 firmware.bin
 
 # Erase flash
-If the device stops responding or unpredictable behaviour, a flash erase might be needed before flashing. Read more here
+If the device stops responding or unpredictable behaviour, a flash erase might be needed before flashing.
   
 ## Erase ESP32 flash Command:
 esptool.py --port port_name erase_flash
