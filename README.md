@@ -37,10 +37,10 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 5) MBK (MEP Basic Key) must be entered in its "hex" representation. This is a 40 char long string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (just 20 char.) which has to be converted to hex manually - each single ASCII character gives a 2 digit hex number.
 6) I have done some translations to German on the main web interface. A english version will follow.
 7) Following MQTT topics should work in MQTT raw mode - they are published on a pure time basis even if they do not change the value.:
-topic + "/meter/MEP_data_ready"
-topic + "/meter/clock"
-topic + "/meter/import/active/accumulated"
-topic + "/meter/l1/voltage"
++topic + "/meter/MEP_data_ready"
++topic + "/meter/clock"
++topic + "/meter/import/active/accumulated"
++topic + "/meter/l1/voltage"
 topic + "/meter/l2/voltage"
 Publish topic + "/meter/l3/voltage"
 Publish topic + "/meter/l1/current"
