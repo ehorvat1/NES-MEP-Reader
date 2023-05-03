@@ -65,6 +65,7 @@ So if you set the "Publish topic" in MQTT configuration to "smartmeter" the actu
 
 ## Web interface:
 The web interface is very similar to original "amsreader-firmware". I have added a 60 Minute plot, and translated to German language.
+The help icons on the configuration page are linked to original "amsreader-firmware" site. Serial Port and RTS Pin are described also on config page.
 <img src="Dashboard.png">
 
 
