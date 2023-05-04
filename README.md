@@ -29,7 +29,7 @@ The serial port connection to the MEP port is fixed in the code to UART2 which i
 8) For MQTT setup: Enter a MQTTs broker IP into field "Host", a unique name to "Client ID" (unique for the MQTT broker) e.g. SM1 and enter a MQTT topic into "Publish topic" field. This will be the base topic name. e.g. smartmeter.
 9) 
 
-## Wifi (STA mode or AP mode):
+## Wifi function (STA mode or AP mode):
 The option on configuration page in section Wifi called:  "Start a Wifi AP on home Wifi connection problem" will enable this:
 If the configured Wifi (should be your home Wifi) can not be reached within app. 2 minutes the ESP32 will swap to Wifi AP mode and will present a AP named "Stromzaehler-abcd" with password mentioned in above pt. 2. 
 
