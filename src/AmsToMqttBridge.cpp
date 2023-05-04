@@ -195,6 +195,7 @@ long summ_60minplot = 0;
 long hour_plot_avg = 0;
 byte index_60minplot = 0;
 unsigned long Last_hourplot_millis = 0;
+unsigned long Last_APClient_millis =0;
 
 //
 //  ++++++++++++   EHorvat NES-MEP End ++++++++++
@@ -702,12 +703,16 @@ void loop() {
 		// Prepare data for 60 Minute Plot (Sum up and Average 4 measurements .... 180 data points for 3600 sec --> average 4 samples of 5 sec interval)
 		summ_60minplot = summ_60minplot + (ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W);
 		index_60minplot++;
+
+
+		if(Debug.isActive(RemoteDebug::INFO)) debugI("++++++  EHo +++ Stations connected to AP: %i",WiFi.softAPgetStationNum());
+
 	}
 	if (mep_data_ready) {
 		mep_Last_ok_millis = millis();	// Timestamp to be used for HAN/MEP port timeout error indication
 	}
 
-	if(millis()- Last_hourplot_millis > 19800) {    // EHorvat set hour plot data update rate of app 20s rate 
+	if(millis()- Last_hourplot_millis > 19850) {    // EHorvat set hour plot data update rate of app 20s rate 
 		Last_hourplot_millis = millis();
 	    if (index_60minplot > 0) {
             hour_plot_avg = summ_60minplot / index_60minplot;
@@ -717,9 +722,20 @@ void loop() {
 		    if(Debug.isActive(RemoteDebug::INFO)) debugI("+++++ millis: %i  LastSent: %i +++ Hour Plot updateHour was done with: %d Watt\r\n", millis(), LastSentMillis, hour_plot_avg);	//EHorvat new  	
 		}
 	}
+	// Check if a Client is connected to the AP , if no Client connected for 90 Sec --> swapWifiMode() should try STA Wifi
+	WiFiConfig wifi;
+	WiFiMode_t mode = WiFi.getMode();
+	
+	if (WiFi.softAPgetStationNum() > 0 && mode == WIFI_AP && config.hasConfig()) {
+		Last_APClient_millis = millis(); //update timeout value
+	}
+	if (mode != WIFI_AP && !wifi.autoreboot) Last_APClient_millis = millis(); //do not swapWifiMode() if on STA or autoreboot flag from GUI is off 	
+	if(millis() - Last_APClient_millis > 90000) {    // EHorvat check if no Client did connect to the AP in last 90 sec
+		if(Debug.isActive(RemoteDebug::INFO)) debugI("No Clients where connected to AP in last 90 Seconds .... do a swapWifiMode");
+		swapWifiMode();
+	}
 
   		// Receiving packages from meter
-
   		// Timeout waiting for answer from meter
   	if(millis() < LastSentMillis) {
     	LastSentMillis = millis();
@@ -1306,6 +1322,10 @@ void swapWifiMode() {
 	if (mode != WIFI_AP || !config.hasConfig()) {
 		if(Debug.isActive(RemoteDebug::INFO)) debugI_P(PSTR("Swapping to AP mode"));
 
+			Serial.printf("--AP Wifi configuration--'\r\n");	    //EHorvat ... always show this info on serial debug
+			Serial.printf(PSTR("  Wifi AP :             '%s'\r\n"), (String("Stromzaehler-") + String(chipId, HEX)).c_str());	    //EHorvat ... always show this info on serial debug
+			Serial.printf(PSTR("  AP Passw:             '%s'\r\n"), WIFI_AP_PASSWORD);     //EHorvat new... always show this info on serial debug
+
 		//wifi_softap_set_dhcps_offer_option(OFFER_ROUTER, 0); // Disable default gw
 
 		/* Example code to set captive portal option in DHCP
@@ -1317,8 +1337,6 @@ void swapWifiMode() {
 			options.add(114, captive.c_str(), captive.length());
 		});
 		*/
-//		WiFi.softAP(PSTR("Stromzaehler"));
-//	strcpy(config.hostname, (String("ams-") + String(chipId, HEX)).c_str());
 
 //     EHorvat : establish Wifi AP connection. Note: Web page security is enforced now also in AP mode (see:  bool AmsWebServer::checkSecurity)
 		WiFi.softAP((String("Stromzaehler-") + String(chipId, HEX)).c_str(), WIFI_AP_PASSWORD);  //EHorvat ... example to include AP password
