@@ -33,7 +33,7 @@ The serial port connection to the MEP port is fixed in the code to UART2 which i
 The option on configuration page in section Wifi called:  "Start a Wifi AP on home Wifi connection problem" will enable this:
 If the configured Wifi (should be your home Wifi) can not be reached within app. 2 minutes the ESP32 will swap to Wifi AP mode and will present a AP named "Stromzaehler-abcd" with password mentioned in above pt. 2. 
 
-Software will try to re-connect to the configured Wifi if no client connects to this AP within 90 seconds. So if one is connected to AP Wifi the device will stay in AP mode. Please mind that most devices will do a automatic reconnect to the AP Wifi if the Wifi connection "Stromzaehler-abcd" was once used. This could prevent the ESP32 from testing defined STA Wifi.
+Software will try to re-connect to the configured Wifi if no client is connected to this AP for 90 seconds. So if one is connected to AP Wifi the device will stay in AP mode. Please mind that most devices will do a automatic reconnect to the AP Wifi if the Wifi connection "Stromzaehler-abcd" was once used. This could prevent the ESP32 from testing defined STA Wifi.
 
 ## Hardware:
 For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-MEP-Reader/tree/main/Hardware) and also the development done by Dabbler group at www.dabbler.dk
