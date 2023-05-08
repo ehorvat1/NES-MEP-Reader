@@ -21,6 +21,7 @@
  * @details This program was created to receive data from AMS electric meters via M-Bus, decode 
  * and send to a MQTT broker. The data packet structure supported by this software is specific 
  * to Norwegian meters, but may also support data from electricity providers in other countries. 
+ * EHorvat: Based on amsreader-firmware Release 2.2.17
  */
 #include <Arduino.h>
 
@@ -195,7 +196,7 @@ long summ_60minplot = 0;
 long hour_plot_avg = 0;
 byte index_60minplot = 0;
 unsigned long Last_hourplot_millis = 0;
-unsigned long Last_APClient_millis =0;
+unsigned long Last_APClient_millis =millis();
 
 //
 //  ++++++++++++   EHorvat NES-MEP End ++++++++++
@@ -481,7 +482,6 @@ bool wifiConnected = false;
 unsigned long lastTemperatureRead = 0;
 unsigned long lastSysupdate = 0;
 unsigned long lastErrorBlink = 0; 
-unsigned long lastDataStoreUpdate = 0;
 int lastError = 0;
 unsigned long lastMEPinfo = 0; //EHorvat new
 
@@ -659,7 +659,7 @@ void loop() {
 					lastSysupdate = now;
 				}
 		}		//EHorvat NES-MEP added 
-		if(now > lastDataStoreUpdate && now - lastDataStoreUpdate > 3600000 && !ds.isHappy()) {
+		if(millis() - meterState.getLastUpdateMillis() > 1800000 && !ds.isHappy()) {
 			handleClear(now);
 		}
 	} catch(const std::exception& e) {
@@ -711,7 +711,6 @@ void loop() {
 	if (mep_data_ready) {
 		mep_Last_ok_millis = millis();	// Timestamp to be used for HAN/MEP port timeout error indication
 	}
-
 	if(millis()- Last_hourplot_millis > 19850) {    // EHorvat set hour plot data update rate of app 20s rate 
 		Last_hourplot_millis = millis();
 	    if (index_60minplot > 0) {
@@ -724,17 +723,18 @@ void loop() {
 	}
 	// Check if a Client is connected to the AP , if no Client connected for 90 Sec --> swapWifiMode() should try STA Wifi
 	WiFiConfig wifi;
-	WiFiMode_t mode = WiFi.getMode();
 	
-	if (WiFi.softAPgetStationNum() > 0 && mode == WIFI_AP && config.hasConfig()) {
-		Last_APClient_millis = millis(); //update timeout value
+	if ((WiFi.softAPgetStationNum() > 0) && (WiFi.getMode() == WIFI_AP)) {
+		Last_APClient_millis = millis(); //update timeout value if any connection is on AP and in AP mode
 	}
-	if (mode != WIFI_AP && !wifi.autoreboot) Last_APClient_millis = millis(); //do not swapWifiMode() if on STA or autoreboot flag from GUI is off 	
-	if(millis() - Last_APClient_millis > 90000) {    // EHorvat check if no Client did connect to the AP in last 90 sec
-		if(Debug.isActive(RemoteDebug::INFO)) debugI("No Clients where connected to AP in last 90 Seconds .... do a swapWifiMode");
+	if (WiFi.getMode() != WIFI_AP) {	//do not swapWifiMode() if on STA or autoreboot flag from GUI is off 	without || !wifi.autoreboot
+		Last_APClient_millis = millis();
+	} 
+	if((WiFi.getMode() == WIFI_AP) && (millis() - Last_APClient_millis > 90000)) {    		// EHorvat check if no Client did connect to the AP in last 90 sec
+		Last_APClient_millis = millis();
+		if(Debug.isActive(RemoteDebug::INFO)) debugI("++++-----+++++-----++++++  No Clients where connected to AP in last 90 Seconds .... do a swapWifiMode");
 		swapWifiMode();
 	}
-
   		// Receiving packages from meter
   		// Timeout waiting for answer from meter
   	if(millis() < LastSentMillis) {
@@ -914,7 +914,6 @@ void handleClear(unsigned long now) {
 		AmsData nullData;
 		debugI_P(PSTR("Clearing data that have not been updated"));
 		ds.update(&nullData);
-		lastDataStoreUpdate = now;
 	}
 }
 
@@ -1308,8 +1307,11 @@ void swapWifiMode() {
 		dnsServer->stop();
 	}
 	WiFi.disconnect(true);
+	delay(10); //EHorvat new... 
 	WiFi.softAPdisconnect(true);
+	delay(10); //EHorvat new... 
 	WiFi.mode(WIFI_OFF);
+	delay(10);
 	yield();
 
 	uint16_t chipId;
@@ -1348,10 +1350,11 @@ void swapWifiMode() {
 		}
 		dnsServer->setErrorReplyCode(DNSReplyCode::NoError);
 		dnsServer->start(53, PSTR("*"), WiFi.softAPIP());
-		#if defined(DEBUG_MODE)
+//		#if defined(DEBUG_MODE)   	//EHorvat Disabled...always debug
 			Debug.setSerialEnabled(true);
 			Debug.begin(F("192.168.4.1"), 23, RemoteDebug::VERBOSE);
-		#endif
+//		#endif						//EHorvat Disabled...always debug
+
 	} else {
 		if(Debug.isActive(RemoteDebug::INFO)) debugI_P(PSTR("Swapping to STA mode"));
 		if(dnsServer != NULL) {
@@ -1545,11 +1548,11 @@ void handleDataSuccess(AmsData* data) {
 	}
 	meterState.apply(*data); 
 	bool saveData = false;
-	if(!ds.isDayHappy() && now > FirmwareVersion::BuildEpoch) {
+	if(!ds.isHappy() && now > FirmwareVersion::BuildEpoch) { // Must use "isHappy()" in case day state gets reset and lastTimestamp is "now"
 		debugD_P(PSTR("Its time to update data storage"));
 		tmElements_t tm;
 		breakTime(now, tm);
-		if(tm.Minute == 0) {
+		if(tm.Minute == 0 && data->getListType() >= 3) {
 			debugV_P(PSTR(" using actual data"));
 			saveData = ds.update(data);
 		} else if(tm.Minute == 1 && meterState.getListType() >= 3) {
@@ -1559,7 +1562,6 @@ void handleDataSuccess(AmsData* data) {
 		if(saveData) {
 			debugI_P(PSTR("Saving data"));
 			ds.save();
-			lastDataStoreUpdate = millis();
 		}
 	}
 
@@ -2474,6 +2476,7 @@ void configFileParse() {
 			EnergyAccountingData ead = { 0, 0, 
                 0, 0, 0, // Cost
                 0, 0, 0, // Income
+				0, 0, 0, // Last month import, export and accuracy
                 0, 0, // Peak 1
                 0, 0, // Peak 2
                 0, 0, // Peak 3
@@ -2481,6 +2484,7 @@ void configFileParse() {
                 0, 0 // Peak 5
             };
 			uint8_t peak = 0;
+			uint64_t totalImport = 0, totalExport = 0;
 			char * pch = strtok (buf+17," ");
 			while (pch != NULL) {
 				if(ead.version < 5) {
@@ -2497,13 +2501,13 @@ void configFileParse() {
 						}
 					} else if(i == 3) {
 						float val = String(pch).toFloat();
-						ead.costYesterday = val * 10;
+						ead.costYesterday = val * 100;
 					} else if(i == 4) {
 						float val = String(pch).toFloat();
-						ead.costThisMonth = val;
+						ead.costThisMonth = val * 100;
 					} else if(i == 5) {
 						float val = String(pch).toFloat();
-						ead.costLastMonth = val;
+						ead.costLastMonth = val * 100;
 					} else if(i >= 6 && i < 18) {
 						uint8_t hour = i-6;					
 						{			
@@ -2524,23 +2528,23 @@ void configFileParse() {
 						ead.month = val;
 					} else if(i == 2) {
 						float val = String(pch).toFloat();
-						ead.costYesterday = val * 10;
+						ead.costYesterday = val * 100;
 					} else if(i == 3) {
 						float val = String(pch).toFloat();
-						ead.costThisMonth = val;
+						ead.costThisMonth = val * 100;
 					} else if(i == 4) {
 						float val = String(pch).toFloat();
-						ead.costLastMonth = val;
+						ead.costLastMonth = val * 100;
 					} else if(i == 5) {
 						float val = String(pch).toFloat();
-						ead.incomeYesterday= val * 10;
+						ead.incomeYesterday= val * 100;
 					} else if(i == 6) {
 						float val = String(pch).toFloat();
-						ead.incomeThisMonth = val;
+						ead.incomeThisMonth = val * 100;
 					} else if(i == 7) {
 						float val = String(pch).toFloat();
-						ead.incomeLastMonth = val;
-					} else if(i >= 8 && i < 20) {
+						ead.incomeLastMonth = val * 100;
+					} else if(i >= 8 && i < 18) {
 						uint8_t hour = i-8;		
 						{			
 							long val = String(pch).toInt();
@@ -2553,12 +2557,28 @@ void configFileParse() {
 							ead.peaks[peak].value = val * 100;
 						}
 						peak++;
-					}
+				} else if(i == 18) {
+						float val = String(pch).toFloat();
+						totalImport = val * 1000;
+				} else if(i == 19) {
+						float val = String(pch).toFloat();
+						totalExport = val * 1000;
+				}
 				}
 				pch = strtok (NULL, " ");
 				i++;
 			}
-			ead.version = 5;
+            uint8_t accuracy = 0;
+            uint64_t importUpdate = totalImport, exportUpdate = totalExport;
+			while(importUpdate > UINT32_MAX || exportUpdate > UINT32_MAX) {
+                accuracy++;
+                importUpdate = totalImport / pow(10, accuracy);
+                exportUpdate = totalExport / pow(10, accuracy);
+            }
+            ead.lastMonthImport = importUpdate;
+            ead.lastMonthExport = exportUpdate;
+
+			ead.version = 6;
 			ea.setData(ead);
 			sEa = true;
 		}
