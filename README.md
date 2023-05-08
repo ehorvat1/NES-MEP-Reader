@@ -1,6 +1,10 @@
 # AMS MQTT Bridge for NES-MEP
 
-Now based on amsreader-firmware Rev, 2.2.16. So it features: WebUI with new design. Works offline now. No Google plots any more. Fallback to Wifi AP can make AP button obsolete. 1hour plot
+Now based on amsreader-firmware Rev, 2.2.17. (from 5th Mai 2023)
+
+So it features: WebUI with new design. Works offline now. No Google plots any more.Last Month info. 
+
+From my side: Fallback to Wifi AP can make AP button obsolete. 1hour plot
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
