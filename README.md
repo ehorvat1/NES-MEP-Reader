@@ -39,6 +39,8 @@ If the configured Wifi (should be your home Wifi) can not be reached within app.
 
 Software will try to re-connect to the configured Wifi if no client is connected to this AP for 90 seconds. So if one is connected to AP Wifi the device will stay in AP mode. Please mind that most devices will do a automatic reconnect to the AP Wifi if the Wifi connection "Stromzaehler-abcd" was once used. This could prevent the ESP32 from automatically reconnecting to defined STA Wifi.
 
+"AP" button still is an option to swap between configured WLAN and an Wifi Access point called "Stromzaehler-abcd". The AP button must be pressed longer than 5 seconds to swap Wifi mode.
+
 ## Hardware:
 For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-MEP-Reader/tree/main/Hardware) and also the development done by Dabbler group at www.dabbler.dk
 
