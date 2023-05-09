@@ -18,7 +18,7 @@ The data from NES (Echelon) smart meters is derived using the smart meters MEP (
 
 ## Quick start:
 1) Flash the ESP32 using files in [ESP32-binaries](https://github.com/ehorvat1/NES-MEP-Reader/tree/main/ESP32-binaries) folder and according instructions of its readme.md file. Later subsequent firmware changes can be done via Web interface by uploading a single firmware file. (Or by connecting ESP32 to a serial port which can also upload firmware.)
-2) Connect to ESP32 "AP" WIFI web page. Initially the ESP32 starts in AP mode (= presenting an WIFI Access point named Stromzaehler-abcd"). Connect your Laptop/Tablet to this Wifi network using **password: nesmep_esp32#V20** and open ESP32 web page which is by default on IP: 192.168.4.1
+2) Connect to ESP32 "AP" WIFI web page. Initially the ESP32 starts in AP mode (= presenting an WIFI Access point named amsreader-abcd"). Connect your Laptop/Tablet to this Wifi network using **password: nesmep_esp32#V20** and open ESP32 web page which is by default on IP: 192.168.4.1
 
 The AP SSID and password are also shown on serial connected terminal right after booting ESP32.
 
