@@ -379,7 +379,7 @@
                 </div>
             </div>
             <div class="my-3">
-                <label><input type="checkbox" name="wa" value="true" bind:checked={configuration.w.a} class="rounded mb-1"/> Start a Wifi AP on home Wifi connection problem. Note: The AP is secured. But one can find the password on my github readme file so you should think about setting some security using General sections Security settings</label>
+                <label><input type="checkbox" name="wa" value="true" bind:checked={configuration.w.a} class="rounded mb-1"/> Start a Wifi AP on home Wifi connection problem. Note: The AP is secured. But one can find the password on my github readme file. So if the AP can be publicly accessed you should think about setting some security using General sections Security settings</label>
             </div>
         </div>
         <div class="cnt">

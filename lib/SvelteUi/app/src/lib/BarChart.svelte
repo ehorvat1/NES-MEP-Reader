@@ -61,7 +61,8 @@
 
             <g class='bars'>
                 {#each config.points as point, i}
-                    {#if !isNaN(xScale(i)) && !isNaN(yScale(point.value))}
+                    <!-- EHorvat test for if only import data was: {#if !isNaN(xScale(i)) && !isNaN(yScale(point.value))} -->
+                    {#if (!isNaN(xScale(i)) && !isNaN(yScale(point.value))) || !isNaN(xScale(i)) && !isNaN(yScale(point.value2))}
                         <g>
                         {#if point.value !== undefined}
                             <rect

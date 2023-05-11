@@ -122,13 +122,19 @@
     <div class="cnt">
         <strong class="text-sm">Stromzaehler</strong>
         <div class="my-2">
-            Hersteller: {metertype(sysinfo.meter.mfg)}
+            Hersteller: {sysinfo.meter.id}
         </div>
         <div class="my-2">
             Model: {sysinfo.meter.model}
         </div>
         <div class="my-2">
-            ID: {sysinfo.meter.id}
+            Seriennr.: {sysinfo.meter.ser}
+        </div>
+        <div class="my-2">
+            Hardware Rev.: {sysinfo.meter.hwr}
+        </div>
+        <div class="my-2">
+            Firmware Rev.: {sysinfo.meter.fwr}
         </div>
     </div>
     {/if}

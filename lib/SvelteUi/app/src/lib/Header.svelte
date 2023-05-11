@@ -44,7 +44,7 @@
 <nav class="bg-violet-600 p-1 rounded-md mx-2">
       <div class="flex flex-wrap space-x-4 text-sm text-gray-300">
         <div class="flex text-lg text-gray-100 p-2">
-          <Link to="/">NES Stromzaehler v2.1</Link>
+          <Link to="/">NES Stromzaehler v2.2</Link>
         </div>
         <div class="flex-none my-auto p-2 flex space-x-4">
           <div class="flex-none my-auto"><Uptime epoch={data.u}/></div>

@@ -107,7 +107,7 @@
         if(max_exp < 0) {      //There is some export....
             min = max_exp;
             if  (max < 0) {     //There is no import
-                max = 0;  //Test 0 (was min_exp)
+                max = min_exp;  //Test 0 (was min_exp)
                 min = max_exp;
             }
         }
