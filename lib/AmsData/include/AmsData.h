@@ -30,7 +30,10 @@ public:
 
     String getListId();
     String getMeterId();
-    uint8_t getMeterType();
+    String getMeterHW();  //EHorvat new for Hardware Rev
+    String getMeterFW();  //EHorvat new for Firmware Rev
+    String getMeterType();  //EHorvat was uint8_t
+    String getMeterSerial();  //EHorvat new
     String getMeterModel();
 
     time_t getMeterTimestamp();
@@ -42,6 +45,7 @@ public:
     uint32_t getReactiveExportPower();
 
     float setfromNESMEP(bool Data_ready, uint16_t ActiveImportPower, long Freq_mHz, uint16_t ActiveExportPower, uint16_t ReactiveExportPower, float L1Voltage, float L2Voltage, float L3Voltage, float L1Current, float L2Current, float L3Current, double ActiveImportCounter,double ReactiveImportCounter, double ActiveExportCounter, double Mep_alivecounter); // EHorvat
+    float setfromNESMEP2(char Manufacturer[5], char Model[9], byte MainHardwareVersionNumber, byte HardwareRevisionNumber, byte MainFirmwareVersionNumber, byte FirmwareRevisionNumber, char UtilitySerialNumber[31]); // EHorvat
 
     float getL1Voltage();
     float getL2Voltage();
@@ -78,7 +82,8 @@ public:
 protected:
     unsigned long lastUpdateMillis = 0;
     unsigned long lastList2 = 0;
-    uint8_t listType = 1, meterType = AmsTypeUnknown;   //EHorvat Set List Type to 1 (was 0)
+    uint8_t listType = 1, meterType; //EHorvat Set List Type to 1 (was 0)
+    String meterType_fw = "";
     time_t packageTimestamp = 0;
     String listId = "", meterId = "", meterModel = "";
     time_t meterTimestamp = 0;
