@@ -19,9 +19,11 @@
         "dns2": "%s"
     },
     "meter": {
-        "mfg": %d,
         "model": "%s",
-        "id": "%s"
+        "id": "%s",
+        "ser": "%s",
+        "hwr": "%s",
+        "fwr": "%s"
     },
     "ui": {
         "i": %d,
