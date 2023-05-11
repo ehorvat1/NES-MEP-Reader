@@ -257,6 +257,18 @@ void AmsWebServer::sysinfoJson() {
 	UpgradeInformation upinfo;
 	config->getUpgradeInformation(upinfo);
 
+	String meterStateFW = meterState->getMeterFW();  	//EHorvat new Firmware Revision
+	if(!meterStateFW.isEmpty())							//EHorvat new
+		meterStateFW.replace(F("\\"), F("\\\\"));			//EHorvat new
+
+	String meterStateHW = meterState->getMeterHW();  	//EHorvat new Hardware Revision
+	if(!meterStateHW.isEmpty())							//EHorvat new
+		meterStateHW.replace(F("\\"), F("\\\\"));			//EHorvat new
+
+	String meterStateSerial = meterState->getMeterSerial();  	//EHorvat new
+	if(!meterStateSerial.isEmpty())							//EHorvat new
+		meterStateSerial.replace(F("\\"), F("\\\\"));			//EHorvat new
+
 	String meterModel = meterState->getMeterModel();
 	if(!meterModel.isEmpty())
 		meterModel.replace(F("\\"), F("\\\\"));
@@ -301,9 +313,11 @@ void AmsWebServer::sysinfoJson() {
 		dns1 != INADDR_NONE ? dns1.toString().c_str() : "",
 		dns2 != INADDR_NONE ? dns2.toString().c_str() : "",
 		#endif
-		meterState->getMeterType(),
 		meterModel.c_str(),
 		meterId.c_str(),
+		meterStateSerial.c_str(),
+		meterStateHW.c_str(),
+		meterStateFW.c_str(),
 		ui.showImport,
 		ui.showExport,
 		ui.showVoltage,
@@ -434,6 +448,9 @@ void AmsWebServer::dataJson() {
 		peaks += String(ea->getPeak(i).value / 100.0);
 	}
 
+	String meterStateFW = meterState->getMeterFW();  	//EHorvat new
+	if(!meterStateFW.isEmpty())							//EHorvat new
+		meterStateFW.replace(F("\\"), F("\\\\"));			//EHorvat new
 	time_t now = time(nullptr);
 
 	snprintf_P(buf, BufferSize, DATA_JSON,
@@ -469,7 +486,7 @@ void AmsWebServer::dataJson() {
 		mqttStatus,
 		mqtt == NULL ? 0 : (int) mqtt->lastError(),
 		price == ENTSOE_NO_VALUE ? "null" : String(price, 2).c_str(),
-		meterState->getMeterType(),
+		meterStateFW.c_str(),
 		meterConfig->distributionSystem,
 		ea->getMonthMax(),
 		peaks.c_str(),
