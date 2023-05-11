@@ -167,6 +167,7 @@ void SerialEvent2();
 AmsData ad;
 //
 extern ConsumptionDataStruct ConsumptionData;
+extern MeterInfoStruct MeterInfo;
 MEPQueueStruct MEPQueue[MaxMEPBuffer];
 byte MEPQueueNextIndex = 0;
 byte MEPQueueSendIndex = 0;
@@ -701,7 +702,7 @@ void loop() {
 		mep_alivecounter_last = mep_alivecounter;
 
 		// Prepare data for 60 Minute Plot (Sum up and Average 4 measurements .... 180 data points for 3600 sec --> average 4 samples of 5 sec interval)
-		summ_60minplot = summ_60minplot + (ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W);
+		summ_60minplot = summ_60minplot + (ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W); //EHorvat Testi
 		index_60minplot++;
 
 
@@ -898,6 +899,7 @@ void loop() {
 //	ad.setfromNESMEP(LastSentMillis, ActiveImportPower, ReactiveImportPower, ActiveExportPower, ReactiveExportPower, L1Voltage, L2Voltage, L3Voltage, L1Current, L2Current, L3Current, ActiveImportCounter,ReactiveImportCounter, ActiveExportCounter, ReactiveExportCounter);
 // Send mep_alivecounter instead of ReactiveExportCounter....
 	ad.setfromNESMEP(mep_data_ready, ConsumptionData.BT28_Fwd_W, ConsumptionData.BT28_Freq_mHz, ConsumptionData.BT28_Rev_W, 4, (ConsumptionData.BT28_RMS_mV_L1/1000.0), (ConsumptionData.BT28_RMS_mV_L2/1000.0), (ConsumptionData.BT28_RMS_mV_L3/1000.0), (ConsumptionData.BT28_RMS_mA_L1/1000.0), (ConsumptionData.BT28_RMS_mA_L2/1000.0), (ConsumptionData.BT28_RMS_mA_L3/1000.0), (ConsumptionData.BT23_Fwd_Act_Wh/1000.0), 11, (ConsumptionData.BT23_Rev_Act_Wh/1000.0), mep_alivecounter );  // Send to AmsData
+	ad.setfromNESMEP2(MeterInfo.BT01_Manufacturer,MeterInfo.BT01_Model, MeterInfo.BT01_MainHardwareVersionNumber, MeterInfo.BT01_HardwareRevisionNumber, MeterInfo.BT01_MainFirmwareVersionNumber, MeterInfo.BT01_FirmwareRevisionNumber, MeterInfo.ET03_UtilitySerialNumber);
 
 		//  ******************   EHorvat NES-MEP end ******************
 
@@ -905,7 +907,7 @@ void loop() {
 		debugW_P(PSTR("loop() used %dms"), end-now);
 	}
 
-}		//   *********    void loop() end   *********
+}		//   *********    void loop() end   *********^
 
 void handleClear(unsigned long now) {
 	tmElements_t tm;

@@ -73,6 +73,8 @@ typedef struct {
   char BT01_Model[9] = "";
   byte BT01_MainFirmwareVersionNumber = 0;
   byte BT01_FirmwareRevisionNumber = 0;
+  byte BT01_MainHardwareVersionNumber = 0;
+  byte BT01_HardwareRevisionNumber = 0;
   char ET03_UtilitySerialNumber[31] = "";
 } MeterInfoStruct;
 

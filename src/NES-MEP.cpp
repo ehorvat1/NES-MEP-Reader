@@ -225,7 +225,7 @@ void queueResponseWithNoRequest(byte *Response,unsigned long ResponseLength,MEPQ
   IncreaseMEPQueueIndex(MEPQueueNextIndex);
 }
 
-boolean Decode0x0001(unsigned long ReplyLength,byte Reply[],char *Manufacturer,char *Model,byte *MainFirmwareVersionNumber,byte *FirmwareRevisionNumber)
+boolean Decode0x0001(unsigned long ReplyLength,byte Reply[],char *Manufacturer,char *Model,byte *MainHardwareVersionNumber,byte *HardwareRevisionNumber,byte *MainFirmwareVersionNumber,byte *FirmwareRevisionNumber)
 {
   if(ReplyLength <= 15) {
     return false;
@@ -234,6 +234,8 @@ boolean Decode0x0001(unsigned long ReplyLength,byte Reply[],char *Manufacturer,c
   Manufacturer[4] = 0;
   memcpy(Model,Reply+4,8);
   Model[8] = 0;
+  *MainHardwareVersionNumber = Reply[12];   //EHorvat new
+  *HardwareRevisionNumber = Reply[13];      //EHorvat new
   *MainFirmwareVersionNumber = Reply[14];
   *FirmwareRevisionNumber = Reply[15];
   return true;
@@ -507,11 +509,16 @@ String ReplyData2String(MEPQueueStruct *MEPQueue,byte MEPQueueReplyIndex, boolea
                    char Model[9];
                    byte MainFirmwareVersionNumber;
                    byte FirmwareRevisionNumber;
-                   if(Decode0x0001(MEPQueue[MEPQueueReplyIndex].ReplyLength-5,MEPQueue[MEPQueueReplyIndex].Reply+5,Manufacturer,Model,&MainFirmwareVersionNumber,&FirmwareRevisionNumber)) {      
+                   byte MainHardwareVersionNumber;    //EHorvat new
+                   byte HardwareRevisionNumber;       //EHorvat new
+                   if(Decode0x0001(MEPQueue[MEPQueueReplyIndex].ReplyLength-5,MEPQueue[MEPQueueReplyIndex].Reply+5,
+                                  Manufacturer,Model,&MainHardwareVersionNumber,&HardwareRevisionNumber,&MainFirmwareVersionNumber,&FirmwareRevisionNumber)) {      
                      memcpy(MeterInfo.BT01_Manufacturer,Manufacturer,5);
                      memcpy(MeterInfo.BT01_Model,Model,9);
                      MeterInfo.BT01_MainFirmwareVersionNumber = MainFirmwareVersionNumber;
                      MeterInfo.BT01_FirmwareRevisionNumber = FirmwareRevisionNumber;
+                     MeterInfo.BT01_MainHardwareVersionNumber = MainHardwareVersionNumber;
+                     MeterInfo.BT01_HardwareRevisionNumber = HardwareRevisionNumber;
                      return "Manufacturer: " + String(Manufacturer) + "<br>" +
                             "Model: " + String(Model) + "<br>" +
                             "Version: " + String(MainFirmwareVersionNumber) + "." + String(FirmwareRevisionNumber);
@@ -990,18 +997,6 @@ void RS3232Enable(boolean State)
   }  
 }
 */
-void LEDindicator(boolean State) //LEDindicator....LED indicator shows MEP activity
-{
-  pinMode(LED_PIN, OUTPUT);
-  if(State)
-  {
-    digitalWrite(LED_PIN,LOW);
-  }
-  else
-  {
-    digitalWrite(LED_PIN,HIGH);
-  }  
-}
 
 String MaxMEPReplyLengthAsHex()
 {
