@@ -65,8 +65,10 @@ bool AmsDataStorage::update(AmsData* data) {
         day.activeImport = importCounter;
         day.activeExport = exportCounter;
         day.lastMeterReadTime = now;
-        return true;
         } else if(day.activeImport == 0 || now - day.lastMeterReadTime > 86400) {
+            if(debugger->isActive(RemoteDebug::VERBOSE)) {
+            debugger->printf_P(PSTR("(AmsDataStorage) %lu == 0 || %lu - %lu > 86400"), day.activeImport, now, day.lastMeterReadTime);
+            }
         day.activeImport = importCounter;
         day.activeExport = exportCounter;
         day.lastMeterReadTime = now;
@@ -112,6 +114,9 @@ bool AmsDataStorage::update(AmsData* data) {
         month.activeExport = exportCounter;
         month.lastMeterReadTime = now;
     } else if(month.activeImport == 0 || now - month.lastMeterReadTime > 2682000) {
+        if(debugger->isActive(RemoteDebug::VERBOSE)) {
+        debugger->printf_P(PSTR("(AmsDataStorage) %lu == 0 || %lu - %lu > 2682000"), month.activeImport, now, month.lastMeterReadTime);
+        }
         month.activeImport = importCounter;
         month.activeExport = exportCounter;
         month.lastMeterReadTime = now;
@@ -276,8 +281,22 @@ bool AmsDataStorage::update(AmsData* data) {
     return ret;
 }
 
+//EHorvat new minute plot
+void AmsDataStorage::updateMinute(int32_t wattimpexp) {
+    for(int i = 149; i>0; i--) {
+        minute.mWatt[i] = minute.mWatt[i-1] ;   
+    }
+    minute.mWatt[0] = wattimpexp;
+}
+
+int32_t AmsDataStorage::getMinuteWatt(uint8_t element) {
+    if(element < 0 || element > 149) return 0;
+    return minute.mWatt[element];
+}
+//EHorvat new minute plot END
+
 //EHorvat new hour plot
-void AmsDataStorage::updateHour(int16_t wattimpexp) {
+void AmsDataStorage::updateHour(int32_t wattimpexp) {
     for(int i = 179; i>0; i--) {
         hour.mWatt[i] = hour.mWatt[i-1] ;   
     }
@@ -588,19 +607,19 @@ bool AmsDataStorage::isHappy() {
 bool AmsDataStorage::isDayHappy() {
     time_t now = time(nullptr);
     if(now < FirmwareVersion::BuildEpoch) return false;
-    tmElements_t tm, last;
 
     if(now < day.lastMeterReadTime) {
         if(debugger->isActive(RemoteDebug::VERBOSE)) debugger->printf_P(PSTR("(AmsDataStorage) Day data timestamp %lu < %lu\n"), (int32_t) now, (int32_t) day.lastMeterReadTime);
         return false;
     }
-    breakTime(tz->toLocal(now), tm);
-    breakTime(tz->toLocal(day.lastMeterReadTime), last);
     if(now-day.lastMeterReadTime > 3600) {
         if(debugger->isActive(RemoteDebug::VERBOSE)) debugger->printf_P(PSTR("(AmsDataStorage) Day data timestamp age %lu - %lu > 3600\n"), (int32_t) now, (int32_t) day.lastMeterReadTime);
         return false;
     }
-    if(tm.Hour > last.Hour) {
+    tmElements_t tm, last;
+    breakTime(tz->toLocal(now), tm);
+    breakTime(tz->toLocal(day.lastMeterReadTime), last);
+    if(tm.Hour != last.Hour) {
         if(debugger->isActive(RemoteDebug::VERBOSE)) debugger->printf_P(PSTR("(AmsDataStorage) Day data hour of last timestamp %d > %d\n"), tm.Hour, last.Hour);
         return false;
     }
