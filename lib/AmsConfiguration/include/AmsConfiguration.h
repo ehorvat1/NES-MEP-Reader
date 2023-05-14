@@ -204,6 +204,7 @@ struct UiConfig {
 	uint8_t showRealtime;
 	uint8_t showPeaks;
 	uint8_t showPricePlot;
+	uint8_t showMinutePlot;   //EHorvat new minute plot
 	uint8_t showHourPlot;   //EHorvat new hour plot
 	uint8_t showDayPlot;
 	uint8_t showMonthPlot;
