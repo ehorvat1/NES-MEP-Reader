@@ -25,10 +25,17 @@ struct MonthDataPoints {
     uint8_t accuracy;
 }; // 142 bytes
 
+//EHorvat new minute plot.
+struct MinuteDataPoints {
+    uint8_t version;
+    int32_t mWatt[150];
+}; // 121 bytes
+//EHorvat new minute plot END
+
 //EHorvat new hour plot.
 struct HourDataPoints {
     uint8_t version;
-    int16_t mWatt[180];
+    int32_t mWatt[180];
 }; // 121 bytes
 //EHorvat new hour plot END
 
@@ -37,8 +44,10 @@ public:
     AmsDataStorage(RemoteDebug*);
     void setTimezone(Timezone*);
     bool update(AmsData*);
+    int32_t getMinuteWatt(uint8_t);        //EHorvat new minute plot.
+    void updateMinute(int32_t);            //EHorvat new minute plot.
     int32_t getHourWatt(uint8_t);        //EHorvat new hour plot.
-    void updateHour(int16_t);            //EHorvat new hour plot.
+    void updateHour(int32_t);            //EHorvat new hour plot.
     uint32_t getHourImport(uint8_t);
     uint32_t getHourExport(uint8_t);
     uint32_t getDayImport(uint8_t);
@@ -76,7 +85,16 @@ private:
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         10
     };
-            //EHorvat new 5 Minute plot...which is a 60 minute plot now...  
+            //EHorvat new 6 Minute plot.
+    MinuteDataPoints minute = {
+        0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    };
+         //EHorvat new hour plot now
     HourDataPoints hour = {
         0, 
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
