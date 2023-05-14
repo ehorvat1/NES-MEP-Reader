@@ -689,6 +689,7 @@ void AmsConfiguration::clearUiConfig(UiConfig& config) {
 	config.showRealtime = 1;
 	config.showPeaks = 0;
 	config.showPricePlot = 0;
+	config.showMinutePlot = 1;
 	config.showHourPlot = 1;
 	config.showDayPlot = 1;
 	config.showMonthPlot = 1;
