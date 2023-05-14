@@ -87,6 +87,7 @@ private:
 
     void sysinfoJson();
     void dataJson();
+	void minuteplotJson(); //EHorvat new minute plot	
 	void hourplotJson(); //EHorvat new hour plot	
 	void dayplotJson();
 	void monthplotJson();
