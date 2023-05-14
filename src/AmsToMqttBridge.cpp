@@ -695,14 +695,14 @@ void loop() {
 //  ******************   EHorvat NES-MEP added start ******************
  	byte j;
 
-  	if(millis()- mep_LastSentMillis > 5000) {    // NES-MEP   ..... send data at a  5000ms rate
+  	if(millis()- mep_LastSentMillis > 2000) {    // NES-MEP   ..... send data at a  2000ms rate
     	mep_LastSentMillis = millis();		
 		mep_data_ready = mep_alivecounter > mep_alivecounter_last;   // mep_alivecounter is increased in NESMEP.cpp line 543 and 615 receiving Table 23 or 28 data
 		mep_data_ready_to_send = mep_data_ready;
 		mep_alivecounter_last = mep_alivecounter;
 
 		// Prepare data for 60 Minute Plot (Sum up and Average 4 measurements .... 180 data points for 3600 sec --> average 4 samples of 5 sec interval)
-		summ_60minplot = summ_60minplot + (ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W); //EHorvat Testi
+		summ_60minplot = summ_60minplot + (ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W); //EHorvat 
 		index_60minplot++;
 
 
@@ -871,7 +871,7 @@ void loop() {
       		}
     	}
     	else {
-      		if(millis()-LastSentMillis > 5000) {     //EHorvat Nes-MEP was 2000
+      		if(millis()-LastSentMillis > 2000) {     //EHorvat Nes-MEP was 5000
 			       				 
 					 // Update consumption data
        			queueRequest("300017" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None);
@@ -890,12 +890,11 @@ void loop() {
 //																mep_keyByteArray[5],mep_keyByteArray[6],mep_keyByteArray[7],mep_keyByteArray[8],mep_keyByteArray[9],
 //																mep_keyByteArray[10],mep_keyByteArray[11],mep_keyByteArray[12],mep_keyByteArray[13],mep_keyByteArray[14],
 //																mep_keyByteArray[15]);
-        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ----  actual Import Power: %d Watt", ConsumptionData.BT28_Fwd_W); //  EHorvat NES-MEP
-
+        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ---- ++++++ actual Import Power: %d Watt", ConsumptionData.BT28_Fwd_W); //  EHorvat NES-MEP
+				ds.updateMinute((ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W)); //EHorvat put data to new Minute Plot array
       		}
     	}
   	}
-
 //	ad.setfromNESMEP(LastSentMillis, ActiveImportPower, ReactiveImportPower, ActiveExportPower, ReactiveExportPower, L1Voltage, L2Voltage, L3Voltage, L1Current, L2Current, L3Current, ActiveImportCounter,ReactiveImportCounter, ActiveExportCounter, ReactiveExportCounter);
 // Send mep_alivecounter instead of ReactiveExportCounter....
 	ad.setfromNESMEP(mep_data_ready, ConsumptionData.BT28_Fwd_W, ConsumptionData.BT28_Freq_mHz, ConsumptionData.BT28_Rev_W, 4, (ConsumptionData.BT28_RMS_mV_L1/1000.0), (ConsumptionData.BT28_RMS_mV_L2/1000.0), (ConsumptionData.BT28_RMS_mV_L3/1000.0), (ConsumptionData.BT28_RMS_mA_L1/1000.0), (ConsumptionData.BT28_RMS_mA_L2/1000.0), (ConsumptionData.BT28_RMS_mA_L3/1000.0), (ConsumptionData.BT23_Fwd_Act_Wh/1000.0), 11, (ConsumptionData.BT23_Rev_Act_Wh/1000.0), mep_alivecounter );  // Send to AmsData
