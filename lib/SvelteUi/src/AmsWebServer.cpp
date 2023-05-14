@@ -10,6 +10,7 @@
 #include "html/github_svg.h"
 #include "html/favicon_svg.h"
 #include "html/data_json.h"
+#include "html/minuteplot_json.h" 				//EHorvat new minute plot
 #include "html/hourplot_json.h" 				//EHorvat new hour plot
 #include "html/dayplot_json.h"
 #include "html/monthplot_json.h"
@@ -85,6 +86,7 @@ void AmsWebServer::setup(AmsConfiguration* config, GpioConfig* gpioConfig, Meter
 	server.on(F("/data.json"), HTTP_GET, std::bind(&AmsWebServer::dataJson, this));
 	server.on(F("/dayplot.json"), HTTP_GET, std::bind(&AmsWebServer::dayplotJson, this));
 	server.on(F("/monthplot.json"), HTTP_GET, std::bind(&AmsWebServer::monthplotJson, this));
+	server.on(F("/minuteplot.json"), HTTP_GET, std::bind(&AmsWebServer::minuteplotJson, this));  //EHorvat 
 	server.on(F("/hourplot.json"), HTTP_GET, std::bind(&AmsWebServer::hourplotJson, this));  //EHorvat 
 	server.on(F("/energyprice.json"), HTTP_GET, std::bind(&AmsWebServer::energyPriceJson, this));
 	server.on(F("/temperature.json"), HTTP_GET, std::bind(&AmsWebServer::temperatureJson, this));
@@ -326,6 +328,7 @@ void AmsWebServer::sysinfoJson() {
 		ui.showRealtime,
 		ui.showPeaks,
 		ui.showPricePlot,
+		ui.showMinutePlot,
 		ui.showHourPlot,
 		ui.showDayPlot,
 		ui.showMonthPlot,
@@ -670,6 +673,182 @@ void AmsWebServer::monthplotJson() {
 		server.send(200, MIME_JSON, buf);
 	}
 }
+
+//EHorvat new minute plot new
+// minimize JSON size and use signed int 
+void AmsWebServer::minuteplotJson() {
+	if(debugger->isActive(RemoteDebug::INFO)) debugger->printf_P(PSTR("Serving /minuteplot.json over http...\n"));  //EHorvat changed to Info level
+//	if(debugger->isActive(RemoteDebug::INFO)) debugger->printf_P(PSTR("++++++++getHour-0 : %i\n"), ds->getMinuteWatt(0));  //EHorvat changed to Info level
+//	if(debugger->isActive(RemoteDebug::INFO)) debugger->printf_P(PSTR("++++++++getHour-179 : %i\n"), ds->getMinuteWatt(179));  //EHorvat changed to Info level
+
+	if(!checkSecurity(2))
+		return;
+
+	if(ds == NULL) {
+		notFound();
+	} else {
+		snprintf_P(buf, BufferSize, MINUTEPLOT_JSON,
+			ds->getMinuteWatt(0),
+			ds->getMinuteWatt(1),
+			ds->getMinuteWatt(2),
+			ds->getMinuteWatt(3),
+			ds->getMinuteWatt(4),
+			ds->getMinuteWatt(5),
+			ds->getMinuteWatt(6),
+			ds->getMinuteWatt(7),
+			ds->getMinuteWatt(8),
+			ds->getMinuteWatt(9),
+			ds->getMinuteWatt(10),
+			ds->getMinuteWatt(11),
+			ds->getMinuteWatt(12),
+			ds->getMinuteWatt(13),
+			ds->getMinuteWatt(14),
+			ds->getMinuteWatt(15),
+			ds->getMinuteWatt(16),
+			ds->getMinuteWatt(17),
+			ds->getMinuteWatt(18),
+			ds->getMinuteWatt(19),
+			ds->getMinuteWatt(20),
+			ds->getMinuteWatt(21),
+			ds->getMinuteWatt(22),
+			ds->getMinuteWatt(23),
+			ds->getMinuteWatt(24),
+			ds->getMinuteWatt(25),
+			ds->getMinuteWatt(26),
+			ds->getMinuteWatt(27),
+			ds->getMinuteWatt(28),
+			ds->getMinuteWatt(29),
+			ds->getMinuteWatt(30),
+			ds->getMinuteWatt(31),
+			ds->getMinuteWatt(32),
+			ds->getMinuteWatt(33),
+			ds->getMinuteWatt(34),
+			ds->getMinuteWatt(35),
+			ds->getMinuteWatt(36),
+			ds->getMinuteWatt(37),
+			ds->getMinuteWatt(38),
+			ds->getMinuteWatt(39),
+			ds->getMinuteWatt(40),
+			ds->getMinuteWatt(41),
+			ds->getMinuteWatt(42),
+			ds->getMinuteWatt(43),
+			ds->getMinuteWatt(44),
+			ds->getMinuteWatt(45),
+			ds->getMinuteWatt(46),
+			ds->getMinuteWatt(47),
+			ds->getMinuteWatt(48),
+			ds->getMinuteWatt(49),
+			ds->getMinuteWatt(50),
+			ds->getMinuteWatt(51),
+			ds->getMinuteWatt(52),
+			ds->getMinuteWatt(53),
+			ds->getMinuteWatt(54),
+			ds->getMinuteWatt(55),
+			ds->getMinuteWatt(56),
+			ds->getMinuteWatt(57),
+			ds->getMinuteWatt(58),
+			ds->getMinuteWatt(59),
+			ds->getMinuteWatt(60),
+			ds->getMinuteWatt(61),
+			ds->getMinuteWatt(62),
+			ds->getMinuteWatt(63),
+			ds->getMinuteWatt(64),
+			ds->getMinuteWatt(65),
+			ds->getMinuteWatt(66),
+			ds->getMinuteWatt(67),
+			ds->getMinuteWatt(68),
+			ds->getMinuteWatt(69),
+			ds->getMinuteWatt(70),
+			ds->getMinuteWatt(71),
+			ds->getMinuteWatt(72),
+			ds->getMinuteWatt(73),
+			ds->getMinuteWatt(74),
+			ds->getMinuteWatt(75),
+			ds->getMinuteWatt(76),
+			ds->getMinuteWatt(77),
+			ds->getMinuteWatt(78),
+			ds->getMinuteWatt(79),
+			ds->getMinuteWatt(80),
+			ds->getMinuteWatt(81),
+			ds->getMinuteWatt(82),
+			ds->getMinuteWatt(83),
+			ds->getMinuteWatt(84),
+			ds->getMinuteWatt(85),
+			ds->getMinuteWatt(86),
+			ds->getMinuteWatt(87),
+			ds->getMinuteWatt(88),
+			ds->getMinuteWatt(89),
+			ds->getMinuteWatt(90),
+			ds->getMinuteWatt(91),
+			ds->getMinuteWatt(92),
+			ds->getMinuteWatt(93),
+			ds->getMinuteWatt(94),
+			ds->getMinuteWatt(95),
+			ds->getMinuteWatt(96),
+			ds->getMinuteWatt(97),
+			ds->getMinuteWatt(98),
+			ds->getMinuteWatt(99),
+			ds->getMinuteWatt(100),
+			ds->getMinuteWatt(101),
+			ds->getMinuteWatt(102),
+			ds->getMinuteWatt(103),
+			ds->getMinuteWatt(104),
+			ds->getMinuteWatt(105),
+			ds->getMinuteWatt(106),
+			ds->getMinuteWatt(107),
+			ds->getMinuteWatt(108),
+			ds->getMinuteWatt(109),
+			ds->getMinuteWatt(110),
+			ds->getMinuteWatt(111),
+			ds->getMinuteWatt(112),
+			ds->getMinuteWatt(113),
+			ds->getMinuteWatt(114),
+			ds->getMinuteWatt(115),
+			ds->getMinuteWatt(116),
+			ds->getMinuteWatt(117),
+			ds->getMinuteWatt(118),
+			ds->getMinuteWatt(119),
+			ds->getMinuteWatt(120),
+			ds->getMinuteWatt(121),
+			ds->getMinuteWatt(122),
+			ds->getMinuteWatt(123),
+			ds->getMinuteWatt(124),
+			ds->getMinuteWatt(125),
+			ds->getMinuteWatt(126),
+			ds->getMinuteWatt(127),
+			ds->getMinuteWatt(128),
+			ds->getMinuteWatt(129),
+			ds->getMinuteWatt(130),
+			ds->getMinuteWatt(131),
+			ds->getMinuteWatt(132),
+			ds->getMinuteWatt(133),
+			ds->getMinuteWatt(134),
+			ds->getMinuteWatt(135),
+			ds->getMinuteWatt(136),
+			ds->getMinuteWatt(137),
+			ds->getMinuteWatt(138),
+			ds->getMinuteWatt(139),
+			ds->getMinuteWatt(140),
+			ds->getMinuteWatt(141),
+			ds->getMinuteWatt(142),
+			ds->getMinuteWatt(143),
+			ds->getMinuteWatt(144),
+			ds->getMinuteWatt(145),
+			ds->getMinuteWatt(146),
+			ds->getMinuteWatt(147),
+			ds->getMinuteWatt(148),
+			ds->getMinuteWatt(149)
+		);
+
+	server.sendHeader(HEADER_CACHE_CONTROL, CACHE_CONTROL_NO_CACHE);
+	server.sendHeader(HEADER_PRAGMA, PRAGMA_NO_CACHE);
+	server.sendHeader(HEADER_EXPIRES, EXPIRES_OFF);
+
+		server.setContentLength(strlen(buf));
+		server.send(200, MIME_JSON, buf);
+	}
+}
+
 
 
 //EHorvat new hour plot new
@@ -1176,6 +1355,7 @@ void AmsWebServer::configurationJson() {
 		ui.showRealtime,
 		ui.showPeaks,
 		ui.showPricePlot,
+		ui.showMinutePlot,		
 		ui.showHourPlot,		
 		ui.showDayPlot,
 		ui.showMonthPlot,
@@ -1643,6 +1823,7 @@ void AmsWebServer::handleSave() {
 		ui.showRealtime = server.arg(F("uc")).toInt();
 		ui.showPeaks = server.arg(F("ut")).toInt();
 		ui.showPricePlot = server.arg(F("up")).toInt();
+		ui.showMinutePlot = server.arg(F("uq")).toInt();
 		ui.showHourPlot = server.arg(F("uh")).toInt();
 		ui.showDayPlot = server.arg(F("ud")).toInt();
 		ui.showMonthPlot = server.arg(F("um")).toInt();
