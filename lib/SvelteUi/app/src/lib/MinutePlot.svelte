@@ -1,5 +1,5 @@
 <script>
-// Generate a plot for one hour duration
+// Generate a plot for 6 minutes duration
 // If export is existing it shows up as bars towards "down". Autoscale is done
 //
 // EHorvat
@@ -11,7 +11,7 @@
     let config = {};
     let max = 0;
     let min = 0;    
-    let no_of_datapoints = 179;   //Number of points-1 in Hour Plot
+    let no_of_datapoints = 149;   //Number of points-1 in minute Plot
     let max_exp = 0;
     let min_exp = 0;
 
@@ -37,14 +37,14 @@
                 max_exp = Math.ceil(exp/10)*10;
                 min_exp = Math.floor(exp/10)*10;
             }
-            if (i%3 == 0) {                     //show x ticks not on every data point
+            if (i%5 == 0) {                     //show x ticks not on every data point
                 xTicks.push({
-                    label: zeropad(-1*i/3)      //show "-" Minutes
+                    label: zeropad(-2*i)      //show "-" Seconds
                 });
             } else {
                 if (i == no_of_datapoints) {  
                     xTicks.push({
-                        label: "Min."
+                        label: "Sek."
                     });  
                 } else {
                     xTicks.push({
@@ -119,7 +119,7 @@
         }
 
         config = {
-            title: "Elektrische Leistung letzte Stunde (Watt)",  //EHorvat translated: "Electrical power last hour (Watt)
+            title: "Elektrische Leistung letzten 5 Minuten (Watt)",
             height: 226,
             width: 1520,
             padding: { top: 20, right: 15, bottom: 20, left: 35 },

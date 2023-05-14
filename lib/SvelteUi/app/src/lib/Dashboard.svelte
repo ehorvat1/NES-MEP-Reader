@@ -1,5 +1,5 @@
 <script>
-    import { pricesStore, dayPlotStore, monthPlotStore, hourPlotStore, temperaturesStore } from './DataStores.js'; //EHorvat added: , hourPlotStore
+    import { pricesStore, dayPlotStore, monthPlotStore, minutePlotStore, hourPlotStore, temperaturesStore } from './DataStores.js'; //EHorvat added: , hourPlotStore
     import { importcol, exportcol, metertype, uiVisibility } from './Helpers.js';
     import PowerGauge from './PowerGauge.svelte';
     import VoltPlot from './VoltPlot.svelte';
@@ -9,6 +9,7 @@
     import PricePlot from './PricePlot.svelte';
     import DayPlot from './DayPlot.svelte';
     import MonthPlot from './MonthPlot.svelte';    
+    import MinutePlot from './MinutePlot.svelte';//EHorvat Minute plot added line
     import HourPlot from './HourPlot.svelte';//EHorvat hour plot added line
     import TemperaturePlot from './TemperaturePlot.svelte';
     import TariffPeakChart from './TariffPeakChart.svelte';
@@ -18,6 +19,7 @@
     let prices = {}
     let dayPlot = {}
     let monthPlot = {}
+    let minutePlot = {} //EHorvat minute plot added line    
     let hourPlot = {} //EHorvat hour plot added line
     let temperatures = {};
     pricesStore.subscribe(update => {
@@ -28,6 +30,9 @@
     });
     monthPlotStore.subscribe(update => {
         monthPlot = update;
+    });    
+    minutePlotStore.subscribe(update => {
+        minutePlot = update;
     });    
     hourPlotStore.subscribe(update => {
         hourPlot = update;
@@ -90,7 +95,12 @@
             <PricePlot json={prices}/>
         </div>
     {/if}
-    {#if uiVisibility(sysinfo.ui.d, hourPlot)}
+    {#if uiVisibility(sysinfo.ui.q, minutePlot)}
+    <div class="cnt gwf">
+        <MinutePlot json={minutePlot} />
+    </div>
+    {/if}
+    {#if uiVisibility(sysinfo.ui.h, hourPlot)}
     <div class="cnt gwf">
         <HourPlot json={hourPlot} />
     </div>

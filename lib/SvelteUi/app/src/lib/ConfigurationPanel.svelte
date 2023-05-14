@@ -38,6 +38,12 @@
         name: 'Price',
         key: 'p'
     },{
+        name: 'Minute plot',
+        key: 'q'
+    },{
+        name: 'Hour plot',
+        key: 'h'
+    },{
         name: 'Day plot',
         key: 'd'
     },{
@@ -85,7 +91,7 @@
             s: false, t: false, l: 5
         },
         u: {
-            i: 0, e: 0, v: 0, a: 0, r: 0, c: 0, t: 0, p: 0, d: 0, m: 0, s: 0
+            i: 0, e: 0, v: 0, a: 0, r: 0, c: 0, t: 0, p: 0, q: 0, h: 0, d: 0, m: 0, s: 0
         },
         i: {
             h: { p: null, u: true },

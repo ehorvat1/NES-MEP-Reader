@@ -66,9 +66,9 @@
                         <g>
                         {#if point.value !== undefined}
                             <rect
-                                x="{xScale(i) + 2}"
+                                x="{xScale(i) + 1}"
                                 y="{yScale(point.value)}"
-                                width="{barWidth - 4}"
+                                width="{barWidth - 2}"
                                 height="{yScale(config.y.min) - yScale(Math.min(config.y.min, 0) + point.value)}"
                                 fill="{point.color}"
                             />
@@ -92,11 +92,11 @@
                             {#if barWidth < 16 && point.value > 0.0001}
                                 {#if i%3 == 0}
                                     <text 
-                                        y="{yScale(config.y.max)+6}" 
-                                        x="{xScale(i)+(barWidth/2) - 4}" 
+                                        y="{yScale(config.y.max)+10}" 
+                                        x="{xScale(i)+(barWidth/2) - 2}" 
                                         text-anchor="middle"
                                         fill="black"
-                                        transform="rotate(90, {xScale(i)+(barWidth/2) - 4}, {yScale(config.y.max)+6})"
+                                        transform="rotate(90, {xScale(i)+(barWidth/2) - 2}, {yScale(config.y.max)+10})"
                                     >{point.label}</text>
                                 {/if}
                                 {#if point.title}
@@ -108,11 +108,11 @@
                         </g>
                         <g>
                         {#if point.value2 > 0.0001}
-                            <!-- EHorvat changed "point.color" to "point.color2" for fill -->
+                            <!-- EHorvat changed "point.color" to "point.color2" for fill  and "2" in first width="{barWidth - 4}"-->
                             <rect
-                                x="{xScale(i) + 2}"
+                                x="{xScale(i) + 1}"
                                 y="{yScale(0)}"
-                                width="{barWidth - 4}"
+                                width="{barWidth - 2}"
                                 height="{yScale(config.y.min) - yScale(config.y.min + point.value2)}"
                                 fill="{point.color2}"
                             />
@@ -135,10 +135,10 @@
                                 {#if i%3 == 0}
                                     <text 
                                         y="{yScale(config.y.min)}" 
-                                        x="{xScale(i)+(barWidth/2) - 4}" 
+                                        x="{xScale(i)+(barWidth/2) - 2}" 
                                         text-anchor="middle"
                                         fill="black"
-                                        transform="rotate(90, {xScale(i)+(barWidth/2) - 4}, {yScale(config.y.min)})"
+                                        transform="rotate(90, {xScale(i)+(barWidth/2) - 2}, {yScale(config.y.min)})"
                                     >{point.label2}</text>
                                 {/if}
                                 {#if point.title2}
