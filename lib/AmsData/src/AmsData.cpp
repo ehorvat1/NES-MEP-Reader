@@ -271,6 +271,11 @@ uint32_t AmsData::getReactiveExportPower() {
     return NESMEP_ReactiveExportPower;         // EHorvat NES-MEP
 }
 
+float AmsData::getFrequency() {
+//    return this->l1voltage;     // EHorvat NES-MEP
+    return NESMEP_Freq_Hz;      // EHorvat NES-MEP
+}
+
 float AmsData::getL1Voltage() {
 //    return this->l1voltage;     // EHorvat NES-MEP
     return NESMEP_L1Voltage;      // EHorvat NES-MEP
