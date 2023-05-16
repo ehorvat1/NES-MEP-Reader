@@ -92,11 +92,11 @@
                             {#if barWidth < 16 && point.value > 0.0001}
                                 {#if i%3 == 0}
                                     <text 
-                                        y="{yScale(config.y.max)+10}" 
-                                        x="{xScale(i)+(barWidth/2) - 2}" 
+                                        y="{yScale(config.y.max)-8}" 
+                                        x="{xScale(i)+(barWidth/2)-4}" 
                                         text-anchor="middle"
                                         fill="black"
-                                        transform="rotate(90, {xScale(i)+(barWidth/2) - 2}, {yScale(config.y.max)+10})"
+                                        transform="rotate(90, {xScale(i)+(barWidth/2)-4}, {yScale(config.y.max)-8})"
                                     >{point.label}</text>
                                 {/if}
                                 {#if point.title}

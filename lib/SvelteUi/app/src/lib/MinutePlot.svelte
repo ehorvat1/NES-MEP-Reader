@@ -11,7 +11,7 @@
     let config = {};
     let max = 0;
     let min = 0;    
-    let no_of_datapoints = 149;   //Number of points-1 in minute Plot
+    let no_of_datapoints = 149;   //Number of points-1 in minute Plot was 149
     let max_exp = 0;
     let min_exp = 0;
 
@@ -56,8 +56,8 @@
                 label: imp,
                 title: imp + ' W',
                 value: imp, 
-                label2: exp * -1, 
-                title2: exp * -1+ ' W',
+                label2: exp, 
+                title2: (- 1 * exp)+ ' W',
                 value2: exp,
                 color2: '#407038',
                 color: '#7c3aed' 

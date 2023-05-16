@@ -56,8 +56,8 @@
                 label: imp,
                 title: imp + ' W',
                 value: imp, 
-                label2: exp * -1, 
-                title2: exp * -1+ ' W',
+                label2: exp, 
+                title2: (- 1 * exp)+ ' W',
                 value2: exp,
                 color2: '#407038',
                 color: '#7c3aed' 
