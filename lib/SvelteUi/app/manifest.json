@@ -1,8 +1,8 @@
 // HTTPS required for this to work
 // Remember: <link rel="manifest" href="manifest.json" />
 {
-    "short_name": "amsreader",
-    "name": "AMS reader",
+    "short_name": "Stromzaehler",
+    "name": "Stromzaehler",
     "icons": [
         {
             "src": "/favicon.svg",
