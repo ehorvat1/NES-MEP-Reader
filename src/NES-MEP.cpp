@@ -1,5 +1,6 @@
 #include "NES-MEP-Tools.h"
 #include "NES-MEP.h"
+#include "AmsConfiguration.h"
 
 unsigned long SequenceNo = 0;
 byte ProcedureSequenceNo = 5; // Must be 5-9 for MEP
@@ -589,7 +590,7 @@ String ReplyData2String(MEPQueueStruct *MEPQueue,byte MEPQueueReplyIndex, boolea
                    long AverageFwdActiveWL3;
                    long AverageRevActiveWL1;
                    long AverageRevActiveWL2;
-                   long AverageRevActiveWL3;                  
+                   long AverageRevActiveWL3;              
                    if(Decode0x001C(MEPQueue[MEPQueueReplyIndex].ReplyLength-5,MEPQueue[MEPQueueReplyIndex].Reply+5,&FwdActiveWL1L2L3,&RevActiveWL1L2L3,&ImportReactiveVArL1L2L3,&ExportReactiveVArL1L2L3,
                                    &RMSCurrentmAL1,&RMSCurrentmAL2,&RMSCurrentmAL3,&RMSVoltagemVL1,&RMSVoltagemVL2,&RMSVoltagemVL3,
                                    &PowerFactorL1,&FrequencymHz,&VAL1L2L3,&PowerFactorL2,&PowerFactorL3,
@@ -659,7 +660,7 @@ String ReplyData2String(MEPQueueStruct *MEPQueue,byte MEPQueueReplyIndex, boolea
                             "Average Rev Active W L3: " + String(AverageRevActiveWL3);
                    }
                    break;
-                          
+                    
       case 0x0034: byte year_;
                    byte month_;
                    byte day_;

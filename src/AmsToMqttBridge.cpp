@@ -897,6 +897,7 @@ void loop() {
   	}
 //	ad.setfromNESMEP(LastSentMillis, ActiveImportPower, ReactiveImportPower, ActiveExportPower, ReactiveExportPower, L1Voltage, L2Voltage, L3Voltage, L1Current, L2Current, L3Current, ActiveImportCounter,ReactiveImportCounter, ActiveExportCounter, ReactiveExportCounter);
 // Send mep_alivecounter instead of ReactiveExportCounter....
+
 	ad.setfromNESMEP(mep_data_ready, ConsumptionData.BT28_Fwd_W, ConsumptionData.BT28_Freq_mHz, ConsumptionData.BT28_Rev_W, 4, (ConsumptionData.BT28_RMS_mV_L1/1000.0), (ConsumptionData.BT28_RMS_mV_L2/1000.0), (ConsumptionData.BT28_RMS_mV_L3/1000.0), (ConsumptionData.BT28_RMS_mA_L1/1000.0), (ConsumptionData.BT28_RMS_mA_L2/1000.0), (ConsumptionData.BT28_RMS_mA_L3/1000.0), (ConsumptionData.BT23_Fwd_Act_Wh/1000.0), 11, (ConsumptionData.BT23_Rev_Act_Wh/1000.0), mep_alivecounter );  // Send to AmsData
 	ad.setfromNESMEP2(MeterInfo.BT01_Manufacturer,MeterInfo.BT01_Model, MeterInfo.BT01_MainHardwareVersionNumber, MeterInfo.BT01_HardwareRevisionNumber, MeterInfo.BT01_MainFirmwareVersionNumber, MeterInfo.BT01_FirmwareRevisionNumber, MeterInfo.ET03_UtilitySerialNumber);
 
