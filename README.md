@@ -6,6 +6,7 @@ So it features: WebUI with new design. Works offline now. Fixed cost / kWh .Last
 From my side: Fallback to Wifi AP can make AP button obsolete. 1hour plot. Additional Meter Info on status page. 
 
 Rel. 2.3: Data fetch from meter and Web Interface now on 2 second base. New 5 minute plot.
+
 Upcoming Rel. 2.4: Frequency Indicator and MQTT Topic
 
 
