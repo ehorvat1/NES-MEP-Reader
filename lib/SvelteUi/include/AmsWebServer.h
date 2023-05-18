@@ -68,7 +68,7 @@ private:
 	String customFirmwareUrl;
 	#endif
 
-    static const uint16_t BufferSize = 2048;
+    static const uint16_t BufferSize = 3072;  //EHorvat changed to 3072 to fix hour plot problem with big numbers (was 2048)
     char* buf;
 
 #if defined(ESP8266)
