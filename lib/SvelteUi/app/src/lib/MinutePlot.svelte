@@ -9,8 +9,8 @@
     export let json;
 
     let config = {};
-    let max = 0;
-    let min = 0;    
+    let ymax = 0;
+    let ymin = 0;    
     let no_of_datapoints = 149;   //Number of points-1 in minute Plot was 149
     let max_exp = 0;
     let min_exp = 0;
@@ -21,7 +21,6 @@
         let xTicks = [];
         let points = [];
         let exp = 0;
-//        for(i = no_of_datapoints; i>-1; i--) {
         for(i = no_of_datapoints; i>-1; i--) {
             let imp = json["i"+zeropad(i)];     //JSON contains (import-export) Watt reading
             if(imp === undefined) imp = 0;   
@@ -32,10 +31,10 @@
                 exp = 0;
             }
             if (i == no_of_datapoints) {                      //Set base for min values at start of for loop
-                max = Math.ceil(imp/10)*10;
-                min = Math.floor(imp/10)*10;
-                max_exp = Math.ceil(exp/10)*10;
-                min_exp = Math.floor(exp/10)*10;
+                ymax = imp;
+                ymin = imp;
+                max_exp = exp;
+                min_exp = exp;
             }
             if (i%5 == 0) {                     //show x ticks not on every data point
                 xTicks.push({
@@ -62,23 +61,19 @@
                 color2: '#407038',
                 color: '#7c3aed' 
             }); 
-            min = Math.min(min, imp);
-            max = Math.max(max, imp);
+            ymin = Math.min(ymin, imp);
+            ymax = Math.max(ymax, imp);
             min_exp = Math.min(min_exp, exp);
             max_exp = Math.max(max_exp, exp);
         }   // ++++++++++++++++++++++++++++++++++ for loop end    
         if (max_exp > 0) {                         //There is some export....
             max_exp = Math.ceil(max_exp/10)*10;  
             min_exp = Math.floor(min_exp/10)*10;
-            if (max > 0) {                         //There is also some import....
-                min = 0;                       
-                min_exp = 0;                   
+            if (ymax > 0) {                         //There is also some import....
+                ymin = 0;                               
             }    
-        } else {
-            max_exp=0;
-            min_exp=0;
         }
-        if (max > 0) {min_exp = 0} // If there is some import set scale min for export to 0
+        if (ymax > 0) {min_exp = 0} // If there is some import set scale min for export to 0
 //  
         max_exp = max_exp * -1;  //Invert export data ..... now we have negative values for export
         min_exp = min_exp * -1;  //Invert export data ..... now we have negative values for export
@@ -95,15 +90,15 @@
             }
         }
 //     
-        max = Math.ceil(max/10)*10;        
-        if (min > 0) {
-            min = Math.floor(min/10)*10;
+        ymax = Math.ceil(ymax/10)*10;        
+        if (ymin > 0) {
+            ymin = Math.floor(ymin/10)*10;
         }   
-        if (max > 0) {                      //There is some import....
-            let yTickDistUp = (max-min)/4;
+        if (ymax > 0) {                      //There is some import....
+            let yTickDistUp = (ymax-ymin)/4;
             if (yTickDistUp < 1) yTickDistUp=1;
             for(i = 0; i < 5; i++) {
-             let val = (yTickDistUp*i)+min;
+             let val = (yTickDistUp*i)+ymin;
                 yTicks.push({
                     value: val,
                     label: val.toFixed(0)
@@ -111,10 +106,9 @@
             }
         }
         if(max_exp < 0) {      //There is some export....
-            min = max_exp;
-            if  (max < 0) {     //There is no import
-                max = min_exp;  //Test 0 (was min_exp)
-                min = max_exp;
+            ymin = max_exp;
+            if  (ymax <= 0) {     //There is no import
+                ymax = min_exp;  //Test 0 (was min_exp)
             }
         }
 
@@ -124,8 +118,8 @@
             width: 1520,
             padding: { top: 20, right: 15, bottom: 20, left: 35 },
             y: {
-                min: min,
-                max: max,
+                min: ymin,
+                max: ymax,
                 ticks: yTicks
             },
             x: {

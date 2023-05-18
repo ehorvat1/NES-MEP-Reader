@@ -111,9 +111,9 @@
                             <!-- EHorvat changed "point.color" to "point.color2" for fill  and "2" in first width="{barWidth - 4}"-->
                             <rect
                                 x="{xScale(i) + 1}"
-                                y="{yScale(0)}"
+                                y="{yScale(Math.min(config.y.max, 0))}"
                                 width="{barWidth - 2}"
-                                height="{yScale(config.y.min) - yScale(config.y.min + point.value2)}"
+                                height="{yScale(config.y.min) - yScale(config.y.min + point.value2 + Math.min(config.y.max, 0))}"
                                 fill="{point.color2}"
                             />
                             {#if barWidth > 15}
