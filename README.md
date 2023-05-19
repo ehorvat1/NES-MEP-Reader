@@ -7,7 +7,7 @@ From my side: Fallback to Wifi AP can make AP button obsolete. 1hour plot. Addit
 
 Rel. 2.3: Data fetch from meter and Web Interface now on 2 second base. New 5 minute plot.
 
-Upcoming Rel. 2.4: Frequency Indicator and Reactive Data including their MQTT Topics
+Upcoming Rel. 2.4: Frequency Indicator, Power Factors and Reactive Data including their MQTT Topics
 
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
