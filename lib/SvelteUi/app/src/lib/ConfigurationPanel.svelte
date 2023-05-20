@@ -9,49 +9,51 @@
     import CountrySelectOptions from './CountrySelectOptions.svelte';
     import { Link, navigate } from 'svelte-navigator';
     import SubnetOptions from './SubnetOptions.svelte';
-    
 
     export let sysinfo = {}
 
     let uiElements = [{
-        name: 'Import gauge',
+        name: 'Bezug',
         key: 'i'
     },{
-        name: 'Export gauge',
+        name: 'Export',
         key: 'e'
     },{
-        name: 'Voltage',
+        name: 'Sapannung',
         key: 'v'
     },{
-        name: 'Amperage',
+        name: 'Strom',
         key: 'a'
     },{
-        name: 'Reactive',
+        name: 'Blind/Scheinleistung',
         key: 'r'
     },{
-        name: 'Realtime',
+        name: 'Aktuelle Daten',
         key: 'c'
     },{
-        name: 'Peaks',
+        name: 'Verbrauchsspitzen',
         key: 't'
     },{
-        name: 'Price',
+        name: 'Preis Vorschau',
         key: 'p'
     },{
-        name: 'Minute plot',
+        name: 'Minuten Plot',
         key: 'q'
     },{
-        name: 'Hour plot',
+        name: 'Stunden Plot',
         key: 'h'
     },{
-        name: 'Day plot',
+        name: 'Tages Plot',
         key: 'd'
     },{
-        name: 'Month plot',
+        name: 'Monats Plot',
         key: 'm'
     },{
-        name: 'Temperature plot',
+        name: 'Temperatur Plot',
         key: 's'
+    },{
+        name: 'Frequenz',
+        key: 'f'
     }];
 
     let loading = true;
@@ -91,7 +93,7 @@
             s: false, t: false, l: 5
         },
         u: {
-            i: 0, e: 0, v: 0, a: 0, r: 0, c: 0, t: 0, p: 0, q: 0, h: 0, d: 0, m: 0, s: 0
+            i: 0, e: 0, v: 0, a: 0, r: 0, c: 0, t: 0, p: 0, q: 0, h: 0, d: 0, m: 0, s: 0, f: 0
         },
         i: {
             h: { p: null, u: true },
@@ -568,7 +570,7 @@
         </div>
         {/if}
         <div class="cnt">
-            <strong class="text-sm">User interface</strong>
+            <strong class="text-sm">Anzeigen der Hautpseite</strong>
             <a href="{wiki('User-interface')}" target="_blank" class="float-right"><HelpIcon/></a>
             <input type="hidden" name="u" value="true"/>
             <div class="flex flex-wrap">
@@ -576,9 +578,9 @@
                     <div class="w-1/2">
                         {el.name}<br/>
                         <select name="u{el.key}" bind:value={configuration.u[el.key]} class="in-s">
-                            <option value={0}>Hide</option>
-                            <option value={1}>Show</option>
-                            <option value={2}>Dynamic</option>
+                            <option value={0}>Verstecken</option>
+                            <option value={1}>Anzeigen</option>
+                            <option value={2}>Dynamisch</option>
                         </select>
                     </div>
                 {/each}

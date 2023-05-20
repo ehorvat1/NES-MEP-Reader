@@ -15,7 +15,7 @@
     function point(v) {
         return {
             label: fmtnum(v) + 'A',
-            title: v.toFixed(1) + ' A',
+            title: v.toFixed(2) + ' A',
             value: isNaN(v) ? 0 : v, 
             color: ampcol(v ? (v)/(max)*100 : 0) 
         };

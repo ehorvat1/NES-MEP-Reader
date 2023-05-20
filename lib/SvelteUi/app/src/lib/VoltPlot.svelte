@@ -12,7 +12,7 @@
     function point(v) {
         return {
             label: fmtnum(v) + 'V', 
-            title: v.toFixed(1) + ' V',
+            title: v.toFixed(2) + ' V',
             value: isNaN(v) ? 0 : v, 
             color: voltcol(v ? v : 0) 
         };

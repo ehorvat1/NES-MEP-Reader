@@ -69,7 +69,7 @@
         max = Math.ceil(max);
 
         config = {
-            title: "Tariff peaks",
+            title: "Verbrauchsspitzen",
             padding: { top: 20, right: 35, bottom: 20, left: 35 },
             y: {
                 min: min,

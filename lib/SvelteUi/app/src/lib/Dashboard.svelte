@@ -2,6 +2,7 @@
     import { pricesStore, dayPlotStore, monthPlotStore, minutePlotStore, hourPlotStore, temperaturesStore } from './DataStores.js'; //EHorvat added: , hourPlotStore
     import { importcol, exportcol, metertype, uiVisibility } from './Helpers.js';
     import PowerGauge from './PowerGauge.svelte';
+    import FreqPlot from './FreqPlot.svelte';
     import VoltPlot from './VoltPlot.svelte';
     import AmpPlot from './AmpPlot.svelte';
     import ReactiveData from './ReactiveData.svelte';
@@ -65,6 +66,11 @@
             </div>
         </div>
     {/if}
+    {#if uiVisibility(sysinfo.ui.f, data.frq)}
+        <div class="cnt">
+            <FreqPlot frq={data.frq}/>
+         </div>
+    {/if}
     {#if uiVisibility(sysinfo.ui.v, data.u1 > 100 || data.u2 > 100 || data.u3 > 100)}
         <div class="cnt">
             <VoltPlot u1={data.u1} u2={data.u2} u3={data.u3} ds={data.ds}/>
@@ -77,7 +83,7 @@
     {/if}
     {#if uiVisibility(sysinfo.ui.r, data.ri > 0 || data.re > 0 || data.ric > 0 || data.rec > 0)}
         <div class="cnt">
-            <ReactiveData importInstant={data.ri} exportInstant={data.re} importTotal={data.ric} exportTotal={data.rec}/>
+            <ReactiveData importInstant={data.ri} exportInstant={data.re} importTotal={data.ric} exportTotal={data.rec} PowerFactorL1={data.f1} PowerFactorL2={data.f2} PowerFactorL3={data.f3} AparentPower={data.va} ReactivePower_Q1={data.rq1} ReactivePower_Q2={data.rq2} ReactivePower_Q3={data.rq3} ReactivePower_Q4={data.rq4}/>
         </div>
     {/if}
     {#if uiVisibility(sysinfo.ui.c, data.ea)}
