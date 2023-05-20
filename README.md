@@ -1,7 +1,7 @@
 # NES-MEP-Reader
 Now based on amsreader-firmware Rev, 2.2.17. (from 5th Mai 2023)
 
-So it features: WebUI with new design. Works offline now. Fixed cost / kWh .Last Month info. 
+So it features: WebUI with new design. WebUI componenst are now selectable in config page. WebUI works also offline (in AP mode) now. Fixed cost / kWh .Last Month info. 
 
 From my side: Fallback to Wifi AP can make AP button obsolete. 1hour plot. Additional Meter Info on status page. 
 
