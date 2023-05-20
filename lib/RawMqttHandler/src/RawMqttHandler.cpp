@@ -73,7 +73,8 @@ bool RawMqttHandler::publish(AmsData* data, AmsData* meterState, EnergyAccountin
     mqtt->publish(topic + "/realtime/import/day", String(ea->getUseToday(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/realtime/export/hour", String(ea->getProducedThisHour(), 3));           //EHorvat NES-MEP
     mqtt->publish(topic + "/realtime/export/day", String(ea->getProducedToday(), 3));               //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/realtime/import/month", String(ea->getUseThisMonth(), 1));
+    mqtt->publish(topic + "/realtime/import/month", String(ea->getUseThisMonth(), 2));
+    mqtt->publish(topic + "/realtime/export/month", String(ea->getProducedThisMonth(), 2));
 // EHorvat .... always send data to MQTT end
 }
 
