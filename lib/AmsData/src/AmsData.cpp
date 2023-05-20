@@ -4,11 +4,15 @@ AmsData::AmsData() {}
 
 // EHorvat NES-MEP added next few lines...
 bool NESMEP_data_ready;
-uint16_t NESMEP_ActiveImportPower;
-uint16_t NESMEP_ReactiveImportPower;
+long NESMEP_ActiveImportPower;
+long NESMEP_ReactiveImportPower;
 float NESMEP_Freq_Hz;
-uint16_t NESMEP_ActiveExportPower;
-uint16_t NESMEP_ReactiveExportPower;
+long NESMEP_ActiveExportPower;
+long NESMEP_ReactiveExportPower;
+float NESMEP_Pwr_Factor_L1;
+float NESMEP_Pwr_Factor_L2;
+float NESMEP_Pwr_Factor_L3;
+float NESMEP_VA_L1L2L3;
 float NESMEP_L1Voltage;
 float NESMEP_L2Voltage;
 float NESMEP_L3Voltage;
@@ -16,11 +20,16 @@ float NESMEP_L1Current;
 float NESMEP_L2Current;
 float NESMEP_L3Current;
 double NESMEP_ActiveImportCounter;
-double NESMEP_ReactiveImportCounter;    //.... this is now NESMEP_data_ready (0/1)
+double NESMEP_ReactiveImportCounter;
 double NESMEP_ActiveExportCounter;
 double NESMEP_ReactiveExportCounter;
-double NESMEP_mep_alivecounter;
 
+long NESMEP_ReactivePower_Q1;
+long NESMEP_ReactivePower_Q2;
+long NESMEP_ReactivePower_Q3;
+long NESMEP_ReactivePower_Q4;
+
+long NESMEP_mep_alivecounter;
 char NESMEP_Manufacturer[5];
 char NESMEP_Model[9];
 char NESMEP_UtilitySerialNumber[31];
@@ -82,9 +91,14 @@ void AmsData::apply(AmsData& other) {
 //    switch(other.getListType()) {                           //EHorvat NES-MEP removed case
 //        case 4:
 //            this->powerFactor = other.getPowerFactor();
-//            this->l1PowerFactor = other.getL1PowerFactor();
-//            this->l2PowerFactor = other.getL2PowerFactor();
-//            this->l3PowerFactor = other.getL3PowerFactor();
+            this->l1PowerFactor = NESMEP_Pwr_Factor_L1;
+            this->l2PowerFactor = NESMEP_Pwr_Factor_L2;
+            this->l3PowerFactor = NESMEP_Pwr_Factor_L3;
+            this->AparentPower = NESMEP_VA_L1L2L3;
+            this->ReactivePower_Q1 = NESMEP_ReactivePower_Q1;
+            this->ReactivePower_Q2 = NESMEP_ReactivePower_Q2;
+            this->ReactivePower_Q3 = NESMEP_ReactivePower_Q3;
+            this->ReactivePower_Q4 = NESMEP_ReactivePower_Q4;
 //            this->l1activeImportPower = other.getL1ActiveImportPower();
 //            this->l2activeImportPower = other.getL2ActiveImportPower();
 //            this->l3activeImportPower = other.getL3ActiveImportPower();
@@ -94,14 +108,15 @@ void AmsData::apply(AmsData& other) {
 //        case 3:
             this->meterTimestamp = other.getMeterTimestamp();
             this->meterTimestamp = time(nullptr) - 1;                       // EHorvat NES-MEP
+            this->activeImportPower = NESMEP_ActiveImportPower;  //EHorvat NES-MEP
             this->activeImportCounter = NESMEP_ActiveImportCounter;         //EHorvat NES-MEP
             this->activeExportCounter = NESMEP_ActiveExportCounter;         //EHorvat NES-MEP
-            this->reactiveImportCounter = NESMEP_ReactiveImportCounter;     //EHorvat NES-MEP .... this is now NESMEP_data_ready (0/1)
-            this->reactiveExportCounter = NESMEP_mep_alivecounter;          // Send mep_alivecounter instead of ReactiveExportCounter....
+            this->activeExportPower = NESMEP_ActiveExportPower;             //EHorvat NES-MEP            this->reactiveImportCounter = NESMEP_ReactiveImportCounter;     //EHorvat NES-MEP .... this is now NESMEP_data_ready (0/1)
+            this->reactiveImportPower = NESMEP_ReactiveImportPower;         //EHorvat NES-MEP
+            this->reactiveExportPower = NESMEP_ReactiveExportPower;          //EHorvat NES-MEP
+            this->reactiveExportCounter = NESMEP_ReactiveExportCounter;
 //            this->activeImportCounter = other.getActiveImportCounter();
 //            this->activeExportCounter = other.getActiveExportCounter();
-//            this->reactiveImportCounter = other.getReactiveImportCounter();
-//            this->reactiveExportCounter = other.getReactiveExportCounter();
             this->counterEstimated = false;
 //        case 2:
             this->listId = other.getListId();
@@ -112,9 +127,7 @@ void AmsData::apply(AmsData& other) {
             this->meterModel = other.getMeterModel();
 //            this->reactiveImportPower = other.getReactiveImportPower();
 //            this->reactiveExportPower = other.getReactiveExportPower();
-            this->reactiveImportPower = NESMEP_ReactiveImportPower;  //EHorvat NES-MEP
-            this->activeExportPower = NESMEP_ActiveExportPower;  //EHorvat NES-MEP
-            this->reactiveExportPower = NESMEP_ReactiveExportPower;  //EHorvat NES-MEP
+
 //            this->l1current = other.getL1Current();
 //            this->l2current = other.getL2Current();
 //            this->l3current = other.getL3Current();
@@ -137,33 +150,66 @@ void AmsData::apply(AmsData& other) {
 //        this->activeImportPower = other.getActiveImportPower();
 //    if(other.getListType() == 2 || (other.getActiveImportPower() > 0 || other.getActiveExportPower() > 0))
 //        this->activeExportPower = other.getActiveExportPower();
-        this->activeImportPower = other.getActiveImportPower();  //EHorvat NES-MEP
 }
 
 // ************ EHorvat NES-MEP  ****************
-float AmsData::setfromNESMEP(bool Data_ready, uint16_t ActiveImportPower, long Freq_mHz, uint16_t ActiveExportPower, uint16_t ReactiveExportPower, float L1Voltage, float L2Voltage, float L3Voltage, float L1Current, float L2Current, float L3Current, double ActiveImportCounter,double ReactiveImportCounter, double ActiveExportCounter, double Mep_alivecounter) {
+uint8_t AmsData::setfromNESMEP_0(bool Data_ready, long Mep_alivecounter) {
     NESMEP_data_ready = Data_ready;
+    NESMEP_mep_alivecounter = Mep_alivecounter;                 // Send mep_alivecounter instead of ReactiveExportCounter....
+return 1;
+}
+
+uint8_t AmsData::setfromNESMEP_1(long ActiveImportPower,
+                                double ActiveImportCounter,
+                                long ActiveExportPower, 
+                                double ActiveExportCounter, 
+                                long ReactiveImportPower, 
+                                long ReactiveExportPower, 
+                                double ReactiveImportCounter,  
+                                double ReactiveExportCounter, 
+                                float Pwr_Factor_L1,
+                                float Pwr_Factor_L2,
+                                float Pwr_Factor_L3,
+                                long VA_L1L2L3,
+                                long ReactivePower_Q1,
+                                long ReactivePower_Q2,
+                                long ReactivePower_Q3,
+                                long ReactivePower_Q4,
+                                float Freq_mHz, 
+                                float L1Voltage, 
+                                float L2Voltage, 
+                                float L3Voltage, 
+                                float L1Current, 
+                                float L2Current, 
+                                float L3Current) {
+//
     NESMEP_ActiveImportPower = ActiveImportPower;
-//    NESMEP_ReactiveImportPower = ReactiveImportPower;
-    NESMEP_Freq_Hz = float(Freq_mHz) / 1000.0;
-    NESMEP_ActiveExportPower = ActiveExportPower;
-    NESMEP_ReactiveExportPower = Freq_mHz;
+    NESMEP_ActiveImportCounter = ActiveImportCounter;     
+    NESMEP_ActiveExportPower = ActiveExportPower; 
+    NESMEP_ActiveExportCounter = ActiveExportCounter;  
+    NESMEP_ReactiveImportPower = ReactiveImportPower;
+    NESMEP_ReactiveExportPower = ReactiveExportPower;
+    NESMEP_ReactiveImportCounter = ReactiveImportCounter;
+    NESMEP_ReactiveExportCounter = ReactiveExportCounter;
+    NESMEP_Pwr_Factor_L1 = Pwr_Factor_L1,
+    NESMEP_Freq_Hz = Freq_mHz;
+    NESMEP_Pwr_Factor_L2 = Pwr_Factor_L2,
+    NESMEP_Pwr_Factor_L3 = Pwr_Factor_L3,
     NESMEP_L1Voltage = L1Voltage;
     NESMEP_L2Voltage = L2Voltage;
     NESMEP_L3Voltage = L3Voltage;
     NESMEP_L1Current = L1Current;
     NESMEP_L2Current = L2Current;
     NESMEP_L3Current = L3Current;
-    NESMEP_ActiveImportCounter = ActiveImportCounter;        
-//    NESMEP_ReactiveImportCounter = ReactiveImportCounter;     // Send NESMEP_data_ready instead of ReactiveImportCounter....
-    NESMEP_ReactiveImportCounter = NESMEP_data_ready ? 1 : 0;   // Send NESMEP_data_ready instead of ReactiveImportCounter....
-    NESMEP_ActiveExportCounter = ActiveExportCounter;
-//    NESMEP_ReactiveExportCounter = ReactiveExportCounter;     // Send mep_alivecounter instead of ReactiveExportCounter....
-    NESMEP_mep_alivecounter = Mep_alivecounter;                 // Send mep_alivecounter instead of ReactiveExportCounter....
-return 123.4;
+    NESMEP_VA_L1L2L3 = VA_L1L2L3;
+    NESMEP_ReactivePower_Q1 = ReactivePower_Q1;
+    NESMEP_ReactivePower_Q2 = ReactivePower_Q2;
+    NESMEP_ReactivePower_Q3 = ReactivePower_Q3;
+    NESMEP_ReactivePower_Q4 = ReactivePower_Q4;
+return 1;
 }
 
-float AmsData::setfromNESMEP2(char Manufacturer[5], char Model[9], byte MainHardwareVersionNumber, byte HardwareRevisionNumber, byte MainFirmwareVersionNumber, byte FirmwareRevisionNumber, char UtilitySerialNumber[31]) {
+uint8_t AmsData::setfromNESMEP_2(char Manufacturer[5], char Model[9], byte MainHardwareVersionNumber, byte HardwareRevisionNumber, byte MainFirmwareVersionNumber, byte FirmwareRevisionNumber, char UtilitySerialNumber[31]) {
     memcpy(NESMEP_Manufacturer,Manufacturer,5);
     memcpy(NESMEP_Model,Model,9);
     memcpy(NESMEP_UtilitySerialNumber,UtilitySerialNumber,31);
@@ -171,7 +217,7 @@ float AmsData::setfromNESMEP2(char Manufacturer[5], char Model[9], byte MainHard
     NESMEP_HardwareRevisionNumber= HardwareRevisionNumber;
     NESMEP_MainFirmwareVersionNumber = MainFirmwareVersionNumber;
     NESMEP_FirmwareRevisionNumber= FirmwareRevisionNumber;
-return 111.1;
+return 1;
 }
 
 // ************ EHorvat NES-MEP end   ****************
@@ -310,15 +356,31 @@ float AmsData::getPowerFactor() {
 }
 
 float AmsData::getL1PowerFactor() {
-    return this->l1PowerFactor;
+    return NESMEP_Pwr_Factor_L1;
 }
 
 float AmsData::getL2PowerFactor() {
-    return this->l2PowerFactor;
+    return NESMEP_Pwr_Factor_L2;
 }
 
 float AmsData::getL3PowerFactor() {
-    return this->l3PowerFactor;
+    return NESMEP_Pwr_Factor_L3;
+}
+uint32_t AmsData::getAparentPower() {
+    return NESMEP_VA_L1L2L3;        // EHorvat NES-MEP
+}
+
+uint32_t AmsData::getReactivePower_Q1() {
+    return NESMEP_ReactivePower_Q1;        // EHorvat NES-MEP
+}
+uint32_t AmsData::getReactivePower_Q2() {
+    return NESMEP_ReactivePower_Q2;        // EHorvat NES-MEP
+}
+uint32_t AmsData::getReactivePower_Q3() {
+    return NESMEP_ReactivePower_Q3;        // EHorvat NES-MEP
+}
+uint32_t AmsData::getReactivePower_Q4() {
+    return NESMEP_ReactivePower_Q4;        // EHorvat NES-MEP
 }
 
 float AmsData::getL1ActiveImportPower() {
@@ -351,18 +413,25 @@ double AmsData::getActiveImportCounter() {
 }
 
 double AmsData::getReactiveImportCounter() {
-//    return this->reactiveImportCounter;           // EHorvat NES-MEP
-    return NESMEP_ReactiveImportCounter;            // This is mep_data_ready now (0/1)
+    return NESMEP_ReactiveImportCounter;           
 }
 
 double AmsData::getActiveExportCounter() {
-//   return this->activeExportCounter;                 // EHorvat NES-MEP
    return NESMEP_ActiveExportCounter;                  // EHorvat NES-MEP
 }
 
 double AmsData::getReactiveExportCounter() {
 //    return this->reactiveExportCounter;
+    return NESMEP_ReactiveExportCounter;             // Send mep_alivecounter instead of ReactiveExportCounter....
+}
+
+double AmsData::getAliveCounter() {
+//    return this->reactiveExportCounter;
     return NESMEP_mep_alivecounter;             // Send mep_alivecounter instead of ReactiveExportCounter....
+}
+
+bool AmsData::isData_ready() {
+    return NESMEP_data_ready;           // EHorvat NES-MEP
 }
 
 bool AmsData::isThreePhase() {
