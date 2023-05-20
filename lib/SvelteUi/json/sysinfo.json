@@ -38,7 +38,8 @@
         "h": %d,
         "d": %d,
         "m": %d,
-        "s": %d
+        "s": %d,
+        "f": %d
     },
     "security": %d,
     "boot_reason": %d,
