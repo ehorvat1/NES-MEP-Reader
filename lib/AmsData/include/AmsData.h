@@ -44,8 +44,37 @@ public:
     uint32_t getActiveExportPower();
     uint32_t getReactiveExportPower();
 
-    float setfromNESMEP(bool Data_ready, uint16_t ActiveImportPower, long Freq_mHz, uint16_t ActiveExportPower, uint16_t ReactiveExportPower, float L1Voltage, float L2Voltage, float L3Voltage, float L1Current, float L2Current, float L3Current, double ActiveImportCounter,double ReactiveImportCounter, double ActiveExportCounter, double Mep_alivecounter); // EHorvat
-    float setfromNESMEP2(char Manufacturer[5], char Model[9], byte MainHardwareVersionNumber, byte HardwareRevisionNumber, byte MainFirmwareVersionNumber, byte FirmwareRevisionNumber, char UtilitySerialNumber[31]); // EHorvat
+    uint8_t setfromNESMEP_0(bool Data_ready, long Mep_alivecounter); // EHorvat
+    uint8_t setfromNESMEP_1(long ActiveImportPower, 
+                            double ActiveImportCounter,
+                            long ActiveExportPower, 
+                            double ActiveExportCounter, 
+                            long ReactiveImportPower,
+                            long ReactiveExportPower, 
+                            double ReactiveImportCounter, 
+                            double ReactiveExportCounter, 
+                            float Pwr_Factor_L1, 
+                            float Pwr_Factor_L2, 
+                            float Pwr_Factor_L3,
+                            long Ap_Power,
+                            long ReactivePower_Q1,
+                            long ReactivePower_Q2,
+                            long ReactivePower_Q3,
+                            long ReactivePower_Q4,
+                            float Freq_mHz, 
+                            float L1Voltage, 
+                            float L2Voltage, 
+                            float L3Voltage, 
+                            float L1Current, 
+                            float L2Current, 
+                            float L3Current); // EHorvat
+    uint8_t setfromNESMEP_2(char Manufacturer[5], 
+                            char Model[9], 
+                            byte MainHardwareVersionNumber, 
+                            byte HardwareRevisionNumber, 
+                            byte MainFirmwareVersionNumber, 
+                            byte FirmwareRevisionNumber, 
+                            char UtilitySerialNumber[31]); // EHorvat
 
     float getL1Voltage();
     float getL2Voltage();
@@ -59,6 +88,11 @@ public:
     float getL1PowerFactor();
     float getL2PowerFactor();
     float getL3PowerFactor();
+    uint32_t getAparentPower();        //EHorvat new get VA L1L2L3
+    uint32_t getReactivePower_Q1();        //EHorvat new
+    uint32_t getReactivePower_Q2();        //EHorvat new
+    uint32_t getReactivePower_Q3();        //EHorvat new
+    uint32_t getReactivePower_Q4();        //EHorvat new
 
     float getL1ActiveImportPower();
     float getL2ActiveImportPower();
@@ -72,7 +106,9 @@ public:
     double getReactiveImportCounter();
     double getActiveExportCounter();
     double getReactiveExportCounter();
-
+    double getAliveCounter();               //EHorvat
+    bool isData_ready();        //EHorvat
+    
     bool isThreePhase();
     bool isTwoPhase();
 
@@ -88,6 +124,7 @@ protected:
     String listId = "", meterId = "", meterModel = "";
     time_t meterTimestamp = 0;
     uint32_t activeImportPower = 0, reactiveImportPower = 0, activeExportPower = 0, reactiveExportPower = 0;
+    uint32_t AparentPower=0, ReactivePower_Q1 = 0, ReactivePower_Q2 = 0, ReactivePower_Q3 = 0, ReactivePower_Q4 = 0;
     float l1voltage = 0, l2voltage = 0, l3voltage = 0, l1current = 0, l2current = 0, l3current = 0;
     float l1activeImportPower = 0, l2activeImportPower = 0, l3activeImportPower = 0;
     float l1activeExportPower = 0, l2activeExportPower = 0, l3activeExportPower = 0;
