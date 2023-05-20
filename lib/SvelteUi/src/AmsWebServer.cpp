@@ -333,6 +333,7 @@ void AmsWebServer::sysinfoJson() {
 		ui.showDayPlot,
 		ui.showMonthPlot,
 		ui.showTemperaturePlot,
+		ui.showFrequency,
 		webConfig.security,
 		#if defined(ESP32)
 		rtc_get_reset_reason(0),
@@ -468,6 +469,7 @@ void AmsWebServer::dataJson() {
 		meterState->getActiveExportCounter(),
 		meterState->getReactiveImportCounter(),
 		meterState->getReactiveExportCounter(),
+		meterState->getFrequency(),   //EHorvat new for Frequency indication. Link in data.json: "frq" :%.3f,
 		meterState->getL1Voltage(),
 		meterState->getL2Voltage(),
 		meterState->getL3Voltage(),
@@ -478,6 +480,11 @@ void AmsWebServer::dataJson() {
 		meterState->getL1PowerFactor(),
 		meterState->getL2PowerFactor(),
 		meterState->getL3PowerFactor(),
+		meterState->getAparentPower(),			//EHorvat new for AparentPower indication. Link in data.json: "va" :%d,
+		meterState->getReactivePower_Q1(), 		//EHorvat new for ReactivePower_Q1 indication. Link in data.json:"rq1" : %d,
+		meterState->getReactivePower_Q2(),
+		meterState->getReactivePower_Q3(),
+		meterState->getReactivePower_Q4(),
 		vcc,
 		rssi,
 		hw->getTemperature(),
@@ -1359,7 +1366,8 @@ void AmsWebServer::configurationJson() {
 		ui.showHourPlot,		
 		ui.showDayPlot,
 		ui.showMonthPlot,
-		ui.showTemperaturePlot
+		ui.showTemperaturePlot,
+		ui.showFrequency
 	);
 	server.sendContent(buf);
 	snprintf_P(buf, BufferSize, CONF_DOMOTICZ_JSON,
@@ -1828,6 +1836,7 @@ void AmsWebServer::handleSave() {
 		ui.showDayPlot = server.arg(F("ud")).toInt();
 		ui.showMonthPlot = server.arg(F("um")).toInt();
 		ui.showTemperaturePlot = server.arg(F("us")).toInt();
+		ui.showFrequency = server.arg(F("uf")).toInt();
 		config->setUiConfig(ui);
 	}
 
