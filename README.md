@@ -55,7 +55,7 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 4) Currently only ESP32 is supported although you may find remainders of ESP8266 in the code. (Yes I want to make it ESP8266 compatible....)
 5) MBK (MEP Basic Key) must be entered in its "hex" representation. This is a 40 char long string like this: 58747A3B7E2C685656794F45404B79724F69562B . You might receive a MEP Basic key in ascii format (just 20 char.) which has to be converted to hex manually - each single ASCII character gives a 2 digit hex number.
 6) I have done some translations to German on the main web interface. A english version will follow.
-7) Following MQTT topics should work in MQTT raw mode - they are published on a pure time basis even if they do not change the value.:
+7) Following raw MQTT topics should work in MQTT raw mode - they are published on a pure time basis even if they do not change the value.:
      - Publish topic + "/meter/mep_data_ready"
      - Publish topic + "/meter/mep_alivecounter"
      - Publish topic + "/meter/manufacturer"
@@ -94,6 +94,7 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
      - Publish topic + "/realtime/export/day"
 	 - Publish topic + "/realtime/export/month"
 
+Those MQTT topics can be found also for HomeAssistant, but with slightly other names...HA is not testes from my side.
 
 So if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter/meter/import/active
 
