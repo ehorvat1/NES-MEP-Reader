@@ -190,8 +190,8 @@ unsigned long mep_LastSentMillis = 0;
 unsigned long mep_Last_ok_millis = 0;
 bool mep_data_ready = false;
 bool mep_data_ready_to_send = false;
-unsigned mep_alivecounter = 0;
-unsigned mep_alivecounter_last = 0;
+long mep_alivecounter = 0;
+long mep_alivecounter_last = 0;
 long array_60minplot[4] = {0,0,0,0};
 long summ_60minplot = 0;
 long hour_plot_avg = 0;
@@ -895,13 +895,42 @@ void loop() {
       		}
     	}
   	}
-//	ad.setfromNESMEP(LastSentMillis, ActiveImportPower, ReactiveImportPower, ActiveExportPower, ReactiveExportPower, L1Voltage, L2Voltage, L3Voltage, L1Current, L2Current, L3Current, ActiveImportCounter,ReactiveImportCounter, ActiveExportCounter, ReactiveExportCounter);
-// Send mep_alivecounter instead of ReactiveExportCounter....
-
-	ad.setfromNESMEP(mep_data_ready, ConsumptionData.BT28_Fwd_W, ConsumptionData.BT28_Freq_mHz, ConsumptionData.BT28_Rev_W, 4, (ConsumptionData.BT28_RMS_mV_L1/1000.0), (ConsumptionData.BT28_RMS_mV_L2/1000.0), (ConsumptionData.BT28_RMS_mV_L3/1000.0), (ConsumptionData.BT28_RMS_mA_L1/1000.0), (ConsumptionData.BT28_RMS_mA_L2/1000.0), (ConsumptionData.BT28_RMS_mA_L3/1000.0), (ConsumptionData.BT23_Fwd_Act_Wh/1000.0), 11, (ConsumptionData.BT23_Rev_Act_Wh/1000.0), mep_alivecounter );  // Send to AmsData
-	ad.setfromNESMEP2(MeterInfo.BT01_Manufacturer,MeterInfo.BT01_Model, MeterInfo.BT01_MainHardwareVersionNumber, MeterInfo.BT01_HardwareRevisionNumber, MeterInfo.BT01_MainFirmwareVersionNumber, MeterInfo.BT01_FirmwareRevisionNumber, MeterInfo.ET03_UtilitySerialNumber);
-
-		//  ******************   EHorvat NES-MEP end ******************
+	ad.setfromNESMEP_0(mep_data_ready,mep_alivecounter);
+//
+	ad.setfromNESMEP_1(ConsumptionData.BT28_Fwd_W,
+						ConsumptionData.BT23_Fwd_Act_Wh/1000.0, 
+						ConsumptionData.BT28_Rev_W, 
+						ConsumptionData.BT23_Rev_Act_Wh/1000.0, 
+						ConsumptionData.BT28_Fwd_VA,
+						ConsumptionData.BT28_Rev_VA, 
+						ConsumptionData.BT23_Fwd_React_Wh/1000.0,
+						ConsumptionData.BT23_Rev_React_Wh/1000.0, 
+						ConsumptionData.BT28_Pwr_Factor_L1/1000.0,
+						ConsumptionData.BT28_Pwr_Factor_L2/1000.0,
+						ConsumptionData.BT28_Pwr_Factor_L3/1000.0,
+						ConsumptionData.BT28_VA_L1L2L3,
+						ConsumptionData.BT28_ReactivePower_Q1,
+						ConsumptionData.BT28_ReactivePower_Q2,
+						ConsumptionData.BT28_ReactivePower_Q3,
+						ConsumptionData.BT28_ReactivePower_Q4,
+						ConsumptionData.BT28_Freq_mHz/1000.0,
+						ConsumptionData.BT28_RMS_mV_L1/1000.0,
+						ConsumptionData.BT28_RMS_mV_L2/1000.0,
+						ConsumptionData.BT28_RMS_mV_L3/1000.0,
+						ConsumptionData.BT28_RMS_mA_L1/1000.0,
+						ConsumptionData.BT28_RMS_mA_L2/1000.0,
+						ConsumptionData.BT28_RMS_mA_L3/1000.0);
+						
+//
+	ad.setfromNESMEP_2(MeterInfo.BT01_Manufacturer,
+						MeterInfo.BT01_Model, 
+						MeterInfo.BT01_MainHardwareVersionNumber, 
+						MeterInfo.BT01_HardwareRevisionNumber, 
+						MeterInfo.BT01_MainFirmwareVersionNumber, 
+						MeterInfo.BT01_FirmwareRevisionNumber, 
+						MeterInfo.ET03_UtilitySerialNumber);
+//
+//  ******************   EHorvat NES-MEP end ******************
 
 	if(end-now > 1000) {
 		debugW_P(PSTR("loop() used %dms"), end-now);

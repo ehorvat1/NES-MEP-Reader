@@ -43,15 +43,23 @@ typedef struct {
 typedef struct {
   long BT23_Fwd_Act_Wh = 0;
   long BT23_Rev_Act_Wh = 0;
+  long BT23_Fwd_React_Wh = 0;
+  long BT23_Rev_React_Wh = 0;  
   long BT28_Fwd_W = 0;
   long BT28_Rev_W = 0;
-  long BT28_Freq_mHz = 0;
+  long BT28_Fwd_VA = 0;
+  long BT28_Rev_VA = 0;
   long BT28_RMS_mA_L1 = 0;
   long BT28_RMS_mA_L2 = 0;
   long BT28_RMS_mA_L3 = 0;    
   long BT28_RMS_mV_L1 = 0;
   long BT28_RMS_mV_L2 = 0;
-  long BT28_RMS_mV_L3 = 0;    
+  long BT28_RMS_mV_L3 = 0; 
+  long BT28_Pwr_Factor_L1 = 0;
+  long BT28_Freq_mHz = 0;    
+  long BT28_VA_L1L2L3 = 0;  
+  long BT28_Pwr_Factor_L2 = 0;
+  long BT28_Pwr_Factor_L3 = 0;
   long BT28_Fwd_W_L1 = 0;
   long BT28_Fwd_W_L2 = 0;
   long BT28_Fwd_W_L3 = 0;
@@ -66,6 +74,10 @@ typedef struct {
   long BT28_Rev_Avg_W_L1 = 0;
   long BT28_Rev_Avg_W_L2 = 0;
   long BT28_Rev_Avg_W_L3 = 0;
+  long BT28_ReactivePower_Q1 = 0;
+  long BT28_ReactivePower_Q2 = 0;
+  long BT28_ReactivePower_Q3 = 0;
+  long BT28_ReactivePower_Q4 = 0;
 } ConsumptionDataStruct;
 
 typedef struct {

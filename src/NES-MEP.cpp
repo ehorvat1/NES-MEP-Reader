@@ -12,7 +12,7 @@ MeterInfoStruct MeterInfo;
 
 
 extern MEPQueueStruct MEPQueue[];
-extern unsigned mep_alivecounter;  //EHorvat NES-MEP MQTT
+extern long mep_alivecounter;  //EHorvat NES-MEP MQTT
 
 // ####################################################
 // ## Source: "078-0372-01BD_MEP_Client_DC OSGP.pdf" ##
@@ -259,7 +259,7 @@ boolean Decode0x0015(unsigned long ReplyLength,byte Reply[],byte *BT21_0,byte *B
   *BT21_9 = Reply[9];
   return true;
 }
-boolean Decode0x0017(unsigned long ReplyLength,byte Reply[],long *FwdActiveWhL1L2L3,long *RevActiveWhL1L2L3)
+boolean Decode0x0017(unsigned long ReplyLength,byte Reply[],long *FwdActiveWhL1L2L3,long *RevActiveWhL1L2L3,long *FwdReactiveWhL1L2L3,long *RevReactiveWhL1L2L3)
 {
   byte A = ((MeterConfig.BT21_0 & 0b00000100) == 0b00000100) ? 1 : 0; // BT21_0_2
   byte B = A + 4 * MeterConfig.BT21_3;
@@ -267,21 +267,21 @@ boolean Decode0x0017(unsigned long ReplyLength,byte Reply[],long *FwdActiveWhL1L
   byte CoinRcd = MeterConfig.BT21_6 * 4; // 4 is size of NI_FMAT2 = 32 bit signed integer
   byte C = B + MeterConfig.BT21_4 + DmdRcd;
   byte D = C + MeterConfig.BT21_5 + CoinRcd;
-  if(ReplyLength <= A+4+4) {
+  if(ReplyLength <= A+12+4) {
     return false;
   }
   // All these are type NI_FMAT1 = 32 bit signed integer
   memcpy(FwdActiveWhL1L2L3, Reply + A, 4);
   memcpy(RevActiveWhL1L2L3, Reply + A+4, 4);
+  memcpy(FwdReactiveWhL1L2L3, Reply + A+8, 4);
+  memcpy(RevReactiveWhL1L2L3, Reply + A+12, 4);
   return true;
 }
 
 boolean Decode0x001C(unsigned long ReplyLength,byte Reply[],long *FwdActiveWL1L2L3,long *RevActiveWL1L2L3,long *ImportReactiveVArL1L2L3,long *ExportReactiveVArL1L2L3,
                      long *RMSCurrentmAL1,long *RMSCurrentmAL2,long *RMSCurrentmAL3,long *RMSVoltagetmVL1,long *RMSVoltagetmVL2,long *RMSVoltagetmVL3,
-                     long *PowerFactorL1,long *FrequencymHz,long *VAL1L2L3,long *PowerFactorL2,long *PowerFactorL3,long *FwdActiveWL1,long *FwdActiveWL2,long *FwdActiveWL3,
-                     long *RevActiveWL1,long *RevActiveWL2,long *RevActiveWL3,long *RMSVoltagemVL1Cont,long *RMSVoltagemVL2Cont,long *RMSVoltagemVL3Cont,
-                     long *RMSVoltagemVL1Avg,long *RMSVoltagemVL2Avg,long *RMSVoltagemVL3Avg,long *AverageFwdActiveWL1L2L3,long *AverageRevActiveWL1L2L3,
-                     long *AverageFwdActiveWL1,long *AverageFwdActiveWL2,long *AverageFwdActiveWL3,long *AverageRevActiveWL1,long *AverageRevActiveWL2,long *AverageRevActiveWL3)
+                     long *PowerFactorL1,long *FrequencymHz,long *VAL1L2L3,long *PowerFactorL2,long *PowerFactorL3,long *ReactivePower_Q1,long *ReactivePower_Q2,long *ReactivePower_Q3,
+                     long *ReactivePower_Q4)
 
 {
   byte A = ((MeterConfig.BT21_0 & 0b01000000) == 0b01000000) ? 3 : 0; // BT21_0_6
@@ -305,26 +305,10 @@ boolean Decode0x001C(unsigned long ReplyLength,byte Reply[],long *FwdActiveWL1L2
   memcpy(VAL1L2L3,                Reply + Offset + 12*4, 4);  
   memcpy(PowerFactorL2,           Reply + Offset + 13*4, 4);  
   memcpy(PowerFactorL3,           Reply + Offset + 14*4, 4);  
-  memcpy(FwdActiveWL1,            Reply + Offset + 26*4, 4);  
-  memcpy(FwdActiveWL2,            Reply + Offset + 27*4, 4);  
-  memcpy(FwdActiveWL3,            Reply + Offset + 28*4, 4);
-  memcpy(RevActiveWL1,            Reply + Offset + 29*4, 4);  
-  memcpy(RevActiveWL2,            Reply + Offset + 30*4, 4);  
-  memcpy(RevActiveWL3,            Reply + Offset + 31*4, 4);  
-  memcpy(RMSVoltagemVL1Cont,      Reply + Offset + 41*4, 4);  
-  memcpy(RMSVoltagemVL2Cont,      Reply + Offset + 42*4, 4);  
-  memcpy(RMSVoltagemVL3Cont,      Reply + Offset + 43*4, 4);  
-  memcpy(RMSVoltagemVL1Avg,       Reply + Offset + 44*4, 4);  
-  memcpy(RMSVoltagemVL2Avg,       Reply + Offset + 45*4, 4);  
-  memcpy(RMSVoltagemVL3Avg,       Reply + Offset + 46*4, 4);
-  memcpy(AverageFwdActiveWL1L2L3, Reply + Offset + 47*4, 4);  
-  memcpy(AverageRevActiveWL1L2L3, Reply + Offset + 48*4, 4);  
-  memcpy(AverageFwdActiveWL1,     Reply + Offset + 49*4, 4);  
-  memcpy(AverageFwdActiveWL2,     Reply + Offset + 50*4, 4);  
-  memcpy(AverageFwdActiveWL3,     Reply + Offset + 51*4, 4);  
-  memcpy(AverageRevActiveWL1,     Reply + Offset + 52*4, 4);  
-  memcpy(AverageRevActiveWL2,     Reply + Offset + 53*4, 4);  
-  memcpy(AverageRevActiveWL3,     Reply + Offset + 54*4, 4);  
+  memcpy(ReactivePower_Q1,        Reply + Offset + 22*4, 4);  
+  memcpy(ReactivePower_Q2,        Reply + Offset + 23*4, 4);  
+  memcpy(ReactivePower_Q3,        Reply + Offset + 24*4, 4);  
+  memcpy(ReactivePower_Q4,        Reply + Offset + 25*4, 4);  
   return true;
 }
 
@@ -543,16 +527,23 @@ String ReplyData2String(MEPQueueStruct *MEPQueue,byte MEPQueueReplyIndex, boolea
                    
       case 0x0017: long FwdActiveWhL1L2L3;
                    long RevActiveWhL1L2L3;
-                   if(Decode0x0017(MEPQueue[MEPQueueReplyIndex].ReplyLength-5,MEPQueue[MEPQueueReplyIndex].Reply+5,&FwdActiveWhL1L2L3,&RevActiveWhL1L2L3)) {
-                     Serial.printf("Decoded FwdActiveWhL1L2L3=%lu and RevActiveWhL1L2L3=%lu\r\n",FwdActiveWhL1L2L3,RevActiveWhL1L2L3);
-                     if(UpdateDataStructures) {
-                       ConsumptionData.BT23_Fwd_Act_Wh = FwdActiveWhL1L2L3;
-                       ConsumptionData.BT23_Rev_Act_Wh = RevActiveWhL1L2L3;
-                       Serial.printf("Storing Fwd_Act_Wh=%lu and Rev_Act_Wh=%lu\r\n",ConsumptionData.BT23_Fwd_Act_Wh,ConsumptionData.BT23_Rev_Act_Wh);
-                       mep_alivecounter++;            // EHorvat NES-MEP MQTT .....  increment mep_alivecounter receiving Table 23 data
+                   long FwdReactiveWhL1L2L3;
+                   long RevReactiveWhL1L2L3;
+                   
+                   if(Decode0x0017(MEPQueue[MEPQueueReplyIndex].ReplyLength-5, MEPQueue[MEPQueueReplyIndex].Reply+5, &FwdActiveWhL1L2L3, &RevActiveWhL1L2L3, &FwdReactiveWhL1L2L3, &RevReactiveWhL1L2L3)) {
+                      Serial.printf("Decoded FwdActiveWhL1L2L3=%lu and RevActiveWhL1L2L3=%lu\r\n",FwdActiveWhL1L2L3,RevActiveWhL1L2L3);
+                      if(UpdateDataStructures) {
+                        ConsumptionData.BT23_Fwd_Act_Wh = FwdActiveWhL1L2L3;
+                        ConsumptionData.BT23_Rev_Act_Wh = RevActiveWhL1L2L3;
+                        ConsumptionData.BT23_Fwd_React_Wh = FwdReactiveWhL1L2L3;
+                        ConsumptionData.BT23_Rev_React_Wh = RevReactiveWhL1L2L3;
+                        Serial.printf("Storing Fwd_Act_Wh=%lu and Rev_Act_Wh=%lu\r\n",ConsumptionData.BT23_Fwd_Act_Wh,ConsumptionData.BT23_Rev_Act_Wh);
+                        mep_alivecounter++;            // EHorvat NES-MEP MQTT .....  increment mep_alivecounter receiving Table 23 data
                      }
                      return "Fwd Active Wh L1L2L3: " + String(FwdActiveWhL1L2L3) + "<br>" +
-                            "Rev Active Wh L1L2L3: " + String(RevActiveWhL1L2L3);
+                            "Rev Active Wh L1L2L3: " + String(RevActiveWhL1L2L3) + "<br>" +
+                            "Fwd Reactive Wh L1L2L3: " + String(FwdReactiveWhL1L2L3) + "<br>" +
+                            "Rev Reactive Wh L1L2L3: " + String(RevReactiveWhL1L2L3);
                    }
                    break;
                    
@@ -571,58 +562,37 @@ String ReplyData2String(MEPQueueStruct *MEPQueue,byte MEPQueueReplyIndex, boolea
                    long VAL1L2L3;
                    long PowerFactorL2;
                    long PowerFactorL3;
-                   long FwdActiveWL1;
-                   long FwdActiveWL2;
-                   long FwdActiveWL3;
-                   long RevActiveWL1;
-                   long RevActiveWL2;
-                   long RevActiveWL3;                  
-                   long RMSVoltagemVL1Cont;
-                   long RMSVoltagemVL2Cont;
-                   long RMSVoltagemVL3Cont;
-                   long RMSVoltagemVL1Avg;
-                   long RMSVoltagemVL2Avg;
-                   long RMSVoltagemVL3Avg;
-                   long AverageFwdActiveWL1L2L3;
-                   long AverageRevActiveWL1L2L3;
-                   long AverageFwdActiveWL1;
-                   long AverageFwdActiveWL2;
-                   long AverageFwdActiveWL3;
-                   long AverageRevActiveWL1;
-                   long AverageRevActiveWL2;
-                   long AverageRevActiveWL3;              
+                   long ReactivePower_Q1;                  
+                   long ReactivePower_Q2;                  
+                   long ReactivePower_Q3;                  
+                   long ReactivePower_Q4;                  
+          
                    if(Decode0x001C(MEPQueue[MEPQueueReplyIndex].ReplyLength-5,MEPQueue[MEPQueueReplyIndex].Reply+5,&FwdActiveWL1L2L3,&RevActiveWL1L2L3,&ImportReactiveVArL1L2L3,&ExportReactiveVArL1L2L3,
                                    &RMSCurrentmAL1,&RMSCurrentmAL2,&RMSCurrentmAL3,&RMSVoltagemVL1,&RMSVoltagemVL2,&RMSVoltagemVL3,
                                    &PowerFactorL1,&FrequencymHz,&VAL1L2L3,&PowerFactorL2,&PowerFactorL3,
-                                   &FwdActiveWL1,&FwdActiveWL2,&FwdActiveWL3,&RevActiveWL1,&RevActiveWL2,&RevActiveWL3,                     
-                                   &RMSVoltagemVL1Cont,&RMSVoltagemVL2Cont,&RMSVoltagemVL3Cont,&RMSVoltagemVL1Avg,&RMSVoltagemVL2Avg,&RMSVoltagemVL3Avg,
-                                   &AverageFwdActiveWL1L2L3,&AverageRevActiveWL1L2L3,&AverageFwdActiveWL1,&AverageFwdActiveWL2,&AverageFwdActiveWL3,&AverageRevActiveWL1,&AverageRevActiveWL2,&AverageRevActiveWL3)) {
-                     if(UpdateDataStructures) {
-                       ConsumptionData.BT28_Fwd_W = FwdActiveWL1L2L3;
-                       ConsumptionData.BT28_Rev_W = RevActiveWL1L2L3;
-                       ConsumptionData.BT28_Freq_mHz = FrequencymHz;
-                       ConsumptionData.BT28_RMS_mA_L1 = RMSCurrentmAL1;
-                       ConsumptionData.BT28_RMS_mA_L2 = RMSCurrentmAL2;
-                       ConsumptionData.BT28_RMS_mA_L3 = RMSCurrentmAL3;
-                       ConsumptionData.BT28_RMS_mV_L1 = RMSVoltagemVL1;
-                       ConsumptionData.BT28_RMS_mV_L2 = RMSVoltagemVL2;
-                       ConsumptionData.BT28_RMS_mV_L3 = RMSVoltagemVL3;
-                       ConsumptionData.BT28_Fwd_W_L1 = FwdActiveWL1;
-                       ConsumptionData.BT28_Fwd_W_L2 = FwdActiveWL2;
-                       ConsumptionData.BT28_Fwd_W_L3 = FwdActiveWL3;
-                       ConsumptionData.BT28_Rev_W_L1 = RevActiveWL1;
-                       ConsumptionData.BT28_Rev_W_L2 = RevActiveWL2;
-                       ConsumptionData.BT28_Rev_W_L3 = RevActiveWL3;
-                       ConsumptionData.BT28_Fwd_Avg_W = AverageFwdActiveWL1L2L3;
-                       ConsumptionData.BT28_Rev_Avg_W = AverageRevActiveWL1L2L3;
-                       ConsumptionData.BT28_Fwd_Avg_W_L1 = AverageFwdActiveWL1;
-                       ConsumptionData.BT28_Fwd_Avg_W_L2 = AverageFwdActiveWL2;
-                       ConsumptionData.BT28_Fwd_Avg_W_L3 = AverageFwdActiveWL3;
-                       ConsumptionData.BT28_Rev_Avg_W_L1 = AverageRevActiveWL1;
-                       ConsumptionData.BT28_Rev_Avg_W_L2 = AverageRevActiveWL2;
-                       ConsumptionData.BT28_Rev_Avg_W_L3 = AverageRevActiveWL3;
-                       mep_alivecounter++;        // EHorvat NES-MEP MQTT ..... also increment mep_alivecounter receiving Table 28 data
-                     }  
+                                   &ReactivePower_Q1,&ReactivePower_Q2,&ReactivePower_Q3,&ReactivePower_Q4)) {
+                      if(UpdateDataStructures) {
+                        ConsumptionData.BT28_Fwd_W = FwdActiveWL1L2L3;
+                        ConsumptionData.BT28_Rev_W = RevActiveWL1L2L3;
+                        ConsumptionData.BT28_Fwd_VA = ImportReactiveVArL1L2L3;
+                        ConsumptionData.BT28_Rev_VA = ExportReactiveVArL1L2L3;
+                        ConsumptionData.BT28_RMS_mA_L1 = RMSCurrentmAL1;
+                        ConsumptionData.BT28_RMS_mA_L2 = RMSCurrentmAL2;
+                        ConsumptionData.BT28_RMS_mA_L3 = RMSCurrentmAL3;
+                        ConsumptionData.BT28_RMS_mV_L1 = RMSVoltagemVL1;
+                        ConsumptionData.BT28_RMS_mV_L2 = RMSVoltagemVL2;
+                        ConsumptionData.BT28_RMS_mV_L3 = RMSVoltagemVL3;
+                        ConsumptionData.BT28_Pwr_Factor_L1 = PowerFactorL1;
+                        ConsumptionData.BT28_Freq_mHz = FrequencymHz;
+                        ConsumptionData.BT28_VA_L1L2L3 = VAL1L2L3;
+                        ConsumptionData.BT28_Pwr_Factor_L2 = PowerFactorL2;
+                        ConsumptionData.BT28_Pwr_Factor_L3 = PowerFactorL3;
+                        ConsumptionData.BT28_ReactivePower_Q1 = ReactivePower_Q1;
+                        ConsumptionData.BT28_ReactivePower_Q2 = ReactivePower_Q2;
+                        ConsumptionData.BT28_ReactivePower_Q3 = ReactivePower_Q3;
+                        ConsumptionData.BT28_ReactivePower_Q4 = ReactivePower_Q4;
+                        mep_alivecounter++;        // EHorvat NES-MEP MQTT ..... also increment mep_alivecounter receiving Table 28 data
+                      }  
                      return "Fwd Active W L1L2L3: " + String(FwdActiveWL1L2L3) + "<br>" +
                             "Rev Active W L1L2L3: " + String(RevActiveWL1L2L3) + "<br>" +
                             "Import Reactive VAr L1L2L3: " + String(ImportReactiveVArL1L2L3) + "<br>" +
@@ -637,27 +607,7 @@ String ReplyData2String(MEPQueueStruct *MEPQueue,byte MEPQueueReplyIndex, boolea
                             "VA L1L2L3: " + String(VAL1L2L3) + "<br>" +
                             "Power Factor L1 (1/1000): " + String(PowerFactorL1) + "<br>" +
                             "Power Factor L2 (1/1000): " + String(PowerFactorL2) + "<br>" +
-                            "Power Factor L3 (1/1000): " + String(PowerFactorL3) + "<br>" +
-                            "Fwd Active W L1: " + String(FwdActiveWL1) + "<br>" +
-                            "Fwd Active W L2: " + String(FwdActiveWL2) + "<br>" +
-                            "Fwd Active W L3: " + String(FwdActiveWL3) + "<br>" + 
-                            "Rev Active W L1: " + String(RevActiveWL1) + "<br>" +
-                            "Rev Active W L2: " + String(RevActiveWL2) + "<br>" +
-                            "Rev Active W L3: " + String(RevActiveWL3) + "<br>" +
-                            "RMS Voltage (mV) L1 - Continuous: " + String(RMSVoltagemVL1Cont) + "<br>" +
-                            "RMS Voltage (mV) L2 - Continuous: " + String(RMSVoltagemVL2Cont) + "<br>" + 
-                            "RMS Voltage (mV) L3 - Continuous: " + String(RMSVoltagemVL3Cont) + "<br>" + 
-                            "RMS Voltage (mV) L1 - Average: " + String(RMSVoltagemVL1Avg) + "<br>" + 
-                            "RMS Voltage (mV) L2 - Average: " + String(RMSVoltagemVL2Avg) + "<br>" + 
-                            "RMS Voltage (mV) L3 - Average: " + String(RMSVoltagemVL3Avg) + "<br>" + 
-                            "Average Fwd Active W L1L2L3: " + String(AverageFwdActiveWL1L2L3) + "<br>" + 
-                            "Average Rev Active W L1L2L3: " + String(AverageRevActiveWL1L2L3) + "<br>" + 
-                            "Average Fwd Active W L1: " + String(AverageFwdActiveWL1) + "<br>" + 
-                            "Average Fwd Active W L2: " + String(AverageFwdActiveWL2) + "<br>" + 
-                            "Average Fwd Active W L3: " + String(AverageFwdActiveWL3) + "<br>" + 
-                            "Average Rev Active W L1: " + String(AverageRevActiveWL1) + "<br>" + 
-                            "Average Rev Active W L2: " + String(AverageRevActiveWL2) + "<br>" + 
-                            "Average Rev Active W L3: " + String(AverageRevActiveWL3);
+                            "Power Factor L3 (1/1000): " + String(PowerFactorL3);
                    }
                    break;
                     
