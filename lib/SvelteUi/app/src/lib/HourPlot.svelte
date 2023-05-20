@@ -11,7 +11,7 @@
         let config = {};
         let ymax = 0;
         let ymin = 0;    
-        let no_of_datapoints = 179;   //Number of points-1 in minute Plot was 149
+        let no_of_datapoints = 179;   //Number of points-1 in Hour Plot (180 points ...3 per minute)
         let max_exp = 0;
         let min_exp = 0;
     
@@ -36,14 +36,14 @@
                     max_exp = exp;
                     min_exp = exp;
                 }
-                if (i%5 == 0) {                     //show x ticks not on every data point
+                if (i%3 == 0) {                     //show x ticks not on every data point
                     xTicks.push({
-                        label: zeropad(-2*i)      //show "-" Seconds
+                        label: zeropad(-1*i/3)      //show "-" Minutes
                     });
                 } else {
                     if (i == no_of_datapoints) {  
                         xTicks.push({
-                            label: "Sek."
+                            label: "Min."
                         });  
                     } else {
                         xTicks.push({
@@ -108,12 +108,12 @@
             if(max_exp < 0) {      //There is some export....
                 ymin = max_exp;
                 if  (ymax <= 0) {     //There is no import
-                    ymax = min_exp;  //
+                    ymax = min_exp;
                 }
             }
     
             config = {
-                title: "Elektrische Leistung letzte 60 Minuten (Watt)",
+                title: "Elektrische Leistung letzte Stunde (Watt)",
                 height: 226,
                 width: 1520,
                 padding: { top: 20, right: 15, bottom: 20, left: 35 },
