@@ -32,25 +32,49 @@ bool RawMqttHandler::publish(AmsData* data, AmsData* meterState, EnergyAccountin
 */ //EHorvat NES-MEP disabled  original lines end    
 
 // EHorvat .... always send data to MQTT (even if data did not change....)
-    mqtt->publish(topic + "/meter/MEP_data_ready", String(data->getReactiveImportCounter(), 0), true, 0);    //EHorvat NES-MEP new item...(was /meter/import/reactive/accumulated")
+    mqtt->publish(topic + "/meter/mep_data_ready", String(data->isData_ready(), 0), true, 0);    //EHorvat NES-MEP new item...(was /meter/import/reactive/accumulated")
+    mqtt->publish(topic + "/meter/mep_alivecounter", String(data->getAliveCounter(), 0));
+    mqtt->publish(topic + "/meter/manufacturer", data->getMeterId());
+    mqtt->publish(topic + "/meter/model", data->getMeterModel());
+    mqtt->publish(topic + "/meter/serialnumber", data->getMeterSerial());
+    mqtt->publish(topic + "/meter/firmwareversion", data->getMeterFW());
+    mqtt->publish(topic + "/meter/hardwareversion", data->getMeterHW());
+//
     mqtt->publish(topic + "/meter/clock", String(data->getMeterTimestamp()));                                           //EHorvat NES-MEP
+    mqtt->publish(topic + "/meter/import/active", String(data->getActiveImportPower()));            //EHorvat NES-MEP
     mqtt->publish(topic + "/meter/import/active/accumulated", String(data->getActiveImportCounter(), 3), true, 0);       //EHorvat NES-MEP
+    mqtt->publish(topic + "/meter/export/active", String(data->getActiveExportPower()));            //EHorvat NES-MEP
+    mqtt->publish(topic + "/meter/export/active/accumulated", String(data->getActiveExportCounter(), 3), true, 0);
+//
+    mqtt->publish(topic + "/meter/import/reactive", String(data->getReactiveImportPower()));        //EHorvat NES-MEP reactive power inductive
+    mqtt->publish(topic + "/meter/export/reactive", String(data->getReactiveExportPower()));        //EHorvat NES-MEP reactive power capacitive
+    mqtt->publish(topic + "/meter/import/reactive/accumulated", String(data->getReactiveImportCounter(), 3), true, 0);
+    mqtt->publish(topic + "/meter/export/reactive/accumulated", String(data->getReactiveExportCounter(), 3), true, 0);
+//
     mqtt->publish(topic + "/meter/l1/voltage", String(data->getL1Voltage(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/meter/l2/voltage", String(data->getL2Voltage(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/meter/l3/voltage", String(data->getL3Voltage(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/meter/l1/current", String(data->getL1Current(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/meter/l2/current", String(data->getL2Current(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/meter/l3/current", String(data->getL3Current(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/meter/import/active", String(data->getActiveImportPower()));            //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/export/active", String(data->getActiveExportPower()));            //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/import/reactive", String(data->getReactiveImportPower()));        //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/export/reactive", String(data->getReactiveExportPower()));        //EHorvat NES-MEP
+//
+    mqtt->publish(topic + "/meter/l1/powerfactor", String(data->getL1PowerFactor(), 2));
+    mqtt->publish(topic + "/meter/l2/powerfactor", String(data->getL2PowerFactor(), 2));
+    mqtt->publish(topic + "/meter/l3/powerfactor", String(data->getL3PowerFactor(), 2));
+//
+    mqtt->publish(topic + "/meter/appowerVA", String(data->getAparentPower(), 2));
+    mqtt->publish(topic + "/meter/frequency", String(data->getFrequency(), 2));
+    mqtt->publish(topic + "/meter/reactivepower_Q1", String(data->getReactivePower_Q1(), 2));
+    mqtt->publish(topic + "/meter/reactivepower_Q2", String(data->getReactivePower_Q2(), 2));
+    mqtt->publish(topic + "/meter/reactivepower_Q3", String(data->getReactivePower_Q3(), 2));
+    mqtt->publish(topic + "/meter/reactivepower_Q4", String(data->getReactivePower_Q4(), 2));
+//
     mqtt->publish(topic + "/realtime/import/hour", String(ea->getUseThisHour(), 3));                //EHorvat NES-MEP
     mqtt->publish(topic + "/realtime/import/day", String(ea->getUseToday(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
     mqtt->publish(topic + "/realtime/export/hour", String(ea->getProducedThisHour(), 3));           //EHorvat NES-MEP
     mqtt->publish(topic + "/realtime/export/day", String(ea->getProducedToday(), 3));               //EHorvat NES-MEP dec to 3 (was 2)
+    mqtt->publish(topic + "/realtime/import/month", String(ea->getUseThisMonth(), 1));
 // EHorvat .... always send data to MQTT end
-
 }
 
 /* EHorvat NES-MEP disabled publishList1 to publishList4 functions --> so all data should be sent always....which is now done in above "publish" function
