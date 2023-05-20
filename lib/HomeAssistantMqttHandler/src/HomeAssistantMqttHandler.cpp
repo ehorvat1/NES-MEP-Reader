@@ -87,17 +87,14 @@ bool HomeAssistantMqttHandler::publishList4(AmsData* data, EnergyAccounting* ea)
     if(data->getL1ActiveExportPower() > 0 || data->getL2ActiveExportPower() > 0 || data->getL3ActiveExportPower() > 0) publishList4ExportSensors();
     snprintf_P(json, BufferSize, HA4_JSON,
         data->getListId().c_str(),
-        data->getMeterId().c_str(),
+        getMeterId(data).c_str(),
         getMeterModel(data).c_str(),
+        getMeterFW(data).c_str(),
+        getMeterHW(data).c_str(),
+        getMeterSerial(data).c_str(),
         data->getActiveImportPower(),
-        data->getL1ActiveImportPower(),
-        data->getL2ActiveImportPower(),
-        data->getL3ActiveImportPower(),
         data->getReactiveImportPower(),
         data->getActiveExportPower(),
-        data->getL1ActiveExportPower(),
-        data->getL2ActiveExportPower(),
-        data->getL3ActiveExportPower(),
         data->getReactiveExportPower(),
         data->getL1Current(),
         data->getL2Current(),
@@ -105,10 +102,15 @@ bool HomeAssistantMqttHandler::publishList4(AmsData* data, EnergyAccounting* ea)
         data->getL1Voltage(),
         data->getL2Voltage(),
         data->getL3Voltage(),
-        data->getPowerFactor() == 0 ? 1 : data->getPowerFactor(),
-        data->getPowerFactor() == 0 ? 1 : data->getL1PowerFactor(),
-        data->getPowerFactor() == 0 ? 1 : data->getL2PowerFactor(),
-        data->getPowerFactor() == 0 ? 1 : data->getL3PowerFactor()
+        data->getL1PowerFactor(),
+        data->getL2PowerFactor(),
+        data->getL3PowerFactor(),
+        data->getAparentPower(),
+        data->getFrequency(),
+        data->getReactivePower_Q1(),
+        data->getReactivePower_Q2(),
+        data->getReactivePower_Q3(),
+        data->getReactivePower_Q4()
     );
     return mqtt->publish(topic + "/power", json);
 }
@@ -117,6 +119,30 @@ String HomeAssistantMqttHandler::getMeterModel(AmsData* data) {
     String meterModel = data->getMeterModel();
     meterModel.replace("\\", "\\\\");
     return meterModel;
+}
+String HomeAssistantMqttHandler::getMeterFW(AmsData* data) {
+    String meterStateFW = data->getMeterFW();
+    if(!meterStateFW.isEmpty())							//EHorvat new
+        meterStateFW.replace("\\", "\\\\");
+    return meterStateFW;
+}
+String HomeAssistantMqttHandler::getMeterHW(AmsData* data) {
+    String meterStateHW = data->getMeterHW();
+    if(!meterStateHW.isEmpty())	
+        meterStateHW.replace("\\", "\\\\");
+    return meterStateHW;
+}
+String HomeAssistantMqttHandler::getMeterSerial(AmsData* data) {
+    String meterStateSerial = data->getMeterSerial();
+    if(!meterStateSerial.isEmpty())		
+        meterStateSerial.replace("\\", "\\\\");
+    return meterStateSerial;
+}
+String HomeAssistantMqttHandler::getMeterId(AmsData* data) {
+    String meterId = data->getMeterId();
+    if(!meterId.isEmpty())
+        meterId.replace("\\", "\\\\");
+    return meterId;
 }
 
 bool HomeAssistantMqttHandler::publishRealtime(AmsData* data, EnergyAccounting* ea, EntsoeApi* eapi) {
