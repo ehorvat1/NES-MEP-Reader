@@ -694,6 +694,7 @@ void AmsConfiguration::clearUiConfig(UiConfig& config) {
 	config.showDayPlot = 1;
 	config.showMonthPlot = 1;
 	config.showTemperaturePlot = 0;
+	config.showFrequency = 1;
 }
 
 bool AmsConfiguration::setUpgradeInformation(int16_t exitCode, int16_t errorCode, const char* currentVersion, const char* nextVersion) {
