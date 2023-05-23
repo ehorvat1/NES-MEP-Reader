@@ -4,7 +4,7 @@
 2) Get Firmware (works only for ESP32)
      1) Use the prebuilt firmware.bin image "firmware.bin" from this directory: [ESP32-binaries](https://github.com/ehorvat1/NES-MEP-Reader/tree/main/ESP32-binaries). For initial flash of ESP32 you will need three files: firmware.bin , partitions.bin and bootloader.bin. The latest bootloader file you can get from Arduino ESP32 bootloader https://github.com/espressif/arduino-esp32/tree/master/tools/sdk/esp32/bin . The default bootloader for a 4MB ESP32 is "bootloader_dio_40m.bin" and it was just renamed here to "bootloader.bin". 
         
-     2) or Build project with PlatformIO.
+     2) or Build project with PlatformIO to generate a firmware.bin file.
 
 3) Make shure you have the 3 needed files (bootloader.bin, firmware.bin,and partitions.bin) in the directory where esptool.py is started in.
 
