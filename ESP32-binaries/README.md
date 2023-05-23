@@ -6,7 +6,7 @@ go tho this Subfolder: [Initial-flash](https://github.com/ehorvat1/NES-MEP-Reade
 When firmware is already installed and device is running, you can do a firmware update over the air (OTA) by accessing the device web page and go to status page ("i" icon on header). Browse to a firmware.bin file and upload it to the ESP32 device.
 
 ## Update ESP32 flashing Command using esptool.py:
-But if you want to use esptool.py to update to a new version, a shorter command can be used to avoid config being overwritten. Just one file will be uploaded to the device: firmware.bin .
+But if you want to use esptool.py to update to a new version, following command can be used to avoid config being overwritten. Just one file will be uploaded to the device: firmware.bin .
 
 esptool.py --port port_name --baud 460800 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x10000 firmware.bin
 
