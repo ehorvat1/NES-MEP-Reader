@@ -9,7 +9,7 @@ Updated Rev2 uploaded 21.Dec 2022
 ### Issues:
 There might be problems with power supply from NES Smart meter. It seems that some meters do not supply sufficient power to ESP32. Or the MAX3232 charge pumps interfering with the step down converter. As a result you might see frequent crashes or the serial communication to MEP port not working. You might also notice that the MAX3232 and the step down converter getting quite warm. 
 If this happens try:
-1) Try with a oversized 470uF of 1000uF capacitor on the +3.3V and GND. This helped a lot, but still 2 or 3 tries to connect canmay be needed.
+1) Try with a (oversized) 470uF or 1000uF capacitor on the +3.3V and GND. This helped a lot, but still 2 or 3 tries to connect canmay be needed.
 2) Always helps: Remove the DCDC converter (!) and power the ESP32 module directly from USB.
 
 ### Notes:
