@@ -7,8 +7,10 @@ Updated Rev2 uploaded 21.Dec 2022
 3) A "selfmade" printed cirquit board based on attached KICAD project. [Schema in pdf format](https://github.com/ehorvat1/NES-MEP-Reader/blob/main/Hardware/NES-MEP-EHo-shema-Rev2.pdf)
 
 ### Issues:
-There might be problems with power supply from NES Smart meter. It seems that some meters do not supply sufficient power to ESP32. As a result you might see frequent crashes or the serial communication to MEP port not working.
-If this happens remove the DCDC converter (!) and power the ESP32 module directly from USB.
+There might be problems with power supply from NES Smart meter. It seems that some meters do not supply sufficient power to ESP32. Or the MAX3232 charge pumps interfere with the step down converter. As a result you might see frequent crashes or the serial communication to MEP port not working.
+If this happens 
+1) Try with a oversized 470uF of 1000uF capacitor on the +3.3V and GND. This helped a lot, but still 2 or 3 tries to connect canmay be needed.
+2) Always helps: Remove the DCDC converter (!) and power the ESP32 module directly from USB.
 
 ### Notes:
 1) I have used a small "connector" board to connect to the MEP port and a flat ribbon cable. In this way the signals are transported outside of the meter. The flat ribbon cable fits through the open gap where the meter is mounted into the electric cabinet. This all is done because here in my place the MEP port is not accesable, it is covered by a plasic cover which is sealed off by the power supply company.
