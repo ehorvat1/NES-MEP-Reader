@@ -96,9 +96,7 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 
 Those MQTT topics can be found also for HomeAssistant, but with slightly other names...HA is not testes from my side.
 
-So if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter/meter/import/active
-
-9) Only RAW MQTT Payload is tested so far. Others may work for above mentioned smart meter data.
+So for example, if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter/meter/import/active
 
 
 ## Web interface:
