@@ -5,11 +5,17 @@
 bool RawMqttHandler::publish(AmsData* data, AmsData* meterState, EnergyAccounting* ea, EntsoeApi* eapi) {
 	if(topic.isEmpty() || !mqtt->connected())
 		return false;
-/* EHorvat NES-MEP disabled  original lines start       
-    if(data->getPackageTimestamp() > 0) {                                                        
-        mqtt->publish(topic + "/meter/dlms/timestamp", String(data->getPackageTimestamp()));    
-    }   
 
+    mqtt10secCount++;
+    if (mqtt10secCount > 4) {
+        mqtt10sec = 1;
+        mqtt10secCount = 0;
+    } else {
+        mqtt10sec = 0;
+    }        
+    if(data->getPackageTimestamp() > 0) {
+        mqtt->publish(topic + "/meter/dlms/timestamp", String(data->getPackageTimestamp()));
+    }
     switch(data->getListType()) {
         case 4:
             publishList4(data, meterState);
@@ -29,174 +35,99 @@ bool RawMqttHandler::publish(AmsData* data, AmsData* meterState, EnergyAccountin
         loop();
     }
     return true;
-*/ //EHorvat NES-MEP disabled  original lines end    
-
-// EHorvat .... always send data to MQTT (even if data did not change....)
-    mqtt->publish(topic + "/meter/mep_data_ready", String(data->isData_ready(), 0), true, 0);    //EHorvat NES-MEP new item...(was /meter/import/reactive/accumulated")
-    mqtt->publish(topic + "/meter/mep_alivecounter", String(data->getAliveCounter(), 0));
-    mqtt->publish(topic + "/meter/manufacturer", data->getMeterId());
-    mqtt->publish(topic + "/meter/model", data->getMeterModel());
-    mqtt->publish(topic + "/meter/serialnumber", data->getMeterSerial());
-    mqtt->publish(topic + "/meter/firmwareversion", data->getMeterFW());
-    mqtt->publish(topic + "/meter/hardwareversion", data->getMeterHW());
-//
-    mqtt->publish(topic + "/meter/clock", String(data->getMeterTimestamp()));                                           //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/import/active", String(data->getActiveImportPower()));            //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/import/active/accumulated", String(data->getActiveImportCounter(), 3), true, 0);       //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/export/active", String(data->getActiveExportPower()));            //EHorvat NES-MEP
-    mqtt->publish(topic + "/meter/export/active/accumulated", String(data->getActiveExportCounter(), 3), true, 0);
-//
-    mqtt->publish(topic + "/meter/import/reactive", String(data->getReactiveImportPower()));        //EHorvat NES-MEP reactive power inductive
-    mqtt->publish(topic + "/meter/export/reactive", String(data->getReactiveExportPower()));        //EHorvat NES-MEP reactive power capacitive
-    mqtt->publish(topic + "/meter/import/reactive/accumulated", String(data->getReactiveImportCounter(), 3), true, 0);
-    mqtt->publish(topic + "/meter/export/reactive/accumulated", String(data->getReactiveExportCounter(), 3), true, 0);
-//
-    mqtt->publish(topic + "/meter/l1/voltage", String(data->getL1Voltage(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/meter/l2/voltage", String(data->getL2Voltage(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/meter/l3/voltage", String(data->getL3Voltage(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/meter/l1/current", String(data->getL1Current(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/meter/l2/current", String(data->getL2Current(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/meter/l3/current", String(data->getL3Current(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-//
-    mqtt->publish(topic + "/meter/l1/powerfactor", String(data->getL1PowerFactor(), 2));
-    mqtt->publish(topic + "/meter/l2/powerfactor", String(data->getL2PowerFactor(), 2));
-    mqtt->publish(topic + "/meter/l3/powerfactor", String(data->getL3PowerFactor(), 2));
-//
-    mqtt->publish(topic + "/meter/appowerVA", String(data->getAparentPower(), 2));
-    mqtt->publish(topic + "/meter/frequency", String(data->getFrequency(), 2));
-    mqtt->publish(topic + "/meter/reactivepower_Q1", String(data->getReactivePower_Q1(), 2));
-    mqtt->publish(topic + "/meter/reactivepower_Q2", String(data->getReactivePower_Q2(), 2));
-    mqtt->publish(topic + "/meter/reactivepower_Q3", String(data->getReactivePower_Q3(), 2));
-    mqtt->publish(topic + "/meter/reactivepower_Q4", String(data->getReactivePower_Q4(), 2));
-//
-    mqtt->publish(topic + "/realtime/import/hour", String(ea->getUseThisHour(), 3));                //EHorvat NES-MEP
-    mqtt->publish(topic + "/realtime/import/day", String(ea->getUseToday(), 3));                    //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/realtime/export/hour", String(ea->getProducedThisHour(), 3));           //EHorvat NES-MEP
-    mqtt->publish(topic + "/realtime/export/day", String(ea->getProducedToday(), 3));               //EHorvat NES-MEP dec to 3 (was 2)
-    mqtt->publish(topic + "/realtime/import/month", String(ea->getUseThisMonth(), 2));
-    mqtt->publish(topic + "/realtime/export/month", String(ea->getProducedThisMonth(), 2));
-// EHorvat .... always send data to MQTT end
 }
 
-/* EHorvat NES-MEP disabled publishList1 to publishList4 functions --> so all data should be sent always....which is now done in above "publish" function
-
 bool RawMqttHandler::publishList1(AmsData* data, AmsData* meterState) {
-    if(full || meterState->getActiveImportPower() != data->getActiveImportPower()) {
+// full = 2 second rate
+// 
+    if(full || mqtt10sec) {
+        mqtt->publish(topic + "/uptime", String((unsigned long) millis64()/1000));  //EHorvat 
         mqtt->publish(topic + "/meter/import/active", String(data->getActiveImportPower()));
     }
     return true;
 }
 
 bool RawMqttHandler::publishList2(AmsData* data, AmsData* meterState) {
-    // Only send data if changed. ID and Type is sent on the 10s interval only if changed
-    if(full || meterState->getMeterId() != data->getMeterId()) {
+    if(full || mqtt10sec) {
         mqtt->publish(topic + "/meter/id", data->getMeterId());
-    }
-    if(full || meterState->getMeterModel() != data->getMeterModel()) {
         mqtt->publish(topic + "/meter/type", data->getMeterModel());
-    }
-    if(full || meterState->getL1Current() != data->getL1Current()) {
         mqtt->publish(topic + "/meter/l1/current", String(data->getL1Current(), 2));
-    }
-    if(full || meterState->getL1Voltage() != data->getL1Voltage()) {
         mqtt->publish(topic + "/meter/l1/voltage", String(data->getL1Voltage(), 2));
-    }
-    if(full || meterState->getL2Current() != data->getL2Current()) {
         mqtt->publish(topic + "/meter/l2/current", String(data->getL2Current(), 2));
-    }
-    if(full || meterState->getL2Voltage() != data->getL2Voltage()) {
         mqtt->publish(topic + "/meter/l2/voltage", String(data->getL2Voltage(), 2));
-    }
-    if(full || meterState->getL3Current() != data->getL3Current()) {
         mqtt->publish(topic + "/meter/l3/current", String(data->getL3Current(), 2));
-    }
-    if(full || meterState->getL3Voltage() != data->getL3Voltage()) {
         mqtt->publish(topic + "/meter/l3/voltage", String(data->getL3Voltage(), 2));
-    }
-    if(full || meterState->getReactiveExportPower() != data->getReactiveExportPower()) {
         mqtt->publish(topic + "/meter/export/reactive", String(data->getReactiveExportPower()));
-    }
-    if(full || meterState->getActiveExportPower() != data->getActiveExportPower()) {
         mqtt->publish(topic + "/meter/export/active", String(data->getActiveExportPower()));
-    }
-    if(full || meterState->getReactiveImportPower() != data->getReactiveImportPower()) {
         mqtt->publish(topic + "/meter/import/reactive", String(data->getReactiveImportPower()));
     }
     return true;
 }
 
 bool RawMqttHandler::publishList3(AmsData* data, AmsData* meterState) {
-    // ID and type belongs to List 2, but I see no need to send that every 10s
-    mqtt->publish(topic + "/meter/id", data->getMeterId(), true, 0);
-    mqtt->publish(topic + "/meter/type", data->getMeterModel(), true, 0);
-    mqtt->publish(topic + "/meter/clock", String(data->getMeterTimestamp()));
-    mqtt->publish(topic + "/meter/import/reactive/accumulated", String(data->getReactiveImportCounter(), 3), true, 0);
-    mqtt->publish(topic + "/meter/import/active/accumulated", String(data->getActiveImportCounter(), 3), true, 0);
-    mqtt->publish(topic + "/meter/export/reactive/accumulated", String(data->getReactiveExportCounter(), 3), true, 0);
-    mqtt->publish(topic + "/meter/export/active/accumulated", String(data->getActiveExportCounter(), 3), true, 0);
+    // 
+    if(full || mqtt10sec) {
+//       mqtt->publish(topic + "/meter/id", data->getMeterId(), true, 0);
+//        mqtt->publish(topic + "/meter/type", data->getMeterModel(), true, 0);
+        mqtt->publish(topic + "/meter/clock", String(data->getMeterTimestamp()));
+        mqtt->publish(topic + "/meter/import/reactive/accumulated", String(data->getReactiveImportCounter(), 3), true, 0);
+        mqtt->publish(topic + "/meter/import/active/accumulated", String(data->getActiveImportCounter(), 3), true, 0);
+        mqtt->publish(topic + "/meter/export/reactive/accumulated", String(data->getReactiveExportCounter(), 3), true, 0);
+        mqtt->publish(topic + "/meter/export/active/accumulated", String(data->getActiveExportCounter(), 3), true, 0);
+    }
     return true;
 }
 
 bool RawMqttHandler::publishList4(AmsData* data, AmsData* meterState) {
-        if(full || meterState->getL1ActiveImportPower() != data->getL1ActiveImportPower()) {
+    if(full || mqtt10sec) {
             mqtt->publish(topic + "/meter/import/l1", String(data->getL1ActiveImportPower(), 2));
-        }
-        if(full || meterState->getL2ActiveImportPower() != data->getL2ActiveImportPower()) {
             mqtt->publish(topic + "/meter/import/l2", String(data->getL2ActiveImportPower(), 2));
-        }
-        if(full || meterState->getL3ActiveImportPower() != data->getL3ActiveImportPower()) {
             mqtt->publish(topic + "/meter/import/l3", String(data->getL3ActiveImportPower(), 2));
-        }
-        if(full || meterState->getL1ActiveExportPower() != data->getL1ActiveExportPower()) {
             mqtt->publish(topic + "/meter/export/l1", String(data->getL1ActiveExportPower(), 2));
-        }
-        if(full || meterState->getL2ActiveExportPower() != data->getL2ActiveExportPower()) {
             mqtt->publish(topic + "/meter/export/l2", String(data->getL2ActiveExportPower(), 2));
-        }
-        if(full || meterState->getL3ActiveExportPower() != data->getL3ActiveExportPower()) {
             mqtt->publish(topic + "/meter/export/l3", String(data->getL3ActiveExportPower(), 2));
-        }
-        if(full || meterState->getPowerFactor() != data->getPowerFactor()) {
-            mqtt->publish(topic + "/meter/powerfactor", String(data->getPowerFactor(), 2));
-        }
-        if(full || meterState->getL1PowerFactor() != data->getL1PowerFactor()) {
+            mqtt->publish(topic + "/meter/power/frequency", String(data->getFrequency(), 2));
             mqtt->publish(topic + "/meter/l1/powerfactor", String(data->getL1PowerFactor(), 2));
-        }
-        if(full || meterState->getL2PowerFactor() != data->getL2PowerFactor()) {
             mqtt->publish(topic + "/meter/l2/powerfactor", String(data->getL2PowerFactor(), 2));
-        }
-        if(full || meterState->getL3PowerFactor() != data->getL3PowerFactor()) {
             mqtt->publish(topic + "/meter/l3/powerfactor", String(data->getL3PowerFactor(), 2));
+            mqtt->publish(topic + "/meter/power/aparentpower", String(data->getAparentPower()));
+            mqtt->publish(topic + "/meter/power/reactivepower_Q1", String(data->getReactivePower_Q1()));
+            mqtt->publish(topic + "/meter/power/reactivepower_Q2", String(data->getReactivePower_Q2()));
+            mqtt->publish(topic + "/meter/power/reactivepower_Q3", String(data->getReactivePower_Q3()));
+            mqtt->publish(topic + "/meter/power/reactivepower_Q4", String(data->getReactivePower_Q4()));
         }
         return true;
 }
 
 bool RawMqttHandler::publishRealtime(EnergyAccounting* ea) {
-    mqtt->publish(topic + "/realtime/import/hour", String(ea->getUseThisHour(), 3));
-    mqtt->publish(topic + "/realtime/import/day", String(ea->getUseToday(), 2));
-    mqtt->publish(topic + "/realtime/import/month", String(ea->getUseThisMonth(), 1));
-    uint8_t peakCount = ea->getConfig()->hours;
-    if(peakCount > 5) peakCount = 5;
-    for(uint8_t i = 1; i <= peakCount; i++) {
-        mqtt->publish(topic + "/realtime/import/peak/" + String(i, 10), String(ea->getPeak(i).value / 100.0, 10), true, 0);
+    if(full || mqtt10sec) {
+        mqtt->publish(topic + "/realtime/import/hour", String(ea->getUseThisHour(), 3));
+        mqtt->publish(topic + "/realtime/import/day", String(ea->getUseToday(), 2));
+        mqtt->publish(topic + "/realtime/import/month", String(ea->getUseThisMonth(), 1));
+        uint8_t peakCount = ea->getConfig()->hours;
+        if(peakCount > 5) peakCount = 5;
+        for(uint8_t i = 1; i <= peakCount; i++) {
+            mqtt->publish(topic + "/realtime/import/peak/" + String(i, 10), String(ea->getPeak(i).value / 100.0, 10), true, 0);
+        }
+        mqtt->publish(topic + "/realtime/import/threshold", String(ea->getCurrentThreshold(), 10), true, 0);
+        mqtt->publish(topic + "/realtime/import/monthmax", String(ea->getMonthMax(), 3), true, 0);
+        mqtt->publish(topic + "/realtime/export/hour", String(ea->getProducedThisHour(), 3));
+        mqtt->publish(topic + "/realtime/export/day", String(ea->getProducedToday(), 2));
+        mqtt->publish(topic + "/realtime/export/month", String(ea->getProducedThisMonth(), 1));
     }
-    mqtt->publish(topic + "/realtime/import/threshold", String(ea->getCurrentThreshold(), 10), true, 0);
-    mqtt->publish(topic + "/realtime/import/monthmax", String(ea->getMonthMax(), 3), true, 0);
-    mqtt->publish(topic + "/realtime/export/hour", String(ea->getProducedThisHour(), 3));
-    mqtt->publish(topic + "/realtime/export/day", String(ea->getProducedToday(), 2));
-    mqtt->publish(topic + "/realtime/export/month", String(ea->getProducedThisMonth(), 1));
     return true;
 }
-*/ // EHorvat NES-MEP disabled publishList1 to publishList4 end
 
 bool RawMqttHandler::publishTemperatures(AmsConfiguration* config, HwTools* hw) {
     uint8_t c = hw->getTempSensorCount();
-    for(int i = 0; i < c; i++) {
-        TempSensorData* data = hw->getTempSensorData(i);
-        if(data != NULL && data->lastValidRead > -85) {
-            if(data->changed || full) {
-                mqtt->publish(topic + "/temperature/" + toHex(data->address), String(data->lastValidRead, 2));
-                data->changed = false;
+    if(full || mqtt10sec) {
+        for(int i = 0; i < c; i++) {
+            TempSensorData* data = hw->getTempSensorData(i);
+            if(data != NULL && data->lastValidRead > -85) {
+                if(data->changed || full) {
+                    mqtt->publish(topic + "/temperature/" + toHex(data->address), String(data->lastValidRead, 2));
+                    data->changed = false;
+                }
             }
         }
     }
@@ -283,32 +214,33 @@ bool RawMqttHandler::publishPrices(EntsoeApi* eapi) {
         breakTime(ts, tm);
 		sprintf(ts6hr, "%04d-%02d-%02dT%02d:00:00Z", tm.Year+1970, tm.Month, tm.Day, tm.Hour);
 	}
-
-    for(int i = 0; i < 34; i++) {
-        float val = values[i];
-        if(val == ENTSOE_NO_VALUE) {
-            mqtt->publish(topic + "/price/" + String(i), "", true, 0);
-        } else {
-            mqtt->publish(topic + "/price/" + String(i), String(val, 4), true, 0);
+    if(full || mqtt10sec) {
+        for(int i = 0; i < 34; i++) {
+            float val = values[i];
+            if(val == ENTSOE_NO_VALUE) {
+                mqtt->publish(topic + "/price/" + String(i), "", true, 0);
+            } else {
+                mqtt->publish(topic + "/price/" + String(i), String(val, 4), true, 0);
+            }
+            mqtt->loop();
+            delay(10);
         }
-        mqtt->loop();
-        delay(10);
-    }
-    if(min != INT16_MAX) {
-        mqtt->publish(topic + "/price/min", String(min, 4), true, 0);
-    }
-    if(max != INT16_MIN) {
-        mqtt->publish(topic + "/price/max", String(max, 4), true, 0);
-    }
+        if(min != INT16_MAX) {
+            mqtt->publish(topic + "/price/min", String(min, 4), true, 0);
+        }
+        if(max != INT16_MIN) {
+            mqtt->publish(topic + "/price/max", String(max, 4), true, 0);
+        }
 
-    if(min1hrIdx != -1) {
-        mqtt->publish(topic + "/price/cheapest/1hr", String(ts1hr), true, 0);
-    }
-    if(min3hrIdx != -1) {
-        mqtt->publish(topic + "/price/cheapest/3hr", String(ts3hr), true, 0);
-    }
-    if(min6hrIdx != -1) {
-        mqtt->publish(topic + "/price/cheapest/6hr", String(ts6hr), true, 0);
+        if(min1hrIdx != -1) {
+            mqtt->publish(topic + "/price/cheapest/1hr", String(ts1hr), true, 0);
+        }
+        if(min3hrIdx != -1) {
+            mqtt->publish(topic + "/price/cheapest/3hr", String(ts3hr), true, 0);
+        }
+        if(min6hrIdx != -1) {
+            mqtt->publish(topic + "/price/cheapest/6hr", String(ts6hr), true, 0);
+        }
     }
     return true;
 }
@@ -317,14 +249,12 @@ bool RawMqttHandler::publishSystem(HwTools* hw, EntsoeApi* eapi, EnergyAccountin
 	if(topic.isEmpty() || !mqtt->connected())
 		return false;
 
-//	mqtt->publish(topic + "/id", WiFi.macAddress(), true, 0);
-    mqtt->publish(topic + "/mac_address", WiFi.macAddress(), true, 0);   //EHorvat NES-MEP topic changed (was "/id")
-
-	mqtt->publish(topic + "/uptime", String((unsigned long) millis64()/1000));
-//	float vcc = hw->getVcc();                                   //EHorvat NES-MEP disabled
-//	if(vcc > 0) {                                               //EHorvat NES-MEP disabled
-//		mqtt->publish(topic + "/vcc", String(vcc, 2));          //EHorvat NES-MEP disabled
-//	}                                                           //EHorvat NES-MEP disabled
+	mqtt->publish(topic + "/id", WiFi.macAddress(), true, 0);
+//	mqtt->publish(topic + "/uptime", String((unsigned long) millis64()/1000)); //EHorvat moved this line to publishList1
+	float vcc = hw->getVcc();
+	if(vcc > 0) {
+		mqtt->publish(topic + "/vcc", String(vcc, 2));
+	}
 	mqtt->publish(topic + "/mem", String(ESP.getFreeHeap()));
 	mqtt->publish(topic + "/rssi", String(hw->getWifiRssi()));
     if(hw->getTemperature() > -85) {
