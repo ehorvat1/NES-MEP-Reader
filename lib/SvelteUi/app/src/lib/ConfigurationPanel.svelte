@@ -491,11 +491,10 @@
                     Payload<br/>
                     <select name="qm" bind:value={configuration.q.m} class="in-l">
                         <option value={0}>JSON</option>
-                        <option value={1}>Raw (minimal)</option>
-                        <option value={2}>Raw (full)</option>
+                        <option value={1}>Raw (10 Sek.)</option>
+                        <option value={2}>Raw (2 Sek.)</option>
                         <option value={3}>Domoticz</option>
                         <option value={4}>HomeAssistant</option>
-                        <option value={255}>HEX dump</option>
                     </select>
                 </div>
             </div>

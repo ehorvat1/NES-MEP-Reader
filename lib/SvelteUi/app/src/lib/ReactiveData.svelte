@@ -18,23 +18,23 @@
     <div class="grid grid-cols-2 mt-4">
         <div>Scheinleistung</div>
         <div class="text-right">{typeof AparentPower !== 'undefined' ? AparentPower.toFixed(0) : '-'} VA</div>
-        <div>BlindLeist. ind</div>
+        <div>BlindL. ind</div>
         <div class="text-right">{typeof importInstant !== 'undefined' ? importInstant.toFixed(0) : '-'} VAr</div>
-        <div>BlindLeist. kap</div>
+        <div>BlindL. kap</div>
         <div class="text-right">{typeof exportInstant !== 'undefined' ? exportInstant.toFixed(0) : '-'} VAr</div>
     </div>
     <div class="grid grid-cols-2 mt-4">
-        <div>Blindleist. Q1</div>
+        <div>BlindL. Q1</div>
         <div class="text-right">{typeof ReactivePower_Q1 !== 'undefined' ? ReactivePower_Q1.toFixed(0) : '-'} VAr</div>        
-        <div>Blindleist. Q2</div>
+        <div>BlindL. Q2</div>
         <div class="text-right">{typeof ReactivePower_Q2 !== 'undefined' ? ReactivePower_Q2.toFixed(0) : '-'} VAr</div>        
-        <div>Blindleist. Q3</div>
+        <div>BlindL. Q3</div>
         <div class="text-right">{typeof ReactivePower_Q3 !== 'undefined' ? ReactivePower_Q3.toFixed(0) : '-'} VAr</div>        
-        <div>Blindleist. Q4</div>
+        <div>BlindL. Q4</div>
         <div class="text-right">{typeof ReactivePower_Q4 !== 'undefined' ? ReactivePower_Q4.toFixed(0) : '-'} VAr</div>        
-        <div>Summe BL ind</div>
+        <div>Ges.BL ind</div>
         <div class="text-right">{typeof importTotal !== 'undefined' ? importTotal.toFixed(1) : '-'} kVArh</div>
-        <div>Summe BL kap</div>
+        <div>Ges.BL kap</div>
         <div class="text-right">{typeof exportTotal !== 'undefined' ? exportTotal.toFixed(1) : '-'} kVArh</div>
     </div>    
     <div class="grid grid-cols-2 mt-4">

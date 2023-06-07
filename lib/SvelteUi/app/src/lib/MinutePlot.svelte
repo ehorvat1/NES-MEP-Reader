@@ -16,7 +16,7 @@
     let min_exp = 0;
 
     $: {
-        let i = 0;        
+        let i = 0;     
         let yTicks = [];
         let xTicks = [];
         let points = [];
@@ -36,9 +36,9 @@
                 max_exp = exp;
                 min_exp = exp;
             }
-            if (i%5 == 0) {                     //show x ticks not on every data point
+            if ((i+1)%5 == 0) {                     //show x ticks not on every data point
                 xTicks.push({
-                    label: zeropad(-2*i)      //show "-" Seconds
+                    label: zeropad(-2*(i+1))      //show "-" Seconds
                 });
             } else {
                 if (i == no_of_datapoints) {  
@@ -53,10 +53,10 @@
             }
             points.push({
                 label: imp,
-                title: imp + ' W',
+                title: 'vor ' + ((i+1)*2) + ' Sek.: ' + imp + ' W',
                 value: imp, 
                 label2: exp, 
-                title2: (- 1 * exp)+ ' W',
+                title2: 'vor ' + ((i+1)*2) + ' Sek.: ' + (- 1 * exp)+ ' W',
                 value2: exp,
                 color2: '#407038',
                 color: '#7c3aed' 
