@@ -127,17 +127,14 @@ bool JsonMqttHandler::publishList4(AmsData* data, EnergyAccounting* ea) {
         hw->getWifiRssi(),
         hw->getTemperature(),
         data->getListId().c_str(),
-        data->getMeterId().c_str(),
-        getMeterModel(data).c_str(),
+        getMeterId(data).c_str(),  //EHorvat changed to local string
+        getMeterModel(data).c_str(),//EHorvat new
+        getMeterFW(data).c_str(),//EHorvat new
+        getMeterHW(data).c_str(),//EHorvat new
+        getMeterSerial(data).c_str(),//EHorvat new
         data->getActiveImportPower(),
-        data->getL1ActiveImportPower(),
-        data->getL2ActiveImportPower(),
-        data->getL3ActiveImportPower(),
         data->getReactiveImportPower(),
         data->getActiveExportPower(),
-        data->getL1ActiveExportPower(),
-        data->getL2ActiveExportPower(),
-        data->getL3ActiveExportPower(),
         data->getReactiveExportPower(),
         data->getL1Current(),
         data->getL2Current(),
@@ -149,6 +146,12 @@ bool JsonMqttHandler::publishList4(AmsData* data, EnergyAccounting* ea) {
         data->getL1PowerFactor(),
         data->getL2PowerFactor(),
         data->getL3PowerFactor(),
+        data->getAparentPower(),//EHorvat new
+        data->getFrequency(),//EHorvat new
+        data->getReactivePower_Q1(),//EHorvat new
+        data->getReactivePower_Q2(),//EHorvat new
+        data->getReactivePower_Q3(),//EHorvat new
+        data->getReactivePower_Q4(),//EHorvat new
         data->getActiveImportCounter(),
         data->getActiveExportCounter(),
         data->getReactiveImportCounter(),
@@ -168,6 +171,30 @@ String JsonMqttHandler::getMeterModel(AmsData* data) {
     String meterModel = data->getMeterModel();
     meterModel.replace("\\", "\\\\");
     return meterModel;
+}
+String JsonMqttHandler::getMeterFW(AmsData* data) {
+    String meterStateFW = data->getMeterFW();
+    if(!meterStateFW.isEmpty())							//EHorvat new
+        meterStateFW.replace("\\", "\\\\");
+    return meterStateFW;
+}
+String JsonMqttHandler::getMeterHW(AmsData* data) {
+    String meterStateHW = data->getMeterHW();
+    if(!meterStateHW.isEmpty())	
+        meterStateHW.replace("\\", "\\\\");
+    return meterStateHW;
+}
+String JsonMqttHandler::getMeterSerial(AmsData* data) {
+    String meterStateSerial = data->getMeterSerial();
+    if(!meterStateSerial.isEmpty())		
+        meterStateSerial.replace("\\", "\\\\");
+    return meterStateSerial;
+}
+String JsonMqttHandler::getMeterId(AmsData* data) {
+    String meterId = data->getMeterId();
+    if(!meterId.isEmpty())
+        meterId.replace("\\", "\\\\");
+    return meterId;
 }
 
 bool JsonMqttHandler::publishTemperatures(AmsConfiguration* config, HwTools* hw) {
