@@ -12,7 +12,7 @@ long NESMEP_ReactiveExportPower;
 float NESMEP_Pwr_Factor_L1;
 float NESMEP_Pwr_Factor_L2;
 float NESMEP_Pwr_Factor_L3;
-float NESMEP_VA_L1L2L3;
+long NESMEP_VA_L1L2L3;
 float NESMEP_L1Voltage;
 float NESMEP_L2Voltage;
 float NESMEP_L3Voltage;
@@ -90,7 +90,7 @@ void AmsData::apply(AmsData& other) {
 //
 //    switch(other.getListType()) {                           //EHorvat NES-MEP removed case
 //        case 4:
-//            this->powerFactor = other.getPowerFactor();
+            this->powerFactor = other.getPowerFactor();
             this->l1PowerFactor = NESMEP_Pwr_Factor_L1;
             this->l2PowerFactor = NESMEP_Pwr_Factor_L2;
             this->l3PowerFactor = NESMEP_Pwr_Factor_L3;
@@ -99,12 +99,12 @@ void AmsData::apply(AmsData& other) {
             this->ReactivePower_Q2 = NESMEP_ReactivePower_Q2;
             this->ReactivePower_Q3 = NESMEP_ReactivePower_Q3;
             this->ReactivePower_Q4 = NESMEP_ReactivePower_Q4;
-//            this->l1activeImportPower = other.getL1ActiveImportPower();
-//            this->l2activeImportPower = other.getL2ActiveImportPower();
-//            this->l3activeImportPower = other.getL3ActiveImportPower();
-//            this->l1activeExportPower = other.getL1ActiveExportPower();
-//            this->l2activeExportPower = other.getL2ActiveExportPower();
-//            this->l3activeExportPower = other.getL3ActiveExportPower();
+            this->l1activeImportPower = other.getL1ActiveImportPower();
+            this->l2activeImportPower = other.getL2ActiveImportPower();
+            this->l3activeImportPower = other.getL3ActiveImportPower();
+            this->l1activeExportPower = other.getL1ActiveExportPower();
+            this->l2activeExportPower = other.getL2ActiveExportPower();
+            this->l3activeExportPower = other.getL3ActiveExportPower();
 //        case 3:
             this->meterTimestamp = other.getMeterTimestamp();
             this->meterTimestamp = time(nullptr) - 1;                       // EHorvat NES-MEP
@@ -115,41 +115,22 @@ void AmsData::apply(AmsData& other) {
             this->reactiveImportPower = NESMEP_ReactiveImportPower;         //EHorvat NES-MEP
             this->reactiveExportPower = NESMEP_ReactiveExportPower;          //EHorvat NES-MEP
             this->reactiveExportCounter = NESMEP_ReactiveExportCounter;
-//            this->activeImportCounter = other.getActiveImportCounter();
-//            this->activeExportCounter = other.getActiveExportCounter();
             this->counterEstimated = false;
 //        case 2:
             this->listId = other.getListId();
             this->meterId = other.getMeterId();
-//            this->meterType = other.getMeterType();//EHorvat NES-MEP
-//            this->meterType_fw = String(NESMEP_MainFirmwareVersionNumber) + "_" + String(NESMEP_FirmwareRevisionNumber);
             this->meterType_fw = FW_full;//EHorvat NES-MEP
             this->meterModel = other.getMeterModel();
-//            this->reactiveImportPower = other.getReactiveImportPower();
-//            this->reactiveExportPower = other.getReactiveExportPower();
 
-//            this->l1current = other.getL1Current();
-//            this->l2current = other.getL2Current();
-//            this->l3current = other.getL3Current();
-//            this->l1voltage = other.getL1Voltage();
-//            this->l2voltage = other.getL2Voltage();
-//            this->l3voltage = other.getL3Voltage();
-            this->l1current = NESMEP_L1Current;  //EHorvat NES-MEP
-            this->l2current = NESMEP_L2Current;  //EHorvat NES-MEP
-            this->l3current = NESMEP_L3Current;  //EHorvat NES-MEP
-            this->l1voltage = NESMEP_L1Voltage;  //EHorvat NES-MEP
-            this->l2voltage = NESMEP_L2Voltage;  //EHorvat NES-MEP
-            this->l3voltage = NESMEP_L3Voltage;  //EHorvat NES-MEP
+            this->l1current = other.getL1Current();
+            this->l2current = other.getL2Current();
+            this->l3current = other.getL3Current();
+            this->l1voltage = other.getL1Voltage();
+            this->l2voltage = other.getL2Voltage();
+            this->l3voltage = other.getL3Voltage();
             this->threePhase = other.isThreePhase();
             this->twoPhase = other.isTwoPhase();
 //    }   //EHorvat NES-MEP removed case
-
-    // Moved outside switch to handle meters alternating between sending active and accumulated values
-    // EHorvat NES-MEP Disabled next 4 lines 
-//    if(other.getListType() == 1 || (other.getActiveImportPower() > 0 || other.getActiveExportPower() > 0))
-//        this->activeImportPower = other.getActiveImportPower();
-//    if(other.getListType() == 2 || (other.getActiveImportPower() > 0 || other.getActiveExportPower() > 0))
-//        this->activeExportPower = other.getActiveExportPower();
 }
 
 // ************ EHorvat NES-MEP  ****************
