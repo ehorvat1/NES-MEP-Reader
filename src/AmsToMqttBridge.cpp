@@ -653,7 +653,7 @@ void loop() {
 						debugD("Used %ld ms to update temperature", millis()-start);
 					}
 				}
-				if(now - lastSysupdate > 60000) {
+				if(now - lastSysupdate > 20000) { //EHorvat was 60000
 					if(mqtt != NULL && mqttHandler != NULL && WiFi.getMode() != WIFI_AP && WiFi.status() == WL_CONNECTED && mqtt->connected() && !topic.isEmpty()) {
 						mqttHandler->publishSystem(&hw, eapi, &ea);
 					}
