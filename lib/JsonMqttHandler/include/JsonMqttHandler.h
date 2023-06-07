@@ -28,5 +28,9 @@ private:
     bool publishList3(AmsData* data, EnergyAccounting* ea);
     bool publishList4(AmsData* data, EnergyAccounting* ea);
     String getMeterModel(AmsData* data);
+    String getMeterFW(AmsData* data);
+    String getMeterHW(AmsData* data);
+    String getMeterSerial(AmsData* data);
+    String getMeterId(AmsData* data);
 };
 #endif
