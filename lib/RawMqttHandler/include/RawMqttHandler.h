@@ -20,11 +20,14 @@ protected:
 private:
     String topic;
     bool full;
+    bool mqtt10sec; //EHorvat new
+    uint8_t mqtt10secCount = 0;
 
     bool publishList1(AmsData* data, AmsData* meterState);
     bool publishList2(AmsData* data, AmsData* meterState);
     bool publishList3(AmsData* data, AmsData* meterState);
     bool publishList4(AmsData* data, AmsData* meterState);
     bool publishRealtime(EnergyAccounting* ea);
+
 };
 #endif
