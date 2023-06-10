@@ -686,9 +686,6 @@
         </div>
     </div>
     <div class="grid grid-cols-3">
-        <div>
-            <button type="button" on:click={factoryReset} class="py-2 px-4 rounded bg-red-500 text-white ml-2">Factory reset</button>
-        </div>
         <div class="text-center">
             <button type="button" on:click={askReboot} class="py-2 px-4 rounded bg-yellow-500 text-white">Reboot</button>
         </div>
