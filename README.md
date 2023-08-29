@@ -93,7 +93,18 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
 	 - Publish topic + "/realtime/import/month"
      - Publish topic + "/realtime/export/hour"
      - Publish topic + "/realtime/export/day"
-	 - Publish topic + "/realtime/export/month"
+	- Publish topic + "/realtime/export/month"
+	 - Publish topic + "/realtime/import/cost_kwh"
+	 - Publish topic + "/realtime/import/last_counter_value"
+	 - Publish topic + "/realtime/import/last_counter_info"
+	 - Publish topic + "/realtime/import/last_counter_diff"
+	 - Publish topic + "/realtime/import/last_counter_costs"
+	 
+	 - Publish topic + "/realtime/export/refund_kwh"
+	 - Publish topic + "/realtime/export/last_counter_value"
+	 - Publish topic + "/realtime/export/last_counter_info"
+	 - Publish topic + "/realtime/export/last_counter_diff"
+	 - Publish topic + "/realtime/export/last_counter_refund"
 
 Those MQTT topics can be found also for HomeAssistant, but with slightly other names...HA is not testes from my side.
 
