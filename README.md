@@ -8,7 +8,7 @@ From my side:
 - Rel. 2.3: Data fetch from meter and Web Interface now on 2 second base. New 5 minute plot.
 - Rel. 2.4: Frequency Indicator, Power Factors and Reactive Data including their MQTT Topics (for Raw MQTT and HomeAssistant)
 - Rel. 2.5: Added a fixed price per kWh for export.
-            User can enter now a "last" counter value and a text comment for this value - idea is to enter here the last kWh from the last energy bill. A price is calculated from this "last" counter to the actual kWh counter to get an idea of costs since last energy bill. More MQTTs should work now. More info on minute & hour plot.
+            User can enter now a "last" counter value and a text comment for this value - idea is to enter here the last kWh from the last energy bill. A price is calculated from this "last" counter to the actual kWh counter to get an idea of costs since last energy bill. More MQTTs should work now. More info on minute & hour plot. Version is shown now in Status page.
 
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
