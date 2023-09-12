@@ -286,7 +286,7 @@ boolean Decode0x001C(unsigned long ReplyLength,byte Reply[],long *FwdActiveWL1L2
 {
   byte A = ((MeterConfig.BT21_0 & 0b01000000) == 0b01000000) ? 3 : 0; // BT21_0_6
   byte Offset = (A + 4) * MeterConfig.BT21_8;
-  if(ReplyLength <= Offset + 25*4) {   // EHorvat: We just read in first 25 values from BT28 (original was 54*4)
+  if(ReplyLength <= Offset + 25*4) {   // EHorvat: We just check for 25 datapoints from BT28 (original was 54*4)
     return false;
   }
   // All these are type NI_FMAT1 = 32 bit signed integer
