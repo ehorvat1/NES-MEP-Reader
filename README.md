@@ -11,7 +11,7 @@ From my side:
             User can enter now a "last" counter value and a text comment for this value - idea is to enter here the last kWh from the last energy bill. A price is calculated from this "last" counter to the actual kWh counter to get an idea of costs since last energy bill. More info on minute & hour plot. Version is shown now in Status page.
 - pre Rel. 2.6: Only check for 25 Data points from BT28 (was 54)
 
-Please Note: Up to date only MQTT "raw" as payload is working. Selecting MQTT payload for HomeAutomation will cause a looping crash (if MQTT Server is up).
+**Please Note: Up to date only MQTT "raw" as payload is working. Selecting MQTT payload for HomeAutomation will cause a looping crash (if MQTT Server is up).**
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
