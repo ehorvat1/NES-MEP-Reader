@@ -158,10 +158,10 @@
     <div class="cnt">
         <strong class="text-sm">Firmware</strong>
         <div class="my-2"><!-- EHorvat next line was :   Installed version: {sysinfo.version} -->
-            Installierte Version: pre 2.6-ge
+            Installierte Version: 2.6-ge
         </div>        
         <div class="my-2"><!-- EHorvat new info-->
-            Datum: 12 Sept. 2023
+            Datum: 9. Okt. 2023
         </div>
         {#if sysinfo.security == 0 || data.a}
         <div class="my-2 flex">
