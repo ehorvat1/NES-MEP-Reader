@@ -155,6 +155,11 @@ bool HomeAssistantMqttHandler::publishRealtime(AmsData* data, EnergyAccounting* 
         if(!peaks.isEmpty()) peaks += ",";
         peaks += String(ea->getPeak(i).value / 100.0, 2);
     }
+    String  Last_Counter_Info = "";
+    Last_Counter_Info = ea->getLast_Counter_Info();   //EHorvat new
+    String  Last_expCounter_Info = "";
+    Last_expCounter_Info = ea->getLast_expCounter_Info();   //EHorvat new
+    
     snprintf_P(json, BufferSize, REALTIME_JSON,
         ea->getMonthMax(),
         peaks.c_str(),
@@ -170,11 +175,20 @@ bool HomeAssistantMqttHandler::publishRealtime(AmsData* data, EnergyAccounting* 
         ea->getUseThisMonth(),
         ea->getCostThisMonth(),
         ea->getProducedThisMonth(),
-        ea->getIncomeThisMonth()
+        ea->getIncomeThisMonth(),
+        ea->getPriceForHour(0),   //EHorvat new
+        ea->getLast_Counter_Value(),   //EHorvat new
+        Last_Counter_Info.c_str(),   //EHorvat new
+        ea->getLast_Counter_Diff(),   //EHorvat new
+        ea->getCostsLastCounterValue(),   //EHorvat new
+        ea->getIncomeRefundForHour(0),   //EHorvat new
+        ea->getLast_expCounter_Value(),   //EHorvat new
+        Last_expCounter_Info.c_str(),   //EHorvat new
+        ea->getLast_expCounter_Diff(),   //EHorvat new
+        ea->getCostsLastexpCounterValue()   //EHorvat new
     );
     return mqtt->publish(topic + "/realtime", json);
 }
-
 /*
 bool HomeAssistantMqttHandler::publishTemperatures(AmsConfiguration* config, HwTools* hw) {
 	int count = hw->getTempSensorCount();
@@ -479,6 +493,14 @@ void HomeAssistantMqttHandler::publishRealtimeSensors(EnergyAccounting* ea, Ents
             RealtimePeakSensor.devcl,
             RealtimePeakSensor.stacl
         };
+        publishSensor(sensor);
+    }
+    for(uint8_t i = 0; i < LastCounterValueCount; i++) {  //EHorvat new...
+        HomeAssistantSensor sensor = RealtimeLastCounterValue[i];
+        if(strncmp_P(sensor.devcl, PSTR("monetary"), 8) == 0) {
+            if(eapi == NULL) continue;
+            sensor.uom = eapi->getCurrency();
+        }
         publishSensor(sensor);
     }
     rtInit = true;
