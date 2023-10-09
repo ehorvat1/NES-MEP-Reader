@@ -89,6 +89,20 @@ const HomeAssistantSensor RealtimeExportSensors[RealtimeExportSensorCount] PROGM
     {"Current month income",       "/realtime","month.income",      "",     "monetary",        ""}
 };
 
+// EHorvat new for last_counter_value
+const uint8_t LastCounterValueCount PROGMEM = 8;
+const HomeAssistantSensor RealtimeLastCounterValue[LastCounterValueCount] PROGMEM = {
+    {"Cost per kWh",                    "/realtime", "lastctr_imp.costperkwh",       "",     "monetary",        ""},
+    {"import counter last bill value",  "/realtime", "lastctr_imp.ctrvalue",         "kWh",  "energy",          "total_increasing"},
+    {"import counter last bill diff",   "/realtime", "lastctr_imp.diff",             "kWh",  "energy",          "total_increasing"},
+    {"import counter last bill costs",  "/realtime", "lastctr_imp.costs",            "",     "monetary",        ""},
+    {"Refund per kWh",                  "/realtime", "lastctr_exp.refundperkwh",     "",     "monetary",        ""},
+    {"export counter last bill value",  "/realtime", "lastctr_exp.ctrvalue",         "kWh",  "energy",          "total_increasing"},
+    {"export counter last bill diff",   "/realtime", "lastctr_exp.diff",             "kWh",  "energy",          "total_increasing"},
+    {"export counter last bill refund", "/realtime", "lastctr_exp.refund",           "",     "monetary",        ""}
+};
+
+
 const HomeAssistantSensor RealtimePeakSensor PROGMEM = {"Current month peak %d", "/realtime", "peaks[%d]", "kWh", "energy", ""};
 
 const uint8_t PriceSensorCount PROGMEM = 5;
@@ -102,10 +116,11 @@ const HomeAssistantSensor PriceSensors[PriceSensorCount] PROGMEM = {
 
 const HomeAssistantSensor PriceSensor PROGMEM = {"Price in %02d %s", "/prices", "prices['%d']", "", "monetary", ""};
 
-const uint8_t SystemSensorCount PROGMEM = 2;
+const uint8_t SystemSensorCount PROGMEM = 3; // EHorvat new added uptime
 const HomeAssistantSensor SystemSensors[SystemSensorCount] PROGMEM = {
     {"Status",                     "/state",   "rssi",              "dBm",  "signal_strength", "measurement"},
-    {"Supply volt",                "/state",   "vcc",               "V",    "voltage",         "measurement"}
+    {"Supply volt",                "/state",   "vcc",               "V",    "voltage",         "measurement"},
+    {"Uptime",                     "/state",   "up",                 "",    "",                "measurement"}
 };
 
 const HomeAssistantSensor TemperatureSensor PROGMEM = {"Temperature sensor %s", "/temperatures", "temperatures['%s']", "°C", "temperature", "measurement"};
