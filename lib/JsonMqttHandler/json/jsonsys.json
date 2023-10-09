@@ -4,6 +4,5 @@
     "up" : %d,
     "vcc" : %.3f,
     "rssi": %d,
-    "temp": %.2f,
     "version": "%s"
 }

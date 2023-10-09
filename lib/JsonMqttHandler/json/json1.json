@@ -5,7 +5,6 @@
     "t" : %lu,
     "vcc" : %.3f,
     "rssi": %d,
-    "temp": %.2f,
     "data" : {
         "P" : %d
     },
