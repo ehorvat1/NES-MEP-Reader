@@ -108,7 +108,9 @@ For hardware please check repository [Hardware](https://github.com/ehorvat1/NES-
      - Publish topic + "/realtime/export/last_counter_diff"
      - Publish topic + "/realtime/export/last_counter_refund"
 
-Those MQTT topics can be found also for HomeAssistant, but with slightly other names...HA is not testes from my side.
+8) MQTT for HomeAssistant: HA creates/discovers nummerical data as "Sensors". Exceptions is String data which has to be extracted from JSON data manually.
+
+Those MQTT topics can be found also for HomeAssistant, except 
 
 So for example, if you set the "Publish topic" in MQTT configuration to "smartmeter" the actual power used is published with full topic: smartmeter/meter/import/active
 
