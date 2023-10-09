@@ -9,9 +9,9 @@ From my side:
 - Rel. 2.4: Frequency Indicator, Power Factors and Reactive Data including their MQTT Topics (for Raw MQTT and HomeAssistant)
 - Rel. 2.5: Added a fixed price per kWh for export.
             User can enter now a "last" counter value and a text comment for this value - idea is to enter here the last kWh from the last energy bill. A price is calculated from this "last" counter to the actual kWh counter to get an idea of costs since last energy bill. More info on minute & hour plot. Version is shown now in Status page.
-- pre Rel. 2.6: Only check for 25 Data points from BT28 (was 54)
+- Rel. 2.6: MQTT works now for "HomeAssistant" payload. Only check for 25 Data points from BT28 (was 54)
 
-**Please Note: Up to date only MQTT "raw" as payload is working. Selecting MQTT payload for HomeAutomation will cause a looping crash (if MQTT Server is up).**
+**Please Note: Only payloads "raw (2 Sek.)", "raw (10 Sek.)" and "HomeAssistant" are tested .**
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
