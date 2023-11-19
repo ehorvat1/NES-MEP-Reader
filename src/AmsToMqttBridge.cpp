@@ -920,8 +920,11 @@ void loop() {
       		if(millis()-LastSentMillis > 2000) {     //EHorvat Nes-MEP was 5000
 			       				 
 					 // Update consumption data
-       			queueRequest("300017" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None);
-       			queueRequest("30001C" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None);
+       			queueRequest("3F0017000000000D", mep_key, MEPQueue, &MEPQueueNextIndex, None);              //EHorvat ... Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch
+				                                                                                            // for details check discussion here: https://github.com/orgs/OSGP-Alliance-MEP-and-Optical/discussions/18
+//    			queueRequest("300017" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None); //EHorvat ... this was Rev2.6 version ....changed now...seee above 2 lines
+       			
+				queueRequest("30001C" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None);
 //				queueRequest("300803",mep_key,MEPQueue,&MEPQueueNextIndex,None); // ET03: Utility Information EHorvat added for testing
 //				queueRequest("300034",mep_key,MEPQueue,&MEPQueueNextIndex,None); // BT52: UTC Clock  EHorvat added 
 //				if(Debug.isActive(RemoteDebug::INFO)) debugI("---++++---- mep_key = %s", mep_key);
