@@ -51,7 +51,7 @@ void Digest(const byte *apduBytes, unsigned long apduSize, const byte *key, byte
     /* for each byte of the key (repeating the process a second time for the first half of the key) */
     do
     {
-      if (keyLen==0) return;                    //EHorvat ...Prevent Div by 0 error (thanks to makerspace-reinbach.ch)
+      if (keyLen==0) return;                    //EHorvat ...Prevent Div by 0 error (thanks to makerspace-reinach.ch)
       keyByte = key[i%keyLen] >> j;
       last = digestValueOut[(8-j) & 0x7];
       v = 7-j;
