@@ -161,7 +161,7 @@
             Installierte Version: pre2.7-ge
         </div>        
         <div class="my-2"><!-- EHorvat new info-->
-            Datum: 19. Nov. 2023
+            Datum: 4. Dez. 2023
         </div>
         {#if sysinfo.security == 0 || data.a}
         <div class="my-2 flex">
