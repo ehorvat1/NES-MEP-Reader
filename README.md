@@ -10,7 +10,8 @@ From my side:
 - Rel. 2.5: Added a fixed price per kWh for export.
             User can enter now a "last" counter value and a text comment for this value - idea is to enter here the last kWh from the last energy bill. A price is calculated from this "last" counter to the actual kWh counter to get an idea of costs since last energy bill. More info on minute & hour plot. Version is shown now in Status page.
 - Rel. 2.6: MQTT works now for "HomeAssistant" payload. Only check for 25 Data points from BT28 (was 54)
-- **current repo. state: pre 2.7: Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch**
+- **current repo. state: pre 2.7: Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch
+                                  Fixed clearing of MEP error indication in header line.**
 
 **Please Note: Only payloads "raw (2 Sek.)", "raw (10 Sek.)" and "HomeAssistant" are tested .**
 
