@@ -1357,8 +1357,8 @@ void errorBlink() {
 //				if(lastErrorBlink - meterState.getLastUpdateMillis() > 30000) {  // EHorvat disabled line
 				if(lastErrorBlink - mep_Last_ok_millis > 30000) {	// EHorvat use mep_Last_ok_millis as timestamp for error checking
 					debugW_P(PSTR("No HAN data received last 30s, single blink"));
-					hw.ledBlink(LED_RED, 1); // If no message received from AMS in 30 sec, blink once
-					hw.ledBlink(LED_INTERNAL, 1); // EHorvat 
+					hw.ledBlink(LED_RED, 1);                        // If no message received from AMS in 30 sec, blink once
+					hw.ledBlink(LED_INTERNAL, 1);                   // EHorvat added this line
 					if(meterState.getLastError() == 0) meterState.setLastError(METER_ERROR_NO_DATA);
 					return;
 				}
@@ -1366,16 +1366,16 @@ void errorBlink() {
 			case 1:
 				if(mqttEnabled && mqtt != NULL && mqtt->lastError() != 0) {
 					debugW_P(PSTR("MQTT connection not available, double blink"));
-					hw.ledBlink(LED_RED, 2); // If MQTT error, blink twice
-					hw.ledBlink(LED_INTERNAL, 2); // EHorvat
+					hw.ledBlink(LED_RED, 2);                          // If MQTT error, blink twice
+					hw.ledBlink(LED_INTERNAL, 2);                     // EHorvat added this line
 					return;
 				}
 				break;
 			case 2:
 				if(WiFi.getMode() != WIFI_AP && WiFi.status() != WL_CONNECTED) {
 					debugW_P(PSTR("WiFi not connected, tripe blink"));
-					hw.ledBlink(LED_RED, 3); // If WiFi not connected, blink three times
-					hw.ledBlink(LED_INTERNAL, 3); // EHorvat
+					hw.ledBlink(LED_RED, 3);                          // If WiFi not connected, blink three times
+					hw.ledBlink(LED_INTERNAL, 3);                     // EHorvat added this line
 					return;
 				}
 				break;
@@ -1541,8 +1541,9 @@ bool readHanPort() {
 	for(int i = pos+ctx.length; i<BUF_SIZE_HAN; i++) {
 		hanBuffer[i] = 0x00;
 	}
-	meterState.setLastError(DATA_PARSE_OK);
 ++++++++++  EHorvat NES-MEP end */
+	meterState.setLastError(DATA_PARSE_OK);
+
 
 //	AmsData* data = NULL;//  EHorvat NES-MEP changed to below
 	AmsData data;        //  EHorvat NES-MEP
