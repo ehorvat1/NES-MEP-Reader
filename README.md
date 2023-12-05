@@ -13,7 +13,7 @@ From my side:
 - **current repo. state: pre 2.7: Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch .**
   **Fixed clearing of MEP error indication in header line. .**
 
-**Please Note: Only payloads "raw (2 Sek.)", "raw (10 Sek.)" and "HomeAssistant" are tested .**
+**Please Note: For MQTT I could only test payloads "raw (2 Sek.)", "raw (10 Sek.)" and "HomeAssistant" .**
 
 This code is designed to decode data from NES (Networked Energy Services) electric smart meters which are installed in some countries in Europe (eg. Denmark and Austria, Switzerland).  
 The data is presented in a graphical web interface and can also send the data to a MQTT broker which makes it suitable for home automation project.
