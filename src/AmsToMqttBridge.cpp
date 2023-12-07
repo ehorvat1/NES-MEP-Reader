@@ -894,8 +894,9 @@ void loop() {
    		if((MEPQueue[MEPQueueSendIndex].RequestLength > 0) && (MEPQueue[MEPQueueSendIndex].ReplyLength == 0)) {
       		if(MEPQueue[MEPQueueSendIndex].SendAttempts >= MaxSendAttempts) {
 //       		Serial.printf("Giving up on reqest at index %i - too may retries\r\n");   //EHorvat disabled
-				if(Debug.isActive(RemoteDebug::INFO)) debugI("Giving up on reqest at index %i - too may retries");    //EHorvat new
-        		IncreaseMEPQueueIndex(&MEPQueueSendIndex);
+				if(Debug.isActive(RemoteDebug::INFO)) debugI("Zero Bytes received, giving up on reqest at index %i - too may retries",MEPQueueSendIndex);    //EHorvat new - fixed %i indicator
+        		MEPQueue[MEPQueueSendIndex].SendAttempts = 0; //EHorvat new - start a new request round...fixed debugging
+				IncreaseMEPQueueIndex(&MEPQueueSendIndex);
       		}
       		else {
         		MEPQueue[MEPQueueSendIndex].SendAttempts++;
@@ -940,6 +941,7 @@ void loop() {
 //																mep_keyByteArray[10],mep_keyByteArray[11],mep_keyByteArray[12],mep_keyByteArray[13],mep_keyByteArray[14],
 //																mep_keyByteArray[15]);
         	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ---- ++++++ actual Import Power: %d Watt", ConsumptionData.BT28_Fwd_W); //  EHorvat NES-MEP
+//        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ---- ++++++ actual Rev Reacttive Power: %d Watt", ConsumptionData.BT23_Rev_React_Wh); //  EHorvat NES-MEP
 				ds.updateMinute((ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W)); //EHorvat put data to new Minute Plot array
       		}
     	}
