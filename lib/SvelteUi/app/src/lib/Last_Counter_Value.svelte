@@ -8,6 +8,7 @@
     export let last_expCounter_Costs;    
     export let last_expCounter_Diff;
     export let hasExport;
+    export let currency;
 </script>
 
 <div class="mx-2 text-sm">
@@ -22,7 +23,7 @@
         <div>Verbrauch</div>
         <div class="text-right">{typeof last_Counter_Diff !== 'undefined' ? last_Counter_Diff.toFixed(0) : '-'} kWh</div>
         <div>Kosten</div>
-        <div class="text-right">{typeof last_Counter_Costs !== 'undefined' ? last_Counter_Costs.toFixed(2) : '-'} EUR</div>
+        <div class="text-right">{typeof last_Counter_Costs !== 'undefined' ? last_Counter_Costs.toFixed(2) : '-'} {currency}</div>
     </div>
     {#if hasExport}
         <strong>f&uuml;r Export</strong>
@@ -34,7 +35,7 @@
             <div>Export</div>
             <div class="text-right">{typeof last_expCounter_Diff !== 'undefined' ? last_expCounter_Diff.toFixed(0) : '-'} kWh</div>
             <div>Einnahmen</div>
-            <div class="text-right">{typeof last_expCounter_Costs !== 'undefined' ? last_expCounter_Costs.toFixed(2) : '-'} EUR</div>
+            <div class="text-right">{typeof last_expCounter_Costs !== 'undefined' ? last_expCounter_Costs.toFixed(2) : '-'} {currency}</div>
         </div>
     {/if}
 </div>

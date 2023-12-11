@@ -89,7 +89,7 @@
     {/if}
     {#if uiVisibility(sysinfo.ui.l, data.py)}
         <div class="cnt">
-            <Last_Counter_Value last_Counter_Value={data.py} last_Counter_Info={data.pd} last_Counter_Costs={data.pl} last_Counter_Diff={data.pa} last_expCounter_Value={data.pz} last_expCounter_Info={data.pg} last_expCounter_Costs={data.pj} last_expCounter_Diff={data.pk} hasExport={uiVisibility(sysinfo.ui.e, data.om || data.e > 0)}/>
+            <Last_Counter_Value last_Counter_Value={data.py} last_Counter_Info={data.pd} last_Counter_Costs={data.pl} last_Counter_Diff={data.pa} last_expCounter_Value={data.pz} last_expCounter_Info={data.pg} last_expCounter_Costs={data.pj} last_expCounter_Diff={data.pk} currency={data.pc} hasExport={uiVisibility(sysinfo.ui.e, data.om || data.e > 0)}/>
         </div>
     {/if}
     {#if uiVisibility(sysinfo.ui.r, data.ri > 0 || data.re > 0 || data.ric > 0 || data.rec > 0)}

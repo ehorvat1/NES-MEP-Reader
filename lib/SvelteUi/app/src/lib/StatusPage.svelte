@@ -93,9 +93,6 @@
             Chip: {sysinfo.chip}
         </div>
         <div class="my-2">
-            Device: <Link to="/vendor">{boardtype(sysinfo.chip, sysinfo.board)}</Link>
-        </div>
-        <div class="my-2">
             MAC: {sysinfo.mac}
         </div>
         {#if sysinfo.apmac && sysinfo.apmac != sysinfo.mac}
@@ -161,7 +158,7 @@
             Installierte Version: pre2.7-ge
         </div>        
         <div class="my-2"><!-- EHorvat new info-->
-            Datum: 7. Dez. 2023
+            Datum: 11. Dez. 2023
         </div>
         {#if sysinfo.security == 0 || data.a}
         <div class="my-2 flex">

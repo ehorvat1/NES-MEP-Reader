@@ -300,9 +300,6 @@
             <strong class="text-sm">Meter</strong>
             <a href="{wiki('Meter-configuration')}" target="_blank" class="float-right"><HelpIcon/></a>
             <input type="hidden" name="m" value="true"/>
-            <div class="my-1">
-                <span>Serial configuration is fixed to 9600/8N1 on UART2 Pins IO16 & IO17!</span>
-            </div>
 
             <div class="my-1">
                 Voltage<br/>
@@ -493,10 +490,8 @@
                 <div>
                     Payload<br/>
                     <select name="qm" bind:value={configuration.q.m} class="in-l">
-                        <option value={0}>JSON</option>
                         <option value={1}>Raw (10 Sek.)</option>
                         <option value={2}>Raw (2 Sek.)</option>
-                        <option value={3}>Domoticz</option>
                         <option value={4}>HomeAssistant</option>
                     </select>
                 </div>
@@ -588,72 +583,6 @@
                 {/each}
             </div>
         </div>
-        {#if sysinfo.board > 20 || sysinfo.chip == 'esp8266'}
-        <div class="cnt">
-            <strong class="text-sm">Hardware</strong>
-            <a href="{wiki('GPIO-configuration')}" target="_blank" class="float-right"><HelpIcon/></a>
-            {#if sysinfo.board > 20}
-            <input type="hidden" name="i" value="true"/>
-            <div class="my-1">
-                <span>Serial port is fixed at UART2 which are Pins IO16 & IO17! RTS pin is fixed to IO05</span>
-            </div>
-            <div class="flex flex-wrap">
-                <div class="w-1/3">
-                    AP button<br/>
-                    <input name="ia" bind:value={configuration.i.a} type="number" min="0" max={gpioMax} class="in-m tr w-full"/>
-                </div>
-                <div class="w-1/3">
-                    LED<label class="ml-4"><input name="ili" value="true" bind:checked={configuration.i.l.i} type="checkbox" class="rounded mb-1"/> inv</label><br/>
-                    <div class="flex">
-                        <input name="ilp" bind:value={configuration.i.l.p} type="number" min="0" max={gpioMax} class="in-l tr w-full"/>
-                    </div>
-                </div>
-                <div class="w-full">
-                    RGB<label class="ml-4"><input name="iri" value="true" bind:checked={configuration.i.r.i} type="checkbox" class="rounded mb-1"/> inverted</label><br/>
-                    <div class="flex">
-                        <input name="irr" bind:value={configuration.i.r.r} type="number" min="0" max={gpioMax} class="in-f tr w-1/3"/>
-                        <input name="irg" bind:value={configuration.i.r.g} type="number" min="0" max={gpioMax} class="in-m tr w-1/3"/>
-                        <input name="irb" bind:value={configuration.i.r.b} type="number" min="0" max={gpioMax} class="in-l tr w-1/3"/>
-                    </div>
-                </div>
-                {#if sysinfo.chip != 'esp8266'}
-                <div class="my-1 pl-1 w-1/3">
-                    Vcc<br/>
-                    <input name="ivp" bind:value={configuration.i.v.p} type="number" min="0" max={gpioMax} class="in-s tr w-full"/>
-                </div>
-                {/if}
-                {#if configuration.i.v.p > 0}
-                <div class="my-1">
-                    Voltage divider<br/>
-                    <div class="flex">
-                        <input name="ivdv" bind:value={configuration.i.v.d.v} type="number" min="0" max="65535" class="in-f tr w-full" placeholder="VCC"/>
-                        <input name="ivdg" bind:value={configuration.i.v.d.g} type="number" min="0" max="65535" class="in-l tr w-full" placeholder="GND"/>
-                    </div>
-                </div>
-                {/if}
-            </div> 
-            {/if}
-            {#if sysinfo.chip == 'esp8266'}
-            <input type="hidden" name="iv" value="true"/>
-            <div class="my-1 flex flex-wrap">
-                <div class="w-1/3">
-                    Vcc offset<br/>
-                    <input name="ivo" bind:value={configuration.i.v.o} type="number" min="0.0" max="3.5" step="0.01" class="in-f tr w-full"/>
-                </div>
-                <div class="w-1/3 pr-1">
-                    Multiplier<br/>
-                    <input name="ivm" bind:value={configuration.i.v.m} type="number" min="0.1" max="10" step="0.01" class="in-l tr w-full"/>
-                </div>
-                {#if sysinfo.board == 2 || sysinfo.board == 100}
-                <div class="w-1/3 pl-1">
-                    Boot limit<br/>
-                    <input name="ivb" bind:value={configuration.i.v.b} type="number" min="2.5" max="3.5" step="0.1" class="in-s tr w-full"/>
-                </div>
-                {/if}
-            </div>
-            {/if}
-        </div>
-        {/if}
         <div class="cnt"> <!-- EHorvat: Added new last_counter_value -->
             <strong class="text-sm">letzte Abrechnung</strong>
             <div class="my-1"> 
