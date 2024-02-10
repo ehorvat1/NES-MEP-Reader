@@ -13,5 +13,5 @@ If this happens try:
 2) Always helps: Remove the DCDC converter (!) and power the ESP32 module directly from USB.
 
 ### Notes:
-1) I have used a small "connector" board to connect to the MEP port and a flat ribbon cable. In this way the signals are transported outside of the meter. The flat ribbon cable fits through the open gap where the meter is mounted into the electric cabinet. This all is done because here in my place the MEP port is not accesable, it is covered by a plasic cover which is sealed off by the power supply company.
+1) I have used a small "connector" board to connect to the MEP port and a flat ribbon cable. In this way the signals are transported outside of the meter. The flat ribbon cable fits through the open gap where the meter is mounted into the electric cabinet. This all is done because here in my place the MEP port is not accesable, it is covered by a plastic cover which is sealed off by the power supply company.
 2) The spacing of the MEP port terminals is different between NES smart meter models. Therefore just 5 short wires are connected to the "connector" board.
