@@ -12,7 +12,7 @@ MeterInfoStruct MeterInfo;
 
 
 extern MEPQueueStruct MEPQueue[];
-extern long mep_alivecounter;  //EHorvat NES-MEP MQTT
+extern long mep_alivecounter;  //EHorvat NES-MEP
 
 // ####################################################
 // ## Source: "078-0372-01BD_MEP_Client_DC OSGP.pdf" ##

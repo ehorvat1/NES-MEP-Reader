@@ -190,7 +190,8 @@ unsigned long mep_LastSentMillis = 0;
 unsigned long mep_Last_ok_millis = 0;
 bool mep_data_ready = false;
 bool mep_data_ready_to_send = false;
-long mep_alivecounter = 0;
+extern long mep_alivecounter = 0;;  //EHorvat NES-MEP
+//long mep_alivecounter = 0;
 long mep_alivecounter_last = 0;
 long summ_60minplot = 0;
 long hour_plot_avg = 0;
@@ -750,7 +751,10 @@ void loop() {
 		mep_alivecounter_last = mep_alivecounter;
 		summ_60minplot = summ_60minplot + (ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W); //EHorvat 
 		index_60minplot++;
-
+        if (mep_alivecounter > 32000) {	//prevent overflow
+			mep_alivecounter = 1;
+			mep_alivecounter_last = 0;
+		}
 
 		if(Debug.isActive(RemoteDebug::INFO)) debugI("++++++  EHo +++ Stations connected to AP: %i",WiFi.softAPgetStationNum());
 
@@ -940,8 +944,8 @@ void loop() {
 //																mep_keyByteArray[5],mep_keyByteArray[6],mep_keyByteArray[7],mep_keyByteArray[8],mep_keyByteArray[9],
 //																mep_keyByteArray[10],mep_keyByteArray[11],mep_keyByteArray[12],mep_keyByteArray[13],mep_keyByteArray[14],
 //																mep_keyByteArray[15]);
-        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ---- ++++++ actual Import Power: %d Watt", ConsumptionData.BT28_Fwd_W); //  EHorvat NES-MEP
-//        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ---- ++++++ actual Rev Reacttive Power: %d Watt", ConsumptionData.BT23_Rev_React_Wh); //  EHorvat NES-MEP
+        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ----  actual Import Power: %d Watt  , mep_alivecounter = %d", ConsumptionData.BT28_Fwd_W, mep_alivecounter); //  EHorvat NES-MEP
+//        	    if(Debug.isActive(RemoteDebug::INFO)) debugI("---- Read MEP Port ----  actual Rev Reacttive Power: %d Watt", ConsumptionData.BT23_Rev_React_Wh); //  EHorvat NES-MEP
 				ds.updateMinute((ConsumptionData.BT28_Fwd_W - ConsumptionData.BT28_Rev_W)); //EHorvat put data to new Minute Plot array
       		}
     	}
