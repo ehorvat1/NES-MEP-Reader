@@ -922,11 +922,12 @@ void loop() {
       		}
     	}
     	else {
-      		if(millis()-LastSentMillis > 2000) {     //EHorvat Nes-MEP was 5000
+      		if(millis()-LastSentMillis > 2000) {     //EHorvat Nes-MEP was 5000, request data from meter every 2 seconds....
 			       				 
-					 // Update consumption data
-       			queueRequest("3F0017000000000D", mep_key, MEPQueue, &MEPQueueNextIndex, None);              //EHorvat ... Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch
-				                                                                                            // for details check discussion here: https://github.com/orgs/OSGP-Alliance-MEP-and-Optical/discussions/18
+// Update consumption data
+				queueRequest("3F00170000000010", mep_key, MEPQueue, &MEPQueueNextIndex, None);              // EHorvat ...2nd attempt: 2.4.2024: read 16 bytes now (10hex)...Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch
+				                                                                                            // Initial fix: for details check discussion here: https://github.com/orgs/OSGP-Alliance-MEP-and-Optical/discussions/18
+//  			                                                                                            // 2.4.2024: for details check discussion here: https://github.com/ehorvat1/NES-MEP-Reader/issues/8
 //    			queueRequest("300017" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None); //EHorvat ... this was Rev2.6 version ....changed now...seee above 2 lines
        			
 				queueRequest("30001C" + MaxMEPReplyLengthAsHex(),mep_key,MEPQueue,&MEPQueueNextIndex,None);
