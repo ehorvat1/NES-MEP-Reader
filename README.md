@@ -12,6 +12,7 @@ From my side:
 - Rel. 2.6: MQTT works now for "HomeAssistant" payload. Only check for 25 Data points from BT28 (was 54)
 - **current repo. state: pre 2.7: Fix table read BT23 for Gen4 meters....thanks to makerspace-reinach.ch .**
   **Fixed clearing of MEP error indication in header line. Fixed communication recovery and debug message if zero bytes are received.**
+  **Fixed reading from table BT23 resulting in wrong "Export Reactive Arh L1L2L3"....thanks to Hubert**
 
 **Please Note: For MQTT I could only test payloads "raw (2 Sek.)", "raw (10 Sek.)" and "HomeAssistant" .**
 
