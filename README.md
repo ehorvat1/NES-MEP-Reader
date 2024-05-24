@@ -14,7 +14,9 @@ From my side:
   
   **Fixed clearing of MEP error indication in header line. Fixed communication recovery and debug message if zero bytes are received.**
   
-  **Fixed reading from table BT23 resulting in wrong "Export Reactive Arh L1L2L3"....thanks to Hubert**
+  **12 Aprl 2024, Fixed reading from table BT23 resulting in wrong "Export Reactive Arh L1L2L3"....thanks to Hubert**
+
+  **24 Mai 2024, Only as compiled firmware in binary section: A version on "steroids" reading MEP port every second. Short tests did show no problems, but (as for whole project): use at own risk**
 
 **Please Note: For MQTT I could only test payloads "raw (2 Sek.)", "raw (10 Sek.)" and "HomeAssistant" .**
 
